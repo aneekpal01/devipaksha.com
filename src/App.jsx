@@ -158,18 +158,24 @@ export default function App() {
         onOpenPandalGuide={() => setIsPandalGuideOpen(true)}
       />
 
-      {/* 3. Center Hero Stage: Bengali Title, Countdown, and Day Switcher */}
-      <main className="relative z-20 flex-1 flex flex-col items-center justify-center px-4 py-2 my-auto">
+      {/* 3. Hero Top Section: Big Bengali Title & Countdown Subtitle */}
+      <section className="relative z-20 w-full flex flex-col items-center justify-start px-4 pt-1 sm:pt-3">
         <CountdownHeader selectedDayKey={selectedDayKey} />
-        <DaySelectorDropdown
-          currentPlaylistKey={currentPlaylistKey}
-          onSelectPlaylist={handleSelectPlaylist}
-          onOpenAboutMahalaya={() => setIsAboutMahalayaOpen(true)}
-        />
-      </main>
+      </section>
 
-      {/* 4. Bottom Floating Music Player */}
+      {/* Middle open spacer allowing full view of Maa Durga idol in the pandal */}
+      <div className="flex-1 min-h-[40px]" />
+
+      {/* 4. Bottom Section: Day/Playlist Dropdown Capsule & Floating Music Player */}
       <footer className="relative z-30 pb-4 pt-1 px-4 w-full flex flex-col items-center">
+        <div className="mb-2 sm:mb-3">
+          <DaySelectorDropdown
+            currentPlaylistKey={currentPlaylistKey}
+            onSelectPlaylist={handleSelectPlaylist}
+            onOpenAboutMahalaya={() => setIsAboutMahalayaOpen(true)}
+          />
+        </div>
+
         <MusicPlayer
           currentTrack={currentTrack}
           isPlaying={isPlaying}

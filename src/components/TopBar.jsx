@@ -185,16 +185,16 @@ export default function TopBar({
               </span>
             </div>
 
-            {/* 6 Full-Width Horizontal Feature Rows (Matching Screenshot Exactly) */}
+            {/* 6 Full-Width Horizontal Feature Rows (Clean Without Stickers) */}
             <div className="space-y-2">
               {featuresList.map((item) => (
                 <button
                   key={item.id}
                   onClick={item.action}
-                  className="group w-full flex items-center justify-between p-2.5 rounded-2xl bg-gradient-to-r from-white/35 via-white/28 to-white/20 hover:from-white/45 hover:to-white/30 border border-white/40 hover:border-[#ffd873]/80 shadow-[0_3px_12px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.7)] transition-all duration-200 text-left active:scale-97 cursor-pointer"
+                  className="group w-full flex items-center p-2.5 rounded-2xl bg-gradient-to-r from-white/35 via-white/28 to-white/20 hover:from-white/45 hover:to-white/30 border border-white/40 hover:border-[#ffd873]/80 shadow-[0_3px_12px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.7)] transition-all duration-200 text-left active:scale-97 cursor-pointer"
                 >
                   {/* Left: Icon Tile + Title/Subtitle */}
-                  <div className="flex items-center gap-2.5 min-w-0 flex-1 mr-2">
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
                     <div
                       className={`w-9 h-9 rounded-2xl ${item.iconBg} flex items-center justify-center flex-shrink-0 shadow-inner group-hover:scale-105 transition-transform`}
                     >
@@ -210,13 +210,6 @@ export default function TopBar({
                       </p>
                     </div>
                   </div>
-
-                  {/* Right: Rounded Tag Pill Badge */}
-                  <span
-                    className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border shadow-xs flex-shrink-0 ${item.tagStyle}`}
-                  >
-                    {item.tag}
-                  </span>
                 </button>
               ))}
             </div>

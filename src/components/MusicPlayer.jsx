@@ -97,7 +97,6 @@ export default function MusicPlayer({
                   } catch (e) {}
                 }
               } else if (event.data === 0) {
-                // Song ended naturally -> Auto play next song
                 if (isRepeatRef.current) {
                   ytPlayerInstance.current?.seekTo(0);
                   ytPlayerInstance.current?.playVideo();
@@ -164,7 +163,6 @@ export default function MusicPlayer({
           if (cur !== undefined && !isNaN(cur)) setCurrentTime(Math.floor(cur));
           if (dur !== undefined && !isNaN(dur) && dur > 0) setDuration(Math.floor(dur));
 
-          // If track reached the very end -> auto advance
           if (dur && dur > 5 && cur >= (dur - 0.9)) {
             if (lastEndedTrackId.current !== currentTrack?.id) {
               lastEndedTrackId.current = currentTrack?.id;
@@ -249,7 +247,7 @@ export default function MusicPlayer({
   const progressPercent = duration > 0 ? Math.min(100, Math.max(0, (currentTime / duration) * 100)) : 0;
 
   return (
-    <div className="relative z-30 w-full max-w-md mx-auto px-4 pb-4 select-none">
+    <div className="relative z-30 w-full max-w-sm sm:max-w-md mx-auto px-2 sm:px-4 pb-2 sm:pb-3 select-none">
       {/* Active YouTube Iframe Audio Host */}
       <div
         style={{
@@ -266,21 +264,21 @@ export default function MusicPlayer({
         <div id="yt-audio-host" />
       </div>
 
-      {/* Floating Apple Liquid Glass Player Card */}
-      <div className="liquid-glass-card rounded-[28px] p-4 border border-white/20 shadow-2xl backdrop-blur-2xl">
+      {/* Sleek, Thin, Compact Liquid Glass Music Player Card */}
+      <div className="liquid-glass-card rounded-[24px] p-2.5 sm:p-3 border border-white/20 shadow-2xl backdrop-blur-2xl">
         {/* Top Info & Play Controls Row */}
-        <div className="flex items-center gap-3">
-          {/* Song Thumbnail with Liquid Glass bezel */}
+        <div className="flex items-center gap-2.5">
+          {/* Song Thumbnail */}
           <div
             onClick={onOpenPlaylist}
             title="Click to view all songs"
-            className="relative flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl p-0.5 flex items-center justify-center liquid-glass-btn border-white/30 shadow-lg cursor-pointer group overflow-hidden"
+            className="relative flex-shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-xl p-0.5 flex items-center justify-center liquid-glass-btn border-white/30 shadow-md cursor-pointer group overflow-hidden"
           >
             {trackThumbnail ? (
               <img
                 src={trackThumbnail}
                 alt={currentTrack?.title || 'Song Cover'}
-                className={`w-full h-full object-cover rounded-[14px] transition-transform duration-300 ${
+                className={`w-full h-full object-cover rounded-[10px] transition-transform duration-300 ${
                   isPlaying ? 'scale-105 filter brightness-105' : 'group-hover:scale-105'
                 }`}
                 onError={(e) => {
@@ -289,13 +287,13 @@ export default function MusicPlayer({
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <span className="text-2xl">🪔</span>
+                <span className="text-xl">🪔</span>
               </div>
             )}
 
             {/* Soundwave equalizer indicator */}
             {isPlaying && (
-              <div className="absolute bottom-1 right-1 flex items-end gap-0.5 h-3 px-1 rounded-md bg-black/60 backdrop-blur-md">
+              <div className="absolute bottom-0.5 right-0.5 flex items-end gap-0.5 h-2.5 px-1 rounded bg-black/70 backdrop-blur-md">
                 <span className="w-0.5 bg-[#ffd873] eq-bar-1"></span>
                 <span className="w-0.5 bg-[#ffd873] eq-bar-2"></span>
                 <span className="w-0.5 bg-[#ffd873] eq-bar-3"></span>
@@ -308,50 +306,50 @@ export default function MusicPlayer({
             onClick={onOpenPlaylist}
             className="flex-1 min-w-0 cursor-pointer group"
           >
-            <h3 className="text-sm sm:text-base font-bold text-[#fdf3e2] truncate group-hover:text-[#ffd873] transition-colors leading-snug">
+            <h3 className="text-xs sm:text-sm font-bold text-[#fdf3e2] truncate group-hover:text-[#ffd873] transition-colors leading-tight">
               {currentTrack?.title || 'Dugga Elo'}
             </h3>
-            <p className="text-xs text-[#fdf3e2]/70 truncate font-medium mt-0.5">
+            <p className="text-[10px] sm:text-[11px] text-[#fdf3e2]/70 truncate font-medium mt-0.5">
               {currentTrack?.artist || 'Bengali Pujo Hit'}
             </p>
           </div>
 
-          {/* Transport Controls: Previous, Big White Play/Pause Button, Next */}
-          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+          {/* Transport Controls: Previous, Compact White Play Button, Next */}
+          <div className="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
             <button
               onClick={handlePrevClick}
               title="Previous Track"
-              className="p-1.5 text-[#fdf3e2]/80 hover:text-[#ffd873] hover:scale-110 active:scale-95 transition-all cursor-pointer"
+              className="p-1 text-[#fdf3e2]/80 hover:text-[#ffd873] hover:scale-110 active:scale-95 transition-all cursor-pointer"
             >
-              <SkipBack className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
+              <SkipBack className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" />
             </button>
 
-            {/* White Circular Play/Pause Button */}
+            {/* Compact White Circular Play/Pause Button */}
             <button
               onClick={togglePlay}
               title={isPlaying ? 'Pause' : 'Play'}
-              className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-b from-white via-white/95 to-slate-100 text-[#1a0e08] shadow-[0_8px_24px_rgba(255,255,255,0.25),0_4px_16px_rgba(0,0,0,0.5)] border border-white hover:scale-106 active:scale-94 transition-all cursor-pointer"
+              className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-b from-white via-white/95 to-slate-100 text-[#1a0e08] shadow-[0_6px_18px_rgba(255,255,255,0.22),0_3px_12px_rgba(0,0,0,0.5)] border border-white hover:scale-106 active:scale-94 transition-all cursor-pointer"
             >
               {isPlaying ? (
-                <Pause className="w-5 h-5 sm:w-6 sm:h-6 fill-current text-[#120805]" />
+                <Pause className="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-current text-[#120805]" />
               ) : (
-                <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-current text-[#120805] ml-0.5" />
+                <Play className="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-current text-[#120805] ml-0.5" />
               )}
             </button>
 
             <button
               onClick={handleNextClick}
               title="Next Track"
-              className="p-1.5 text-[#fdf3e2]/80 hover:text-[#ffd873] hover:scale-110 active:scale-95 transition-all cursor-pointer"
+              className="p-1 text-[#fdf3e2]/80 hover:text-[#ffd873] hover:scale-110 active:scale-95 transition-all cursor-pointer"
             >
-              <SkipForward className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
+              <SkipForward className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" />
             </button>
           </div>
         </div>
 
-        {/* Dynamic Golden Filled Progress Bar with Left & Right Timestamps */}
-        <div className="mt-3.5 w-full">
-          <div className="relative flex items-center h-4 group cursor-pointer">
+        {/* Compact Dynamic Golden Filled Progress Bar */}
+        <div className="mt-2 w-full">
+          <div className="relative flex items-center h-3 group cursor-pointer">
             <input
               type="range"
               min="0"
@@ -365,7 +363,7 @@ export default function MusicPlayer({
             />
           </div>
 
-          <div className="flex items-center justify-between text-[11px] font-mono text-[#fdf3e2]/75 mt-1 px-0.5">
+          <div className="flex items-center justify-between text-[10px] font-mono text-[#fdf3e2]/75 mt-0.5 px-0.5">
             <span className="text-[#ffd873] font-bold tabular-nums">
               {formatTime(currentTime)}
             </span>
@@ -375,29 +373,29 @@ export default function MusicPlayer({
           </div>
         </div>
 
-        {/* Bottom Action Controls */}
-        <div className="flex items-center justify-between mt-2.5 pt-2 border-t border-white/10 text-xs text-[#fdf3e2]/85">
+        {/* Compact Bottom Action Controls */}
+        <div className="flex items-center justify-between mt-1.5 pt-1.5 border-t border-white/10 text-[11px] text-[#fdf3e2]/85">
           <button
             onClick={() => setIsShuffle(!isShuffle)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full liquid-glass-btn transition-all cursor-pointer ${
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-full liquid-glass-btn transition-all cursor-pointer ${
               isShuffle
-                ? 'border-[#ffd873] text-[#ffd873] font-bold bg-[#ffd873]/20 shadow-[0_0_12px_rgba(255,216,115,0.3)]'
+                ? 'border-[#ffd873] text-[#ffd873] font-bold bg-[#ffd873]/20 shadow-[0_0_10px_rgba(255,216,115,0.3)]'
                 : 'text-[#fdf3e2]/75 hover:text-[#ffd873]'
             }`}
           >
-            <Shuffle className="w-3.5 h-3.5" />
+            <Shuffle className="w-3 h-3" />
             <span>Shuffle</span>
           </button>
 
           <button
             onClick={() => setIsRepeat(!isRepeat)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full liquid-glass-btn transition-all cursor-pointer ${
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-full liquid-glass-btn transition-all cursor-pointer ${
               isRepeat
-                ? 'border-[#ffd873] text-[#ffd873] font-bold bg-[#ffd873]/20 shadow-[0_0_12px_rgba(255,216,115,0.3)]'
+                ? 'border-[#ffd873] text-[#ffd873] font-bold bg-[#ffd873]/20 shadow-[0_0_10px_rgba(255,216,115,0.3)]'
                 : 'text-[#fdf3e2]/75 hover:text-[#ffd873]'
             }`}
           >
-            <Repeat className="w-3.5 h-3.5" />
+            <Repeat className="w-3 h-3" />
             <span>Repeat</span>
           </button>
 
@@ -405,9 +403,9 @@ export default function MusicPlayer({
           <button
             onClick={handleDhakQuickTrigger}
             title="Play Dhak rhythm & open soundboard"
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full liquid-glass-btn border-[#ffd873]/50 text-[#ffd873] font-bold shadow-[0_0_14px_rgba(255,216,115,0.25)] hover:border-[#ffd873] cursor-pointer"
+            className="flex items-center gap-1 px-3 py-1 rounded-full liquid-glass-btn border-[#ffd873]/50 text-[#ffd873] font-bold shadow-[0_0_12px_rgba(255,216,115,0.25)] hover:border-[#ffd873] cursor-pointer"
           >
-            <Drum className="w-3.5 h-3.5 text-[#ffd873]" />
+            <Drum className="w-3 h-3 text-[#ffd873]" />
             <span>🎵 Dhak</span>
           </button>
         </div>

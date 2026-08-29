@@ -158,8 +158,8 @@ export default function App() {
         onOpenPandalGuide={() => setIsPandalGuideOpen(true)}
       />
 
-      {/* 3. Hero Top Section: Big Bengali Title & Countdown Subtitle */}
-      <section className="relative z-20 w-full flex flex-col items-center justify-start px-4 pt-1 sm:pt-3">
+      {/* 3. Hero Top Section: Big Bengali Title & Countdown Subtitle (Moved down for clean clearance) */}
+      <section className="relative z-20 w-full flex flex-col items-center justify-start px-4 pt-8 sm:pt-12 md:pt-14">
         <CountdownHeader selectedDayKey={selectedDayKey} />
       </section>
 

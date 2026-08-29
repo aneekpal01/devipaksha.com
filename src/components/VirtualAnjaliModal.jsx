@@ -1,0 +1,316 @@
+import React, { useState, useEffect } from 'react';
+import { X, Sparkles, Volume2, Heart, Award, Flame, Flower2, Bell } from 'lucide-react';
+import confetti from 'canvas-confetti';
+
+const FLOWERS = [
+  {
+    id: 'jaba',
+    name: 'রক্তজবা (Red Hibiscus)',
+    desc: 'মা দুর্গার পরম প্রিয় লাল রক্তজবা ফুল',
+    emoji: '🌺',
+    colors: ['#ef4444', '#dc2626', '#b91c1c', '#ffd873']
+  },
+  {
+    id: 'belpata',
+    name: 'বিল্বপত্র ও চন্দন (Bel Pata)',
+    desc: 'পবিত্র চন্দন লেপিত ত্রিদল বেলপাতা',
+    emoji: '🍃',
+    colors: ['#10b981', '#059669', '#34d399', '#fef08a']
+  },
+  {
+    id: 'aparajita',
+    name: 'অপরাজিতা ও শিউলি (Shiuli)',
+    desc: 'নীল অপরাজিতা ও শরৎকালের সুবাসিত শিউলি',
+    emoji: '🌼',
+    colors: ['#3b82f6', '#1d4ed8', '#ffffff', '#fb923c']
+  },
+  {
+    id: 'arati',
+    name: 'ধূপ ও পঞ্চপ্রদীপ (Arati Deepam)',
+    desc: 'সুগন্ধি ধূপ ও ঘৃতপ্রদীপের সন্ধ্যারতি',
+    emoji: '🪔',
+    colors: ['#f59e0b', '#d97706', '#fbbf24', '#ef4444']
+  }
+];
+
+const MANTRAS = [
+  {
+    phase: 'প্রথম অঞ্জলি (1st Anjali Mantra)',
+    sanskrit: 'ওঁ মহিষঘ্নি মহামায়ে চামুণ্ডে মুণ্ডমালিনী। আয়ুরারোগ্য বিজয়ং দেহি দেবি নমোঽস্তুতে॥',
+    phonetic: 'Om Mahishaghni Mahamaye Chamunde Mundamalini / Ayurarogyam Vijayang Dehi Devi Namostute',
+    meaning: 'হে মহিষাসুরমর্দিনী, হে মহামায়া, তুমি আমাদের দীর্ঘায়ু, আরোগ্য ও বিজয় দান করো।'
+  },
+  {
+    phase: 'দ্বিতীয় অঞ্জলি (2nd Anjali Mantra)',
+    sanskrit: 'ওঁ সর্বমঙ্গল মঙ্গল্যে শিবে সর্বার্থ সাধিকে। শরণ্যে ত্র্যম্বকে গৌরি নারায়ণি নমোঽস্তুতে॥',
+    phonetic: 'Om Sarva Mangala Mangalye Shive Sarvartha Sadhike / Sharanye Tryambake Gauri Narayani Namostute',
+    meaning: 'হে সর্বমঙ্গলা, সর্বার্থসাধিকা, শরণদাত্রী গৌরী নারায়ণী, তোমাকে প্রণাম জানাই।'
+  },
+  {
+    phase: 'প্রণাম মন্ত্র (Final Pranam Mantra)',
+    sanskrit: 'ওঁ জয়ন্তী মঙ্গলা কালী ভদ্রকালী কপালিনী। দুর্গা শিবা ক্ষমা ধাত্রী স্বাহা স্বধা নমোঽস্তুতে॥',
+    phonetic: 'Om Jayanti Mangala Kali Bhadrakali Kapalini / Durga Shiva Kshama Dhatri Swaha Swadha Namostute',
+    meaning: 'হে জয়দাত্রী, মঙ্গলা, দুর্গা, ধাত্রী — হে জগন্মাতা, তোমার চরণে ভক্তিপূর্ণ প্রণাম।'
+  }
+];
+
+// Web Audio API Synthesizer for Shankho (Conch) & Temple Bell
+const playSacredSound = (type = 'bell') => {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+
+    if (type === 'bell') {
+      // Crystal clear temple bell chime
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(880, ctx.currentTime); // A5
+      osc.frequency.exponentialRampToValueAtTime(1760, ctx.currentTime + 0.1);
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.3);
+
+      gain.gain.setValueAtTime(0.4, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.5);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 2.5);
+    } else {
+      // Deep resonant conch / Shankho drone
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(220, ctx.currentTime); // A3
+      osc.frequency.linearRampToValueAtTime(261.63, ctx.currentTime + 0.5); // C4
+      osc.frequency.linearRampToValueAtTime(329.63, ctx.currentTime + 1.2); // E4
+      osc.frequency.linearRampToValueAtTime(220, ctx.currentTime + 2.8);
+
+      gain.gain.setValueAtTime(0.01, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.35, ctx.currentTime + 0.6);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 3.2);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 3.2);
+    }
+  } catch (e) {
+    console.warn('Web Audio playback error:', e);
+  }
+};
+
+export default function VirtualAnjaliModal({ isOpen, onClose }) {
+  const [selectedFlower, setSelectedFlower] = useState(FLOWERS[0]);
+  const [currentMantraIdx, setCurrentMantraIdx] = useState(0);
+  const [isOffering, setIsOffering] = useState(false);
+  const [anjaliCount, setAnjaliCount] = useState(() => {
+    const saved = localStorage.getItem('pujo_anjali_count');
+    return saved ? parseInt(saved, 10) : 1284;
+  });
+  const [hasOffered, setHasOffered] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setHasOffered(false);
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  const currentMantra = MANTRAS[currentMantraIdx];
+
+  const handleOfferPushpanjali = () => {
+    if (isOffering) return;
+    setIsOffering(true);
+
+    // Play Conch & Temple Bell Sound
+    playSacredSound('conch');
+    setTimeout(() => playSacredSound('bell'), 300);
+
+    // Dynamic Flower Petal Particle Explosion
+    confetti({
+      particleCount: 70,
+      spread: 80,
+      origin: { y: 0.65 },
+      colors: selectedFlower.colors,
+      ticks: 200,
+      gravity: 0.8
+    });
+
+    setTimeout(() => {
+      confetti({
+        particleCount: 50,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0.2, y: 0.7 },
+        colors: ['#ffd873', '#ff6b1a', '#ffffff']
+      });
+      confetti({
+        particleCount: 50,
+        angle: 120,
+        spread: 55,
+        origin: { x: 0.8, y: 0.7 },
+        colors: ['#ef4444', '#10b981', '#ffd873']
+      });
+    }, 250);
+
+    // Increment count & save
+    const newCount = anjaliCount + 1;
+    setAnjaliCount(newCount);
+    localStorage.setItem('pujo_anjali_count', newCount.toString());
+    setHasOffered(true);
+
+    // Cycle to next mantra on subsequent Anjalis
+    setCurrentMantraIdx((prev) => (prev + 1) % MANTRAS.length);
+
+    setTimeout(() => {
+      setIsOffering(false);
+    }, 1200);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/85 backdrop-blur-2xl animate-fadeIn select-none overflow-hidden">
+      {/* 3D Liquid Glass Modal (Spacious & Responsive) */}
+      <div className="relative w-full max-w-2xl md:h-[84vh] h-full max-h-[90vh] rounded-[32px] sm:rounded-[36px] liquid-glass-card p-4 sm:p-6 shadow-2xl overflow-hidden flex flex-col justify-between border border-white/20 box-border">
+        {/* Pinned Top-Right Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 z-20 p-2 rounded-full liquid-glass-btn text-[#fdf3e2] hover:bg-white/20 cursor-pointer"
+          title="Close"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        {/* 1. Header */}
+        <div className="flex items-center justify-between pb-3 border-b border-white/10 pr-12 gap-3 min-w-0">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="p-2 sm:p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500/25 to-rose-500/25 text-[#ffd873] shadow-md border border-[#ffd873]/30 flex-shrink-0">
+              <img src="/durga-logo.png" alt="Maa Durga" className="w-6 h-6 object-contain drop-shadow" />
+            </div>
+
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h1 className="font-bengali-title text-base sm:text-xl font-bold text-[#ffd873] tracking-wide px-1">
+                  ভার্চুয়াল পুষ্পাঞ্জলি
+                </h1>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-sans font-bold flex-shrink-0">
+                  Live Ritual
+                </span>
+              </div>
+              <p className="text-[10px] sm:text-xs text-[#fdf3e2]/65 font-medium px-1">
+                মায়ের চরণে ভক্তিভরে ফুল ও বেলপাতা নিবেদন করুন
+              </p>
+            </div>
+          </div>
+
+          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-bold text-[#ffd873] shadow-inner flex-shrink-0">
+            <Award className="w-3.5 h-3.5 text-amber-400" />
+            <span>{anjaliCount.toLocaleString()} ভক্ত অঞ্জলি দিয়েছেন</span>
+          </div>
+        </div>
+
+        {/* 2. Scrollable Sacred Ritual Center Stage */}
+        <div className="flex-1 overflow-y-auto px-1.5 py-2 space-y-4 overflow-x-hidden w-full box-border">
+          {/* Sanskrit Mantra Display Card */}
+          <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-950/40 via-black/40 to-rose-950/30 border border-[#ffd873]/25 shadow-xl relative overflow-hidden box-border">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[11px] font-bold text-amber-300/90 tracking-wide font-bengali uppercase flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#ffd873]" />
+                {currentMantra.phase}
+              </span>
+              <button
+                type="button"
+                onClick={() => playSacredSound('conch')}
+                className="text-[10px] px-2 py-1 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-[#ffd873] flex items-center gap-1 cursor-pointer transition-colors"
+                title="Play Conch Sound"
+              >
+                <Volume2 className="w-3 h-3" />
+                <span>শঙ্খধ্বনি</span>
+              </button>
+            </div>
+
+            <p className="font-bengali text-sm sm:text-base text-[#fdf3e2] font-semibold leading-relaxed tracking-wide mb-2 text-center text-festive-glow">
+              {currentMantra.sanskrit}
+            </p>
+
+            <p className="text-[10px] sm:text-xs text-[#ffd873]/75 italic text-center font-serif leading-snug mb-1.5">
+              "{currentMantra.phonetic}"
+            </p>
+
+            <p className="text-[10px] sm:text-xs text-[#fdf3e2]/60 text-center font-bengali leading-normal border-t border-white/10 pt-2">
+              {currentMantra.meaning}
+            </p>
+          </div>
+
+          {/* Floral & Offering Choice Grid (2x2) */}
+          <div>
+            <label className="block text-xs font-bold text-[#ffd873] mb-2 font-bengali">
+              ১. অর্ঘ্য বা ফুল নির্বাচন করুন (Choose Offering):
+            </label>
+
+            <div className="grid grid-cols-2 gap-2.5">
+              {FLOWERS.map((f) => {
+                const isSelected = selectedFlower.id === f.id;
+
+                return (
+                  <div
+                    key={f.id}
+                    onClick={() => setSelectedFlower(f)}
+                    className={`p-3 rounded-2xl cursor-pointer transition-all border flex items-center gap-3 box-border ${
+                      isSelected
+                        ? 'liquid-glass-btn border-[#ffd873] bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-[#ffd873] shadow-lg'
+                        : 'border-white/10 hover:border-white/20 bg-white/5 text-[#fdf3e2]/80 hover:bg-white/10'
+                    }`}
+                  >
+                    <div className="text-2xl sm:text-3xl flex-shrink-0">
+                      {f.emoji}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-xs sm:text-sm font-bold truncate">
+                        {f.name}
+                      </div>
+                      <div className="text-[10px] text-[#fdf3e2]/55 truncate">
+                        {f.desc}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Success Devotional Greeting Banner */}
+          {hasOffered && (
+            <div className="p-3 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 text-xs sm:text-sm flex items-center justify-between animate-fadeIn shadow-md">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-emerald-400" />
+                <span>মা দুর্গার আশীর্বাদ আপনার ও আপনার পরিবারের উপর সদাসর্বদা বর্ষিত হোক! 🌸🙏</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* 3. Bottom Action Bar */}
+        <div className="pt-3 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 box-border">
+          <div className="text-[11px] text-[#fdf3e2]/60 sm:block hidden font-bengali">
+            অর্ঘ্য নিবেদন করতে নিচের বোতামটি স্পর্শ করুন 🌺
+          </div>
+
+          <button
+            type="button"
+            onClick={handleOfferPushpanjali}
+            disabled={isOffering}
+            className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-black font-extrabold text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-xl transition-all active:scale-95 cursor-pointer disabled:opacity-75"
+          >
+            <Flower2 className={`w-5 h-5 ${isOffering ? 'animate-spin' : 'animate-bounce'}`} />
+            <span>
+              {isOffering ? 'অঞ্জলি প্রদান হচ্ছে... 🌸' : `${selectedFlower.name.split(' ')[0]} দিয়ে অঞ্জলি দিন 🌺`}
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

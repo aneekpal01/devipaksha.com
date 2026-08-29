@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Radiant Gradient -->
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff7b00" />
+      <stop offset="60%" stop-color="#d9381e" />
+      <stop offset="100%" stop-color="#7a0a0a" />
+    </radialGradient>
+
+    <!-- Gold Foil Gradient -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff4cc" />
+      <stop offset="30%" stop-color="#ffd700" />
+      <stop offset="70%" stop-color="#e69500" />
+      <stop offset="100%" stop-color="#b35900" />
+    </linearGradient>
+
+    <!-- Divine Eye Glow -->
+    <filter id="divineGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Circular Outer Badge -->
+  <circle cx="256" cy="256" r="248" fill="url(#bgGlow)" stroke="url(#goldGrad)" stroke-width="12" />
+
+  <!-- Inner Dotted Aura Ring -->
+  <circle cx="256" cy="256" r="226" fill="none" stroke="#ffe066" stroke-width="3" stroke-dasharray="8 8" opacity="0.6" />
+
+  <!-- Cute Golden Mukut (Crown) Base & Peaks -->
+  <g id="crown">
+    <!-- Center Arch -->
+    <path d="M 176 170 Q 256 80 336 170 Q 300 200 256 190 Q 212 200 176 170 Z" fill="url(#goldGrad)" stroke="#803300" stroke-width="3" />
+    <!-- Crown Main Peak -->
+    <path d="M 236 120 Q 256 40 276 120 Q 256 140 236 120 Z" fill="#ffe066" stroke="#b35900" stroke-width="2" />
+    <circle cx="256" cy="60" r="10" fill="#ff2a2a" stroke="#ffffff" stroke-width="2" />
+    <!-- Side Peaks -->
+    <path d="M 190 145 Q 180 95 210 130 Z" fill="url(#goldGrad)" stroke="#803300" stroke-width="2" />
+    <circle cx="188" cy="98" r="6" fill="#ff2a2a" />
+    <path d="M 322 145 Q 332 95 302 130 Z" fill="url(#goldGrad)" stroke="#803300" stroke-width="2" />
+    <circle cx="324" cy="98" r="6" fill="#ff2a2a" />
+    <!-- Crown Pearl Droplets -->
+    <circle cx="216" cy="182" r="5" fill="#ffffff" />
+    <circle cx="256" cy="186" r="6" fill="#ffffff" />
+    <circle cx="296" cy="182" r="5" fill="#ffffff" />
+  </g>
+
+  <!-- Divine Durga Eyes (আইকনিক ত্রিনয়ন) -->
+  <g id="divineEyes">
+    <!-- Left Eyebrow -->
+    <path d="M 150 240 Q 195 205 235 240" fill="none" stroke="#1a0000" stroke-width="8" stroke-linecap="round" />
+    <!-- Right Eyebrow -->
+    <path d="M 277 240 Q 317 205 362 240" fill="none" stroke="#1a0000" stroke-width="8" stroke-linecap="round" />
+
+    <!-- Left Eye (Almond Shaped) -->
+    <path d="M 140 270 Q 192 225 240 270 Q 192 315 140 270 Z" fill="#ffffff" stroke="#1a0000" stroke-width="6" stroke-linejoin="round" />
+    <circle cx="196" cy="270" r="20" fill="#1a0a04" />
+    <circle cx="202" cy="265" r="7" fill="#ffffff" />
+    <!-- Kajal Wing Left -->
+    <path d="M 140 270 Q 120 262 110 250" fill="none" stroke="#1a0000" stroke-width="6" stroke-linecap="round" />
+
+    <!-- Right Eye (Almond Shaped) -->
+    <path d="M 272 270 Q 320 225 372 270 Q 320 315 272 270 Z" fill="#ffffff" stroke="#1a0000" stroke-width="6" stroke-linejoin="round" />
+    <circle cx="316" cy="270" r="20" fill="#1a0a04" />
+    <circle cx="322" cy="265" r="7" fill="#ffffff" />
+    <!-- Kajal Wing Right -->
+    <path d="M 372 270 Q 392 262 402 250" fill="none" stroke="#1a0000" stroke-width="6" stroke-linecap="round" />
+
+    <!-- Third Eye (Trinetra / Trinaayana on Forehead) -->
+    <g id="thirdEye">
+      <path d="M 256 195 Q 272 225 256 250 Q 240 225 256 195 Z" fill="#ff2222" stroke="#ffd700" stroke-width="4" />
+      <circle cx="256" cy="222" r="5" fill="#ffffff" />
+    </g>
+
+    <!-- Traditional Bengali Red Bindi & Chandan Dots -->
+    <circle cx="256" cy="275" r="12" fill="#d90429" stroke="#ffd700" stroke-width="2.5" />
+    <!-- Chandan Dots above eyebrows -->
+    <circle cx="170" cy="222" r="3" fill="#ffffff" />
+    <circle cx="190" cy="214" r="3.5" fill="#ffffff" />
+    <circle cx="212" cy="218" r="3" fill="#ffffff" />
+    <circle cx="300" cy="218" r="3" fill="#ffffff" />
+    <circle cx="322" cy="214" r="3.5" fill="#ffffff" />
+    <circle cx="342" cy="222" r="3" fill="#ffffff" />
+
+    <!-- Cute Traditional Gold Nath (Nose Ring with Pearl Chain) -->
+    <circle cx="282" cy="336" r="32" fill="none" stroke="url(#goldGrad)" stroke-width="5" />
+    <circle cx="256" cy="336" r="6" fill="#ff0044" />
+    <!-- Nath Pearls -->
+    <circle cx="270" cy="365" r="5" fill="#ffffff" />
+    <circle cx="295" cy="360" r="5" fill="#ffffff" />
+    <!-- Delicate Chain to Ear -->
+    <path d="M 314 336 Q 370 340 395 310" fill="none" stroke="#ffd700" stroke-width="2.5" stroke-dasharray="3 3" />
+  </g>
+
+  <!-- Sweet Gentle Smile -->
+  <path d="M 226 390 Q 256 415 286 390" fill="none" stroke="#b3002d" stroke-width="5" stroke-linecap="round" />
+  <path d="M 232 390 Q 256 422 280 390" fill="#d90429" opacity="0.8" />
+</svg>

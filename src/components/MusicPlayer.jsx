@@ -371,7 +371,14 @@ export default function MusicPlayer({
         {/* Compact Bottom Action Controls */}
         <div className="flex items-center justify-between mt-1.5 pt-1.5 border-t border-white/10 text-[11px] text-[#fdf3e2]/85">
           <button
-            onClick={() => setIsShuffle(!isShuffle)}
+            onClick={() => {
+              if (!isShuffle) {
+                setIsShuffle(true);
+                setIsRepeat(false);
+              } else {
+                setIsShuffle(false);
+              }
+            }}
             className={`flex items-center gap-1 px-2.5 py-1 rounded-full liquid-glass-btn transition-all cursor-pointer ${
               isShuffle
                 ? 'border-[#ffd873] text-[#ffd873] font-bold bg-[#ffd873]/20 shadow-[0_0_10px_rgba(255,216,115,0.3)]'
@@ -383,7 +390,14 @@ export default function MusicPlayer({
           </button>
 
           <button
-            onClick={() => setIsRepeat(!isRepeat)}
+            onClick={() => {
+              if (!isRepeat) {
+                setIsRepeat(true);
+                setIsShuffle(false);
+              } else {
+                setIsRepeat(false);
+              }
+            }}
             className={`flex items-center gap-1 px-2.5 py-1 rounded-full liquid-glass-btn transition-all cursor-pointer ${
               isRepeat
                 ? 'border-[#ffd873] text-[#ffd873] font-bold bg-[#ffd873]/20 shadow-[0_0_10px_rgba(255,216,115,0.3)]'

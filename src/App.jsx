@@ -94,8 +94,8 @@ export default function App() {
 
   const handleNextTrack = () => {
     const tracks = getActiveTracks();
-    if (tracks.length === 0) return;
-    const curIdx = tracks.findIndex((t) => t.id === currentTrack.id);
+    if (!tracks || tracks.length === 0) return;
+    const curIdx = tracks.findIndex((t) => t.id === currentTrack?.id);
     let nextIdx;
     if (isShuffle) {
       nextIdx = Math.floor(Math.random() * tracks.length);
@@ -103,19 +103,34 @@ export default function App() {
         nextIdx = (curIdx + 1) % tracks.length;
       }
     } else {
-      nextIdx = (curIdx + 1) % tracks.length;
+      if (curIdx === -1 || curIdx >= tracks.length - 1) {
+        nextIdx = 0;
+      } else {
+        nextIdx = curIdx + 1;
+      }
     }
-    setCurrentTrack(tracks[nextIdx]);
-    setIsPlaying(true);
+    const targetTrack = tracks[nextIdx];
+    if (targetTrack) {
+      setCurrentTrack(targetTrack);
+      setIsPlaying(true);
+    }
   };
 
   const handlePrevTrack = () => {
     const tracks = getActiveTracks();
-    if (tracks.length === 0) return;
-    const curIdx = tracks.findIndex((t) => t.id === currentTrack.id);
-    const prevIdx = (curIdx - 1 + tracks.length) % tracks.length;
-    setCurrentTrack(tracks[prevIdx]);
-    setIsPlaying(true);
+    if (!tracks || tracks.length === 0) return;
+    const curIdx = tracks.findIndex((t) => t.id === currentTrack?.id);
+    let prevIdx;
+    if (curIdx <= 0) {
+      prevIdx = tracks.length - 1;
+    } else {
+      prevIdx = curIdx - 1;
+    }
+    const targetTrack = tracks[prevIdx];
+    if (targetTrack) {
+      setCurrentTrack(targetTrack);
+      setIsPlaying(true);
+    }
   };
 
   const handleSelectTrack = (track, playlistKey) => {

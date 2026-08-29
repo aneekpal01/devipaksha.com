@@ -6,11 +6,15 @@ export default function DaySelectorDropdown({
   currentPlaylistKey = 'durga_puja',
   onOpenPlaylist
 }) {
-  const currentPlaylist = PLAYLISTS_DATA[currentPlaylistKey] || PLAYLISTS_DATA.durga_puja;
+  const getDisplayLabel = () => {
+    if (currentPlaylistKey === 'mahalaya') return 'MAHALAYA';
+    if (currentPlaylistKey === 'dhak_ambience') return 'MAHALAYA SONGS';
+    return 'DURGA';
+  };
 
   return (
     <div className="relative z-30 inline-block text-left mt-2.5">
-      {/* Exact Match Amber/Gold Frosted Capsule Button: ≡   DURGA   ⌵ -> Opens Full Song List */}
+      {/* Exact Match Amber/Gold Frosted Capsule Button: ≡   DURGA / MAHALAYA / MAHALAYA SONGS   ⌵ */}
       <button
         onClick={onOpenPlaylist}
         title="Click to view all songs & playlists"
@@ -18,7 +22,7 @@ export default function DaySelectorDropdown({
       >
         <span className="text-[#ffd873] text-sm font-black">≡</span>
         <span className="font-serif-display font-black tracking-wider text-[#ffd873]">
-          {currentPlaylist.name.split(' ')[0]}
+          {getDisplayLabel()}
         </span>
         <ChevronDown className="w-3.5 h-3.5 text-[#ffd873]" />
       </button>

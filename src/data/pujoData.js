@@ -72,10 +72,10 @@ export const PLAYLISTS_DATA = {
   },
   dhak_ambience: {
     id: "dhak_ambience",
-    name: "Dhak, Aarti & Ambience",
-    bengaliName: "বিশুদ্ধ ঢাক, কাঁসর ও আরতি",
-    description: "Live Pandal Dhak, Dhunuchi Naach, Sandhi Puja 108 Dhak, Aarti & Mantras",
-    icon: "🥁",
+    name: "Mahalaya Songs",
+    bengaliName: "মহালয়া গান ও আগমনী",
+    description: "Classic Sharodiya Agomoni songs, nostalgic Mahalaya & festive beats",
+    icon: "🎵",
     tracks: [
       { id: "fikIhTLhv1w", title: "Dhunuchi Naach Dhaak (ধুনুচি নাচ ঢাক)", artist: "Live Pandal Dhak Beats", duration: "6:10", category: "dhak_ambience", thumbnail: "https://img.youtube.com/vi/fikIhTLhv1w/hqdefault.jpg" },
       { id: "LrrcH_MBnnM", title: "Sandhi Puja 108 Dhak & Aarti (সন্ধিপূজা আরতি ঢাক)", artist: "Traditional Dhaki Ensemble", duration: "7:40", category: "dhak_ambience", thumbnail: "https://img.youtube.com/vi/LrrcH_MBnnM/hqdefault.jpg" },

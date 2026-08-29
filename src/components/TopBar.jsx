@@ -173,7 +173,7 @@ export default function TopBar({
 
         {/* 3. EXACT MATCH Frosted 3D Liquid Glass Dropdown Menu from Reference Screenshot */}
         {isMenuOpen && (
-          <div className="absolute right-0 top-11 z-50 w-80 sm:w-92 rounded-[32px] bg-gradient-to-b from-[#3d2e24]/92 via-[#251811]/96 to-[#150a05]/98 p-3.5 sm:p-4 shadow-2xl border border-white/25 backdrop-blur-3xl animate-fadeIn box-border">
+          <div className="absolute right-0 top-11 z-50 w-80 sm:w-92 rounded-[32px] liquid-glass-card p-3.5 sm:p-4 shadow-2xl animate-fadeIn box-border">
             {/* Header: ✨ দেবীপক্ষ এক্সপ্লোরার | 6 Features */}
             <div className="px-2 py-1 mb-3 border-b border-white/10 flex items-center justify-between">
               <span className="font-bengali text-sm font-black text-[#ffd873] tracking-wide flex items-center gap-1.5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">

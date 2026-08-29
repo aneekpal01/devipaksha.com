@@ -47,13 +47,10 @@ export default function CreatorsModal({ isOpen, onClose }) {
             </div>
           </div>
 
-          {/* Name & Tagline */}
+          {/* Name */}
           <h3 className="text-xl sm:text-2xl font-bold text-[#fdf3e2] tracking-wide">
             Aneek Pal
           </h3>
-          <p className="text-xs sm:text-[13px] text-[#ffd873]/90 font-medium mt-1 font-bengali">
-            বাঙালির শ্রেষ্ঠ উৎসবের জন্য ভালোবাসা দিয়ে তৈরি
-          </p>
 
           {/* Social Links: LinkedIn & Instagram */}
           <div className="flex items-center gap-3.5 mt-4">

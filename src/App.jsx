@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import BackgroundStage from './components/BackgroundStage';
 import TopBar from './components/TopBar';
 import CountdownHeader from './components/CountdownHeader';
@@ -15,43 +15,59 @@ import PandalGuideModal from './components/PandalGuideModal';
 import { PUJO_DAYS, PLAYLISTS_DATA } from './data/pujoData';
 import { useLivePresence } from './utils/useLivePresence';
 
+export const TIME_PHASES = ['dawn', 'day', 'sunset', 'evening', 'night'];
+
+// Real-time 24-Hour Diurnal Phase Detector
+export const getRealTimePhase = () => {
+  const now = new Date();
+  const minutes = now.getHours() * 60 + now.getMinutes();
+
+  // 1. Dawn / ভোর: 4:00 AM — 6:59 AM (240 to 419 mins)
+  if (minutes >= 240 && minutes < 420) return 'dawn';
+  // 2. Day / সকাল ও দুপুর: 7:00 AM — 3:59 PM (420 to 959 mins)
+  if (minutes >= 420 && minutes < 960) return 'day';
+  // 3. Sunset (Golden Hour) / বিকেল ও গোধূলি: 4:00 PM — 6:29 PM (960 to 1109 mins)
+  if (minutes >= 960 && minutes < 1110) return 'sunset';
+  // 4. Evening (Aarti) / সন্ধ্যা ও মেলা: 6:30 PM — 10:29 PM (1110 to 1349 mins)
+  if (minutes >= 1110 && minutes < 1350) return 'evening';
+  // 5. Midnight / গভীর রাত ও পূর্ণিমা: 10:30 PM — 3:59 AM
+  return 'night';
+};
+
 export default function App() {
   const [selectedDayKey, setSelectedDayKey] = useState('mahalaya');
   const [currentPlaylistKey, setCurrentPlaylistKey] = useState('durga_puja');
 
-  // Automatically determine Day/Night based on real local time (6 AM to 6 PM is Day, 6 PM to 6 AM is Night)
-  const getInitialIsNight = () => {
-    const hour = new Date().getHours();
-    return hour < 6 || hour >= 18;
-  };
-
-  const [isNight, setIsNight] = useState(getInitialIsNight);
+  // Real-time 5-Phase Time of Day Engine
+  const [timePhase, setTimePhase] = useState(getRealTimePhase);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
 
-  // Auto-sync day/night if user hasn't manually overridden it, checks every minute
-  React.useEffect(() => {
+  // Auto-sync time phase with real clock every 30 seconds (if user hasn't manually overridden in session)
+  useEffect(() => {
     const checkTime = () => {
-      const hour = new Date().getHours();
-      const autoNight = hour < 6 || hour >= 18;
-      const manualOverride = sessionStorage.getItem('pujo_manual_theme_toggle');
+      const manualOverride = sessionStorage.getItem('pujo_manual_phase_toggle');
       if (!manualOverride) {
-        setIsNight(autoNight);
+        setTimePhase(getRealTimePhase());
       }
     };
 
-    const interval = setInterval(checkTime, 60000);
+    const interval = setInterval(checkTime, 30000);
     return () => clearInterval(interval);
   }, []);
 
-  const handleToggleNight = () => {
-    setIsNight((prev) => {
-      const next = !prev;
-      sessionStorage.setItem('pujo_manual_theme_toggle', 'true');
-      return next;
+  // Manual cycle through all 5 diurnal time phases on button click
+  const handleCycleTimePhase = () => {
+    setTimePhase((prev) => {
+      const curIdx = TIME_PHASES.indexOf(prev);
+      const nextPhase = TIME_PHASES[(curIdx + 1) % TIME_PHASES.length];
+      sessionStorage.setItem('pujo_manual_phase_toggle', 'true');
+      return nextPhase;
     });
   };
+
+  const isNight = timePhase === 'evening' || timePhase === 'night' || timePhase === 'dawn';
 
   // 100% Real live presence and live community chat hook
   const { onlineCount, messages, chaiCount, sendMessage, buyChai, tabSenderId } = useLivePresence();
@@ -141,13 +157,14 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen w-full flex flex-col justify-between overflow-x-hidden text-[#fdf3e2]">
-      {/* 1. Background Pandal Art & Interactive Particle Engine */}
-      <BackgroundStage isNight={isNight} />
+      {/* 1. Dynamic 5-Phase Time-of-Day Pandal Background */}
+      <BackgroundStage timePhase={timePhase} isNight={isNight} />
 
-      {/* 2. Top Bar (🟢 100% Real Live Online, Pushpanjali, Pandal Guide, Spotify, Adda, About Mahalaya) */}
+      {/* 2. Top Bar with 5-Phase Celestial Switch & Floating Hub */}
       <TopBar
+        timePhase={timePhase}
         isNight={isNight}
-        setIsNight={setIsNight}
+        onCycleTimePhase={handleCycleTimePhase}
         onlineCount={onlineCount}
         onOpenAdda={() => setIsAddaOpen(true)}
         onOpenGreeting={() => setIsGreetingOpen(true)}
@@ -158,46 +175,35 @@ export default function App() {
         onOpenPandalGuide={() => setIsPandalGuideOpen(true)}
       />
 
-      {/* 3. Center Section: Bengali Header & Clean Unobstructed Pandal Stage */}
-      <main className="relative z-20 flex flex-col items-center justify-start flex-1 w-full max-w-lg mx-auto pointer-events-auto pt-1">
-        <CountdownHeader
+      {/* 3. Center Hero Stage: Bengali Title, Countdown, and Day Switcher */}
+      <main className="relative z-20 flex-1 flex flex-col items-center justify-center px-4 -mt-3">
+        <CountdownHeader selectedDayKey={selectedDayKey} />
+        <DaySelectorDropdown
           selectedDayKey={selectedDayKey}
+          onSelectDay={setSelectedDayKey}
+          onOpenAboutMahalaya={() => setIsAboutMahalayaOpen(true)}
+          onOpenGreeting={() => setIsGreetingOpen(true)}
         />
       </main>
 
-      {/* 4. Bottom Controls Section: Day Selector Pill + Floating Glassmorphic Music Player */}
-      <div className="relative z-30 flex flex-col items-center w-full max-w-lg mx-auto">
-        {/* The Exact Pill: ≡ MAHALAYA ⌵ / ≡ DURGA ⌵ */}
-        <div className="mb-2">
-          <DaySelectorDropdown
-            currentPlaylistKey={currentPlaylistKey}
-            onSelectPlaylist={handleSelectPlaylist}
-            onOpenAboutMahalaya={() => setIsAboutMahalayaOpen(true)}
-          />
-        </div>
-
-        {/* Pixel-Perfect Glassmorphic Player */}
+      {/* 4. Bottom Floating Music Player */}
+      <footer className="relative z-30 pb-4 pt-1 px-4 w-full flex flex-col items-center">
         <MusicPlayer
           currentTrack={currentTrack}
           isPlaying={isPlaying}
           setIsPlaying={setIsPlaying}
-          onNext={handleNextTrack}
-          onPrev={handlePrevTrack}
-          onOpenDhak={() => setIsDhakOpen(true)}
-          onOpenPlaylist={() => setIsPlaylistOpen(true)}
+          onNextTrack={handleNextTrack}
+          onPrevTrack={handlePrevTrack}
           isShuffle={isShuffle}
           setIsShuffle={setIsShuffle}
           isRepeat={isRepeat}
           setIsRepeat={setIsRepeat}
+          onOpenPlaylist={() => setIsPlaylistOpen(true)}
+          onOpenDhak={() => setIsDhakOpen(true)}
         />
-      </div>
+      </footer>
 
-      {/* Modals & Interactive Overlays */}
-      <DhakSoundboard
-        isOpen={isDhakOpen}
-        onClose={() => setIsDhakOpen(false)}
-      />
-
+      {/* 5. Modals & Dialogs */}
       <PlaylistModal
         isOpen={isPlaylistOpen}
         onClose={() => setIsPlaylistOpen(false)}
@@ -206,6 +212,26 @@ export default function App() {
         currentTrack={currentTrack}
         isPlaying={isPlaying}
         onSelectTrack={handleSelectTrack}
+      />
+
+      <DhakSoundboard
+        isOpen={isDhakOpen}
+        onClose={() => setIsDhakOpen(false)}
+      />
+
+      <PujoGreetingModal
+        isOpen={isGreetingOpen}
+        onClose={() => setIsGreetingOpen(false)}
+      />
+
+      <ChaiAddaModal
+        isOpen={isAddaOpen}
+        onClose={() => setIsAddaOpen(false)}
+        messages={messages}
+        onSendMessage={sendMessage}
+        chaiCount={chaiCount}
+        onBuyChai={buyChai}
+        mySenderId={tabSenderId}
       />
 
       <MahalayaAboutModal
@@ -218,32 +244,13 @@ export default function App() {
         isOpen={isSpotifyOpen}
         onClose={() => setIsSpotifyOpen(false)}
         onPlayFullTrack={handlePlaySpotifyFullTrack}
-        currentPlayingTrackId={currentTrack?.id}
-        isPlaying={isPlaying}
       />
 
-      <PujoGreetingModal
-        isOpen={isGreetingOpen}
-        onClose={() => setIsGreetingOpen(false)}
-      />
-
-      <ChaiAddaModal
-        isOpen={isAddaOpen}
-        onClose={() => setIsAddaOpen(false)}
-        messages={messages}
-        chaiCount={chaiCount}
-        onSendMessage={sendMessage}
-        onBuyChai={buyChai}
-        tabSenderId={tabSenderId}
-      />
-
-      {/* 🌺 Virtual Pushpanjali & Sacred Conch Modal */}
       <VirtualAnjaliModal
         isOpen={isAnjaliOpen}
         onClose={() => setIsAnjaliOpen(false)}
       />
 
-      {/* 🏛️ Kolkata Iconic Pandal Parikrama Guide Modal */}
       <PandalGuideModal
         isOpen={isPandalGuideOpen}
         onClose={() => setIsPandalGuideOpen(false)}

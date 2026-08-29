@@ -15,6 +15,8 @@ import {
 } from 'lucide-react';
 
 export default function TopBar({
+  timePhase = 'day',
+  onCycleTimePhase,
   isNight,
   setIsNight,
   onOpenAdda,
@@ -139,13 +141,33 @@ export default function TopBar({
 
       {/* 2. Right: Dynamic Floating Menu Capsule */}
       <div className="relative flex items-center gap-2" ref={menuRef}>
-        {/* Day / Night Theme Ambience Switch */}
+        {/* 5-Phase Real-Time Celestial Diurnal Switch (🌅 Dawn ➔ ☀️ Day ➔ 🌇 Sunset ➔ 🏮 Evening ➔ 🌙 Night) */}
         <button
-          onClick={() => setIsNight(!isNight)}
-          title={isNight ? 'Switch to Day ambience (দিনের আলো)' : 'Switch to Night ambience (রাতের আলো)'}
-          className="flex items-center justify-center w-8 h-8 rounded-full liquid-glass-btn text-[#ffd873] hover:bg-yellow-400/20 shadow-md transition-all active:scale-95 cursor-pointer"
+          onClick={onCycleTimePhase || (() => setIsNight(!isNight))}
+          title={
+            timePhase === 'dawn'
+              ? 'ভোর (Dawn: ৪:০০ AM — ৬:৫৯ AM) • ক্লিক করে সময় পরিবর্তন করুন'
+              : timePhase === 'day'
+              ? 'সকাল ও দুপুর (Day: ৭:০০ AM — ৩:৫৯ PM) • ক্লিক করে সময় পরিবর্তন করুন'
+              : timePhase === 'sunset'
+              ? 'বিকেল ও গোধূলি (Golden Hour: ৪:০০ PM — ৬:২৯ PM) • ক্লিক করে সময় পরিবর্তন করুন'
+              : timePhase === 'evening'
+              ? 'সন্ধ্যা ও আরতি (Evening: ৬:৩০ PM — ১০:২৯ PM) • ক্লিক করে সময় পরিবর্তন করুন'
+              : 'গভীর রাত ও পূর্ণিমা (Midnight: ১০:৩০ PM — ৩:৫৯ AM) • ক্লিক করে সময় পরিবর্তন করুন'
+          }
+          className="flex items-center justify-center w-8 h-8 rounded-full liquid-glass-btn text-[#ffd873] hover:bg-yellow-400/20 shadow-md transition-all active:scale-95 cursor-pointer text-sm"
         >
-          {isNight ? <Sun className="w-4 h-4 text-amber-300" /> : <Moon className="w-4 h-4 text-amber-200" />}
+          {timePhase === 'dawn' ? (
+            <span className="text-sm">🌅</span>
+          ) : timePhase === 'day' ? (
+            <Sun className="w-4 h-4 text-amber-300" />
+          ) : timePhase === 'sunset' ? (
+            <span className="text-sm">🌇</span>
+          ) : timePhase === 'evening' ? (
+            <span className="text-sm">🏮</span>
+          ) : (
+            <Moon className="w-4 h-4 text-amber-200" />
+          )}
         </button>
 
         {/* Dynamic Island Floating Feature Hub Pill with Cute Maa Durga Logo */}

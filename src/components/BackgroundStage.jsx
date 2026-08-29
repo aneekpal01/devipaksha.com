@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-export default function BackgroundStage({ isNight = false }) {
+export default function BackgroundStage({ timePhase = 'day', isNight = false }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function BackgroundStage({ isNight = false }) {
     };
     window.addEventListener('resize', handleResize);
 
-    // 1. Floating particles: Shiuli & Kash (Day) / Golden Embers (Night)
+    // 1. Floating particles: Shiuli & Kash (Day) / Golden Embers (Night & Evening)
     const particles = [];
     const particleCount = Math.min(36, Math.floor(width / 28));
 
@@ -37,7 +37,7 @@ export default function BackgroundStage({ isNight = false }) {
       });
     }
 
-    // 2. Realistic Tuni Bulb (Fairy Lights) along the top sky & roofline ONLY (Zero middle clutter)
+    // 2. Realistic Tuni Bulb (Fairy Lights) along the top sky
     let tuniBulbs = [];
     const bulbColors = [
       { main: '#ffd873', glow: 'rgba(255, 216, 115, 0.75)' }, // Warm Gold
@@ -54,7 +54,6 @@ export default function BackgroundStage({ isNight = false }) {
       const curves = [];
 
       if (isDesktop) {
-        // Desktop: Clean top street-crossing draped festoons only (Zero center obstruction)
         curves.push({
           x1: 0, y1: height * 0.03,
           cx: width * 0.5, cy: height * 0.07,
@@ -69,7 +68,6 @@ export default function BackgroundStage({ isNight = false }) {
           count: 32
         });
       } else {
-        // Mobile: Clean top draped festoons only (Middle chain completely removed!)
         curves.push({
           x1: 0, y1: height * 0.03,
           cx: width * 0.5, cy: height * 0.07,
@@ -169,7 +167,6 @@ export default function BackgroundStage({ isNight = false }) {
       ctx.save();
       ctx.globalAlpha = alpha;
 
-      // Soft light halo
       const glowGrad = ctx.createRadialGradient(bulb.x, bulb.y, 1, bulb.x, bulb.y, bulb.size * 3.2);
       glowGrad.addColorStop(0, bulb.glow);
       glowGrad.addColorStop(0.6, bulb.glow.replace('0.75', '0.2'));
@@ -180,7 +177,6 @@ export default function BackgroundStage({ isNight = false }) {
       ctx.arc(bulb.x, bulb.y, bulb.size * 3.2, 0, Math.PI * 2);
       ctx.fill();
 
-      // Bright white hot center
       ctx.shadowColor = bulb.color;
       ctx.shadowBlur = 8 * pulse;
       ctx.fillStyle = '#ffffff';
@@ -188,7 +184,6 @@ export default function BackgroundStage({ isNight = false }) {
       ctx.arc(bulb.x, bulb.y, bulb.size * 0.6, 0, Math.PI * 2);
       ctx.fill();
 
-      // Colored glass shell
       ctx.fillStyle = bulb.color;
       ctx.beginPath();
       ctx.arc(bulb.x, bulb.y, bulb.size, 0, Math.PI * 2);
@@ -203,14 +198,14 @@ export default function BackgroundStage({ isNight = false }) {
       const time = Date.now() - startTime;
       ctx.clearRect(0, 0, width, height);
 
-      // In Night Mode: Draw clean top strings of glowing, twinkling Tuni Bulbs
-      if (isNight) {
+      // In Evening/Night/Sunset: Draw fairy lights
+      if (isNight || timePhase === 'sunset' || timePhase === 'evening') {
         tuniBulbs.forEach((bulb) => {
           drawTuniBulb(bulb, time);
         });
       }
 
-      // Floating Petals (Day) & Night Embers
+      // Floating Petals (Day/Dawn) & Night Embers
       particles.forEach((p) => {
         if (isNight) {
           p.x += Math.sin(time * 0.001 + p.rotation) * 0.5;
@@ -254,32 +249,59 @@ export default function BackgroundStage({ isNight = false }) {
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [isNight]);
+  }, [isNight, timePhase]);
 
   return (
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#050201]">
-      {/* 1. PC / Desktop Panoramic Widescreen Background */}
+      {/* 1. PC / Desktop 5-Phase Dynamic Time Widescreen Backgrounds */}
       <div className="hidden md:block absolute inset-0 w-full h-full">
-        {/* Day Background (Sunny Autumn Blue Sky with Golden Pandal) */}
+        {/* Phase 1: Dawn / ভোর (4:00 AM - 6:59 AM) */}
         <img
-          src="/assets/pandal-pc-day.jpg"
-          alt="Durga Puja Pandal Daytime Panoramic PC View"
+          src="/assets/pandal-pc-dawn.webp"
+          alt="Bhor Dawn Pandal"
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
-            isNight ? 'opacity-0 scale-100' : 'opacity-100 scale-100'
+            timePhase === 'dawn' ? 'opacity-100' : 'opacity-0'
           } filter brightness-100 contrast-105 saturate-105`}
         />
 
-        {/* Night Background (Full Moon, Glowing Street Lamps & Serene Night Pandal) */}
+        {/* Phase 2: Day / সকাল ও দুপুর (7:00 AM - 3:59 PM) */}
         <img
-          src="/assets/pandal-pc-night.jpg"
-          alt="Durga Puja Pandal Nighttime Panoramic PC View"
+          src="/assets/pandal-pc-day.webp"
+          alt="Sokal Daytime Pandal"
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
-            isNight ? 'opacity-100 scale-100' : 'opacity-0 scale-100'
+            timePhase === 'day' ? 'opacity-100' : 'opacity-0'
+          } filter brightness-100 contrast-105 saturate-105`}
+        />
+
+        {/* Phase 3: Sunset / বিকেল ও গোধূলি (4:00 PM - 6:29 PM) */}
+        <img
+          src="/assets/pandal-pc-sunset.webp"
+          alt="Bikel Sunset Golden Hour Pandal"
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
+            timePhase === 'sunset' ? 'opacity-100' : 'opacity-0'
+          } filter brightness-100 contrast-105 saturate-105`}
+        />
+
+        {/* Phase 4: Evening / সন্ধ্যা ও আরতি (6:30 PM - 10:29 PM) */}
+        <img
+          src="/assets/pandal-pc-evening.webp"
+          alt="Sondhya Festive Evening Pandal"
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
+            timePhase === 'evening' ? 'opacity-100' : 'opacity-0'
+          } filter brightness-100 contrast-105 saturate-105`}
+        />
+
+        {/* Phase 5: Midnight / রাত ও পূর্ণিমা (10:30 PM - 3:59 AM) */}
+        <img
+          src="/assets/pandal-pc-night.webp"
+          alt="Raat Midnight Pandal"
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
+            timePhase === 'night' ? 'opacity-100' : 'opacity-0'
           } filter brightness-100 contrast-105 saturate-105`}
         />
       </div>
 
-      {/* 2. Mobile Background */}
+      {/* 2. Mobile Background (Preserved) */}
       <div className="block md:hidden absolute inset-0 w-full h-full">
         <img
           src="/assets/pandal-day.jpg"
@@ -299,15 +321,15 @@ export default function BackgroundStage({ isNight = false }) {
       </div>
 
       {/* Atmospheric Vignette Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#070302]/45 via-transparent to-[#070302]/80" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_45%,_rgba(0,0,0,0.45)_85%,_rgba(0,0,0,0.85)_100%)]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#070302]/35 via-transparent to-[#070302]/70" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_50%,_rgba(0,0,0,0.35)_85%,_rgba(0,0,0,0.75)_100%)]" />
 
-      {/* 3. Canvas Layer: Floating Kash/Shiuli (Day) OR Clean Top Tuni Bulbs & Aarti Sparks (Night) */}
+      {/* 3. Canvas Layer: Floating Kash/Shiuli & Aarti Sparks */}
       <canvas ref={canvasRef} className="absolute inset-0 z-10 w-full h-full pointer-events-none" />
 
       {/* Vintage film grain overlay */}
       <div
-        className="absolute inset-0 opacity-[0.05] mix-blend-overlay pointer-events-none"
+        className="absolute inset-0 opacity-[0.04] mix-blend-overlay pointer-events-none"
         style={{
           backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")`
         }}

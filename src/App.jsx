@@ -12,6 +12,8 @@ import MahalayaAboutModal from './components/MahalayaAboutModal';
 import SpotifyPlayerModal from './components/SpotifyPlayerModal';
 import VirtualAnjaliModal from './components/VirtualAnjaliModal';
 import PandalGuideModal from './components/PandalGuideModal';
+import CreatorsModal from './components/CreatorsModal';
+import BuyChaiModal from './components/BuyChaiModal';
 import { PUJO_DAYS, PLAYLISTS_DATA } from './data/pujoData';
 import { useLivePresence } from './utils/useLivePresence';
 
@@ -65,6 +67,8 @@ export default function App() {
   const [isSpotifyOpen, setIsSpotifyOpen] = useState(false);
   const [isAnjaliOpen, setIsAnjaliOpen] = useState(false);
   const [isPandalGuideOpen, setIsPandalGuideOpen] = useState(false);
+  const [isCreatorsOpen, setIsCreatorsOpen] = useState(false);
+  const [isBuyChaiOpen, setIsBuyChaiOpen] = useState(false);
 
   // Current track state
   const [currentTrack, setCurrentTrack] = useState(
@@ -171,6 +175,8 @@ export default function App() {
         onOpenSpotify={() => setIsSpotifyOpen(true)}
         onOpenAnjali={() => setIsAnjaliOpen(true)}
         onOpenPandalGuide={() => setIsPandalGuideOpen(true)}
+        onOpenCreators={() => setIsCreatorsOpen(true)}
+        onOpenBuyChai={() => setIsBuyChaiOpen(true)}
       />
 
       {/* 3. Hero Top Section: Big Bengali Title & Countdown Subtitle (Moved lower for perfect sky framing) */}
@@ -256,6 +262,16 @@ export default function App() {
       <PandalGuideModal
         isOpen={isPandalGuideOpen}
         onClose={() => setIsPandalGuideOpen(false)}
+      />
+
+      <CreatorsModal
+        isOpen={isCreatorsOpen}
+        onClose={() => setIsCreatorsOpen(false)}
+      />
+
+      <BuyChaiModal
+        isOpen={isBuyChaiOpen}
+        onClose={() => setIsBuyChaiOpen(false)}
       />
     </div>
   );

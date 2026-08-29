@@ -9,7 +9,8 @@ import {
   Music,
   BookOpen,
   Send,
-  Flower2
+  Flower2,
+  Users
 } from 'lucide-react';
 
 export default function TopBar({
@@ -21,6 +22,8 @@ export default function TopBar({
   onOpenAnjali,
   onOpenPandalGuide,
   onOpenGreeting,
+  onOpenCreators,
+  onOpenBuyChai,
   onlineCount = 1
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -120,20 +123,46 @@ export default function TopBar({
 
   return (
     <header className="relative z-40 w-full px-3 sm:px-6 pt-3 sm:pt-4 flex items-center justify-between pointer-events-auto">
-      {/* 1. Left: 🟢 Live Online Indicator */}
-      <div
-        onClick={onOpenAdda}
-        title="Click to join live community adda!"
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full liquid-glass-pill cursor-pointer shadow-md hover:scale-103 active:scale-95 transition-all group"
-      >
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_10px_#34d399]"></span>
-        </span>
-        <span className="tabular-nums font-bold text-emerald-300 text-xs">
-          {onlineCount}
-        </span>
-        <span className="text-[11px] text-[#fdf3e2]/70 font-medium">online</span>
+      {/* 1. Left: 🟢 Live Online Indicator & Dual Capsule [ 👥 | ☕ ] */}
+      <div className="flex items-center gap-2">
+        <div
+          onClick={onOpenAdda}
+          title="Click to join live community adda!"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full liquid-glass-pill cursor-pointer shadow-md hover:scale-103 active:scale-95 transition-all group"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_10px_#34d399]"></span>
+          </span>
+          <span className="tabular-nums font-bold text-emerald-300 text-xs">
+            {onlineCount}
+          </span>
+          <span className="text-[11px] text-[#fdf3e2]/70 font-medium">online</span>
+        </div>
+
+        {/* Dual Capsule Pill: [ 👥 Creators | ☕ Buy Chai ] matching user screenshot */}
+        <div className="flex items-center rounded-full liquid-glass-pill p-0.5 border border-white/20 shadow-md">
+          {/* 👥 Creators Button */}
+          <button
+            onClick={onOpenCreators}
+            title="Made with Bhalobasha by Aneek Pal"
+            className="flex items-center justify-center p-1.5 sm:px-2.5 sm:py-1 rounded-full text-[#fdf3e2]/85 hover:text-[#ffd873] hover:bg-white/15 active:scale-95 transition-all cursor-pointer"
+          >
+            <Users className="w-3.5 h-3.5" />
+          </button>
+
+          {/* Divider */}
+          <span className="w-[1px] h-3.5 bg-white/20 my-auto" />
+
+          {/* ☕ Buy Us A Chai Button */}
+          <button
+            onClick={onOpenBuyChai}
+            title="Buy Us A Chai (UPI Support)"
+            className="flex items-center justify-center p-1.5 sm:px-2.5 sm:py-1 rounded-full text-[#fdf3e2]/85 hover:text-[#ffd873] hover:bg-white/15 active:scale-95 transition-all cursor-pointer"
+          >
+            <Coffee className="w-3.5 h-3.5 text-amber-300" />
+          </button>
+        </div>
       </div>
 
       {/* 2. Right: Ambience Switch & Floating Menu */}

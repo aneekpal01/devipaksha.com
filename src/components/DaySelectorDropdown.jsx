@@ -28,14 +28,14 @@ export default function DaySelectorDropdown({
   }, []);
 
   return (
-    <div className="relative z-30 inline-block text-left" ref={dropdownRef}>
-      {/* Apple Liquid Glass Pill Button: ≡ DURGA ⌵ */}
+    <div className="relative z-30 inline-block text-left mt-2.5" ref={dropdownRef}>
+      {/* Exact Match Amber/Gold Frosted Capsule Button: ≡   DURGA   ⌵ */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-5 py-2 rounded-full liquid-glass-pill text-[#fdf3e2] font-semibold text-xs sm:text-sm uppercase tracking-widest transition-all hover:scale-104 active:scale-96"
+        className="flex items-center gap-2.5 px-6 py-2 rounded-full liquid-glass-pill text-[#ffd873] font-bold text-xs sm:text-sm uppercase tracking-widest transition-all hover:scale-104 active:scale-95 shadow-lg border border-[#ffd873]/40 bg-gradient-to-r from-amber-500/25 via-amber-600/20 to-orange-500/20"
       >
         <span className="text-[#ffd873] text-sm">≡</span>
-        <span className="font-serif-display font-bold tracking-wider text-[#ffd873]">
+        <span className="font-serif-display font-black tracking-wider text-[#ffd873]">
           {currentPlaylist.name.split(' ')[0]}
         </span>
         <ChevronDown
@@ -47,7 +47,7 @@ export default function DaySelectorDropdown({
 
       {/* Apple Liquid Glass Dropdown Menu */}
       {isOpen && (
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-80 sm:w-96 rounded-3xl liquid-glass-card p-3.5 z-50 animate-fadeIn select-none">
+        <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-80 sm:w-96 rounded-3xl liquid-glass-card p-3.5 z-50 animate-fadeIn select-none shadow-2xl border border-white/20">
           {/* 5 Playlists Selector */}
           <div className="mb-2.5">
             <div className="text-[10px] uppercase font-bold tracking-widest text-[#ffd873] mb-2 flex items-center justify-between">
@@ -61,7 +61,7 @@ export default function DaySelectorDropdown({
                   <button
                     key={key}
                     onClick={() => {
-                      onSelectPlaylist(key);
+                      if (onSelectPlaylist) onSelectPlaylist(key);
                       setIsOpen(false);
                     }}
                     className={`py-2 px-1.5 rounded-2xl text-center transition-all ${
@@ -86,7 +86,7 @@ export default function DaySelectorDropdown({
             <button
               onClick={() => {
                 setIsOpen(false);
-                onOpenAboutMahalaya();
+                if (onOpenAboutMahalaya) onOpenAboutMahalaya();
               }}
               className="flex items-center justify-center gap-2 w-full py-2.5 rounded-2xl liquid-glass-btn text-[#ffd873] font-bold text-xs"
             >

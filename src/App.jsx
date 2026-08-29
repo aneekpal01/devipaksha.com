@@ -176,13 +176,12 @@ export default function App() {
       />
 
       {/* 3. Center Hero Stage: Bengali Title, Countdown, and Day Switcher */}
-      <main className="relative z-20 flex-1 flex flex-col items-center justify-center px-4 -mt-3">
+      <main className="relative z-20 flex-1 flex flex-col items-center justify-center px-4 py-2 my-auto">
         <CountdownHeader selectedDayKey={selectedDayKey} />
         <DaySelectorDropdown
-          selectedDayKey={selectedDayKey}
-          onSelectDay={setSelectedDayKey}
+          currentPlaylistKey={currentPlaylistKey}
+          onSelectPlaylist={handleSelectPlaylist}
           onOpenAboutMahalaya={() => setIsAboutMahalayaOpen(true)}
-          onOpenGreeting={() => setIsGreetingOpen(true)}
         />
       </main>
 

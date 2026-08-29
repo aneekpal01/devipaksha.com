@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { X, Copy, Check, Coffee, Sparkles } from 'lucide-react';
+import { X, Check, Coffee } from 'lucide-react';
 
 export default function BuyChaiModal({ isOpen, onClose }) {
   const [copied, setCopied] = useState(false);
-  const upiId = 'aneekpal@upi'; // Default fallback
+  const upiId = 'aneekpal@upi';
 
   if (!isOpen) return null;
 
@@ -25,15 +25,15 @@ export default function BuyChaiModal({ isOpen, onClose }) {
           <X className="w-4 h-4" />
         </button>
 
-        {/* Title: BUY US A CHAI */}
+        {/* Title: BUY ME A CHAI */}
         <div className="text-[11px] font-mono tracking-widest text-[#ffd873] uppercase font-bold mb-2 flex items-center justify-center gap-1.5">
           <Coffee className="w-3.5 h-3.5 text-amber-400" />
-          <span>BUY US A CHAI</span>
+          <span>BUY ME A CHAI</span>
         </div>
 
-        {/* Poetic Subtitle */}
-        <p className="text-xs text-[#fdf3e2]/80 leading-relaxed max-w-xs mx-auto mb-4">
-          If Devi Paksha made your Pujo a little nicer, you know what to do. One cup of chai, and we're back to the adda. ☕✨
+        {/* Personalized Solo Creator Subtitle */}
+        <p className="text-xs text-[#fdf3e2]/85 leading-relaxed max-w-xs mx-auto mb-4 font-medium">
+          If Devi Paksha made your Pujo a little more special, consider buying me a cup of chai. It fuels my coding & keeps the adda alive! ☕🪔
         </p>
 
         {/* UPI QR Code Container with Maa Durga Center Art */}
@@ -49,7 +49,7 @@ export default function BuyChaiModal({ isOpen, onClose }) {
         </div>
 
         {/* Scanner helper text */}
-        <p className="text-[11px] text-[#ffd873]/80 font-medium mt-3 font-sans">
+        <p className="text-[11px] text-[#ffd873]/90 font-medium mt-3 font-sans">
           Scan with any UPI app (GPay, PhonePe, Paytm)
         </p>
 

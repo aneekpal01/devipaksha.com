@@ -2,17 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import {
   Sun,
   Moon,
-  ChevronDown,
-  Sparkles,
-  Music,
-  MapPin,
-  MessageCircle,
-  BookOpen,
-  Send,
-  Radio,
-  Drum,
-  Flame,
-  CheckCircle2
+  ChevronDown
 } from 'lucide-react';
 
 export default function TopBar({
@@ -50,20 +40,18 @@ export default function TopBar({
       action: () => {
         setIsMenuOpen(false);
         onOpenAnjali();
-      },
-      gradient: 'from-amber-500/25 to-rose-500/25 border-amber-500/30'
+      }
     },
     {
       id: 'pandal',
       title: 'কলকাতা প্যান্ডেল পরিক্রমা',
-      desc: '৩২টি সেরা পুজো ও মেট্রো রুট',
+      desc: '৩২টি সেরা পুজো ও মেট্রো...',
       icon: '🏛️',
       tag: 'GUIDE',
       action: () => {
         setIsMenuOpen(false);
         onOpenPandalGuide();
-      },
-      gradient: 'from-amber-500/20 to-orange-500/20 border-orange-500/30'
+      }
     },
     {
       id: 'adda',
@@ -74,20 +62,18 @@ export default function TopBar({
       action: () => {
         setIsMenuOpen(false);
         onOpenAdda();
-      },
-      gradient: 'from-emerald-500/20 to-teal-500/20 border-emerald-500/30'
+      }
     },
     {
       id: 'spotify',
       title: 'স্পটিফাই মিউজিক হাব',
-      desc: 'অফিসিয়াল পুজো ট্র্যাক ও প্লেলিস্ট',
+      desc: 'অফিসিয়াল পুজো ট্র্যাক ও...',
       icon: '🎵',
       tag: 'AUDIO',
       action: () => {
         setIsMenuOpen(false);
         onOpenSpotify();
-      },
-      gradient: 'from-green-500/20 to-emerald-500/20 border-green-500/30'
+      }
     },
     {
       id: 'mahalaya',
@@ -98,20 +84,18 @@ export default function TopBar({
       action: () => {
         setIsMenuOpen(false);
         onOpenAboutMahalaya();
-      },
-      gradient: 'from-orange-500/20 to-amber-500/20 border-amber-500/30'
+      }
     },
     {
       id: 'greeting',
       title: 'শারদ শুভেচ্ছা কার্ড',
-      desc: 'ডিজিটাল কার্ড বানিয়ে শেয়ার করুন',
+      desc: 'ডিজিটাল কার্ড বানিয়ে...',
       icon: '💌',
       tag: 'SHARE',
       action: () => {
         setIsMenuOpen(false);
         onOpenGreeting();
-      },
-      gradient: 'from-pink-500/20 to-rose-500/20 border-pink-500/30'
+      }
     }
   ];
 
@@ -133,18 +117,18 @@ export default function TopBar({
         <span className="text-[11px] text-[#fdf3e2]/70 font-medium">online</span>
       </div>
 
-      {/* 2. Right: Dynamic Floating Menu Capsule */}
+      {/* 2. Right: Ambience Switch & Floating Menu */}
       <div className="relative flex items-center gap-2" ref={menuRef}>
-        {/* Day / Night Theme Ambience Switch (☀️ / 🌙) */}
+        {/* Day / Night Ambience Toggle (☀️ / 🌙) */}
         <button
           onClick={setIsNight}
-          title={isNight ? 'Switch to Day ambience (দিনের আলো)' : 'Switch to Night ambience (রাতের আলো)'}
+          title={isNight ? 'Switch to Day ambience' : 'Switch to Night ambience'}
           className="flex items-center justify-center w-8 h-8 rounded-full liquid-glass-btn text-[#ffd873] hover:bg-yellow-400/20 shadow-md transition-all active:scale-95 cursor-pointer"
         >
           {isNight ? <Sun className="w-4 h-4 text-amber-300" /> : <Moon className="w-4 h-4 text-amber-200" />}
         </button>
 
-        {/* Dynamic Island Floating Feature Hub Pill with Cute Maa Durga Logo */}
+        {/* Floating Menu Button: [ 👑 পুজো স্পেশাল ⌵ ] */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full liquid-glass-pill transition-all cursor-pointer shadow-lg active:scale-95 ${
@@ -168,12 +152,12 @@ export default function TopBar({
           />
         </button>
 
-        {/* 3. Frosted 3D Liquid Glass Dropdown Menu */}
+        {/* 3. Exact Match Dark Slate Frosted Glass Dropdown Menu */}
         {isMenuOpen && (
-          <div className="absolute right-0 top-11 z-50 w-80 sm:w-88 rounded-[30px] liquid-glass-card p-3.5 shadow-2xl border border-white/35 backdrop-blur-3xl animate-fadeIn box-border">
-            {/* Header */}
-            <div className="px-2.5 py-1.5 mb-2 border-b border-black/15 flex items-center justify-between">
-              <span className="font-bengali text-xs font-black text-[#ffd873] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] uppercase tracking-wider flex items-center gap-1.5">
+          <div className="absolute right-0 top-11 z-50 w-80 sm:w-88 rounded-[32px] bg-[#1a1d26]/96 p-3.5 shadow-2xl border border-white/20 backdrop-blur-3xl animate-fadeIn box-border">
+            {/* Header: 👑 দেবীপক্ষ এক্সপ্লোরার | Sharod 2026 */}
+            <div className="px-2 py-1 mb-2.5 border-b border-white/10 flex items-center justify-between">
+              <span className="font-bengali text-xs font-black text-[#ffd873] tracking-wide flex items-center gap-1.5">
                 <img
                   src="/durga-logo.png"
                   alt="Maa Durga"
@@ -181,32 +165,35 @@ export default function TopBar({
                 />
                 দেবীপক্ষ এক্সপ্লোরার
               </span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-black/40 text-[#ffd873] font-bold border border-white/20">
+              <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-black/70 text-[#ffd873] font-bold border border-white/15 font-sans">
                 Sharod 2026
               </span>
             </div>
 
-            {/* 6 Feature Button Tiles */}
+            {/* 6 Feature Button Tiles (Matching Exact Reference Screenshot) */}
             <div className="grid grid-cols-2 gap-2">
               {featuresList.map((item) => (
                 <button
                   key={item.id}
                   onClick={item.action}
-                  className="group relative flex flex-col justify-between p-2.5 rounded-2xl bg-gradient-to-b from-white/40 via-white/30 to-white/25 hover:from-white/50 hover:to-white/35 border border-white/50 hover:border-[#ffd873]/80 shadow-[0_4px_16px_rgba(0,0,0,0.15),inset_0_1px_1px_rgba(255,255,255,0.8)] transition-all duration-200 text-left active:scale-96 cursor-pointer"
+                  className="group flex flex-col justify-between p-2.5 rounded-2xl bg-[#424754]/80 hover:bg-[#4d5363]/90 border border-white/15 shadow-sm transition-all text-left active:scale-96 cursor-pointer"
                 >
-                  <div className="flex items-center justify-between w-full mb-1">
-                    <span className="text-xl p-1 rounded-xl bg-white/50 shadow-sm border border-white/40 group-hover:scale-110 transition-transform">
+                  {/* Top row: Light Square Icon Tile + Black Tag Badge */}
+                  <div className="flex items-center justify-between w-full mb-1.5">
+                    <div className="w-9 h-9 rounded-xl bg-[#cbced6] flex items-center justify-center text-lg shadow-inner group-hover:scale-105 transition-transform">
                       {item.icon}
-                    </span>
-                    <span className="text-[9px] font-black px-1.5 py-0.5 rounded-md bg-[#1a0802] text-[#ffd873] border border-amber-400/40 shadow-xs font-sans tracking-wide">
+                    </div>
+                    <span className="text-[9px] font-black px-2 py-0.5 rounded-md bg-black text-[#ffd873] border border-white/10 font-sans tracking-wider">
                       {item.tag}
                     </span>
                   </div>
+
+                  {/* Bottom: Title & Subtitle */}
                   <div>
-                    <h3 className="font-bengali text-xs font-black text-[#150702] group-hover:text-[#801200] leading-tight transition-colors">
+                    <h3 className="font-bengali text-xs font-black text-white group-hover:text-[#ffd873] leading-tight transition-colors truncate">
                       {item.title}
                     </h3>
-                    <p className="text-[10px] text-[#2d1105] font-bold leading-snug mt-0.5 line-clamp-1">
+                    <p className="text-[10px] text-stone-300 font-medium leading-snug mt-0.5 truncate">
                       {item.desc}
                     </p>
                   </div>
@@ -214,10 +201,10 @@ export default function TopBar({
               ))}
             </div>
 
-            {/* Sub-footer */}
-            <div className="mt-2.5 pt-2 border-t border-black/15 px-2 flex items-center justify-between text-[10px] text-[#fdf3e2]/70 font-semibold">
-              <span className="font-bengali">দেবীপক্ষ (Devi Paksha)</span>
-              <span className="font-bengali text-[#ffd873]/90">শারদীয় উৎসব</span>
+            {/* Sub-footer: দেবীপক্ষ (Devi Paksha) | শারদীয় উৎসব */}
+            <div className="mt-3 pt-2 border-t border-white/10 px-2 flex items-center justify-between text-[10px]">
+              <span className="font-bengali text-stone-300 font-medium">দেবীপক্ষ (Devi Paksha)</span>
+              <span className="font-bengali text-[#ffd873] font-bold">শারদীয় উৎসব</span>
             </div>
           </div>
         )}

@@ -4,7 +4,7 @@ import { Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function CountdownHeader({ selectedDayKey }) {
-  const selectedDay = PUJO_DAYS[selectedDayKey] || PUJO_DAYS.mahalaya;
+  const selectedDay = PUJO_DAYS[selectedDayKey] || PUJO_DAYS.shashthi;
   const [countdown, setCountdown] = useState(() => getCountdown(selectedDay.dateString));
 
   useEffect(() => {

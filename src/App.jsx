@@ -18,7 +18,7 @@ import { PUJO_DAYS, PLAYLISTS_DATA } from './data/pujoData';
 import { useLivePresence } from './utils/useLivePresence';
 
 export default function App() {
-  const [selectedDayKey, setSelectedDayKey] = useState('mahalaya');
+  const [selectedDayKey, setSelectedDayKey] = useState('shashthi');
   const [currentPlaylistKey, setCurrentPlaylistKey] = useState('durga_puja');
 
   // Automatic Real-Time Day & Night Engine (6 AM to 6 PM is Day, 6 PM to 6 AM is Night)

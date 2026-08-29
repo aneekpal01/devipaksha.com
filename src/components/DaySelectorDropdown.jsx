@@ -45,9 +45,9 @@ export default function DaySelectorDropdown({
         />
       </button>
 
-      {/* Apple Liquid Glass Dropdown Menu */}
+      {/* Apple Liquid Glass Dropdown Menu Opening Upwards */}
       {isOpen && (
-        <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-80 sm:w-96 rounded-3xl liquid-glass-card p-3.5 z-50 animate-fadeIn select-none shadow-2xl border border-white/20">
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-3 w-80 sm:w-96 rounded-3xl liquid-glass-card p-3.5 z-50 animate-fadeIn select-none shadow-2xl border border-white/20">
           {/* 5 Playlists Selector */}
           <div className="mb-2.5">
             <div className="text-[10px] uppercase font-bold tracking-widest text-[#ffd873] mb-2 flex items-center justify-between">

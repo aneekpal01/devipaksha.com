@@ -23,7 +23,7 @@ export default function MusicPlayer({
   const isPlayerReady = useRef(false);
   const prevTrackId = useRef(currentTrack?.id);
   const lastEndedTrackId = useRef(null);
-  const isSwitchingTrack = useRef(false);
+  const isInitialMount = useRef(true);
 
   // Normalize callbacks
   const nextCallback = onNextTrack || onNext;
@@ -58,7 +58,7 @@ export default function MusicPlayer({
           width: '100',
           videoId: currentTrack?.id || 'xlElO06nQy8',
           playerVars: {
-            autoplay: 1,
+            autoplay: 0,
             controls: 0,
             disablekb: 1,
             fs: 0,
@@ -78,24 +78,11 @@ export default function MusicPlayer({
               // 1 = PLAYING, 2 = PAUSED, 0 = ENDED, 3 = BUFFERING, 5 = CUED, -1 = UNSTARTED
               if (event.data === 1) {
                 setIsPlaying(true);
-                isSwitchingTrack.current = false;
                 lastEndedTrackId.current = null;
                 const dur = ytPlayerInstance.current?.getDuration();
                 if (dur && dur > 0) setDuration(dur);
               } else if (event.data === 2) {
-                if (isSwitchingTrack.current || isPlayingRef.current) {
-                  try {
-                    ytPlayerInstance.current?.playVideo();
-                  } catch (e) {}
-                } else {
-                  setIsPlaying(false);
-                }
-              } else if (event.data === 5 || event.data === -1) {
-                if (isSwitchingTrack.current || isPlayingRef.current) {
-                  try {
-                    ytPlayerInstance.current?.playVideo();
-                  } catch (e) {}
-                }
+                setIsPlaying(false);
               } else if (event.data === 0) {
                 if (isRepeatRef.current) {
                   ytPlayerInstance.current?.seekTo(0);
@@ -109,7 +96,7 @@ export default function MusicPlayer({
             },
             onError: (err) => {
               console.warn('YouTube playback notice, advancing to next song:', err);
-              if (onNextRef.current) {
+              if (isPlayingRef.current && onNextRef.current) {
                 setTimeout(() => onNextRef.current(), 400);
               }
             }
@@ -125,7 +112,7 @@ export default function MusicPlayer({
     }
   }, []);
 
-  // Handle song change & force immediate auto-play
+  // Handle song change & respect autoplay only after initial mount
   useEffect(() => {
     if (!currentTrack || !currentTrack.id) return;
 
@@ -133,7 +120,13 @@ export default function MusicPlayer({
       prevTrackId.current = currentTrack.id;
       setCurrentTime(0);
       lastEndedTrackId.current = null;
-      isSwitchingTrack.current = true;
+
+      // If this is the initial load, do not auto-play
+      if (isInitialMount.current) {
+        isInitialMount.current = false;
+        return;
+      }
+
       setIsPlaying(true);
 
       if (ytPlayerInstance.current && isPlayerReady.current) {
@@ -149,6 +142,10 @@ export default function MusicPlayer({
             }
           }, 350);
         }
+      }
+    } else {
+      if (isInitialMount.current) {
+        isInitialMount.current = false;
       }
     }
   }, [currentTrack]);
@@ -184,7 +181,6 @@ export default function MusicPlayer({
   const togglePlay = () => {
     if (!isPlaying) {
       setIsPlaying(true);
-      isSwitchingTrack.current = true;
       if (ytPlayerInstance.current && isPlayerReady.current) {
         if (typeof ytPlayerInstance.current.playVideo === 'function') {
           ytPlayerInstance.current.playVideo();
@@ -192,7 +188,6 @@ export default function MusicPlayer({
       }
     } else {
       setIsPlaying(false);
-      isSwitchingTrack.current = false;
       if (ytPlayerInstance.current && isPlayerReady.current) {
         if (typeof ytPlayerInstance.current.pauseVideo === 'function') {
           ytPlayerInstance.current.pauseVideo();

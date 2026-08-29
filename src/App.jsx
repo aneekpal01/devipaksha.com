@@ -18,10 +18,40 @@ import { useLivePresence } from './utils/useLivePresence';
 export default function App() {
   const [selectedDayKey, setSelectedDayKey] = useState('mahalaya');
   const [currentPlaylistKey, setCurrentPlaylistKey] = useState('durga_puja');
-  const [isNight, setIsNight] = useState(false);
+
+  // Automatically determine Day/Night based on real local time (6 AM to 6 PM is Day, 6 PM to 6 AM is Night)
+  const getInitialIsNight = () => {
+    const hour = new Date().getHours();
+    return hour < 6 || hour >= 18;
+  };
+
+  const [isNight, setIsNight] = useState(getInitialIsNight);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
+
+  // Auto-sync day/night if user hasn't manually overridden it, checks every minute
+  React.useEffect(() => {
+    const checkTime = () => {
+      const hour = new Date().getHours();
+      const autoNight = hour < 6 || hour >= 18;
+      const manualOverride = sessionStorage.getItem('pujo_manual_theme_toggle');
+      if (!manualOverride) {
+        setIsNight(autoNight);
+      }
+    };
+
+    const interval = setInterval(checkTime, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleToggleNight = () => {
+    setIsNight((prev) => {
+      const next = !prev;
+      sessionStorage.setItem('pujo_manual_theme_toggle', 'true');
+      return next;
+    });
+  };
 
   // 100% Real live presence and live community chat hook
   const { onlineCount, messages, chaiCount, sendMessage, buyChai, tabSenderId } = useLivePresence();

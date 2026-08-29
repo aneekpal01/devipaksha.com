@@ -258,32 +258,25 @@ export default function BackgroundStage({ isNight = false }) {
 
   return (
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#050201]">
-      {/* 1. PC / Desktop Panoramic Background */}
+      {/* 1. PC / Desktop Panoramic Widescreen Background */}
       <div className="hidden md:block absolute inset-0 w-full h-full">
-        {/* Day Background */}
+        {/* Day Background (Sunny Autumn Blue Sky with Golden Pandal) */}
         <img
           src="/assets/pandal-pc-day.jpg"
-          alt="Durga Puja Pandal Panoramic PC View"
+          alt="Durga Puja Pandal Daytime Panoramic PC View"
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
-            isNight ? 'opacity-0 scale-100' : 'opacity-95 scale-101'
-          } filter brightness-95 contrast-105 saturate-105`}
+            isNight ? 'opacity-0 scale-100' : 'opacity-100 scale-100'
+          } filter brightness-100 contrast-105 saturate-105`}
         />
 
-        {/* Clean, Crisp Night Pandal View (Without any artificial yellow fog blobs) */}
-        <div
-          className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-            isNight ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <img
-            src="/assets/pandal-pc-day.jpg"
-            alt="Durga Puja Pandal Night View"
-            className="w-full h-full object-cover object-center filter brightness-65 contrast-125 saturate-115"
-          />
-
-          {/* Deep Natural Midnight Sky Gradient at the top */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#020514]/85 via-[#070302]/30 to-[#020101]/80 mix-blend-multiply" />
-        </div>
+        {/* Night Background (Full Moon, Glowing Street Lamps & Serene Night Pandal) */}
+        <img
+          src="/assets/pandal-pc-night.jpg"
+          alt="Durga Puja Pandal Nighttime Panoramic PC View"
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
+            isNight ? 'opacity-100 scale-100' : 'opacity-0 scale-100'
+          } filter brightness-100 contrast-105 saturate-105`}
+        />
       </div>
 
       {/* 2. Mobile Background */}

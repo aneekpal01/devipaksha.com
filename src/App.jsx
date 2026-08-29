@@ -15,59 +15,43 @@ import PandalGuideModal from './components/PandalGuideModal';
 import { PUJO_DAYS, PLAYLISTS_DATA } from './data/pujoData';
 import { useLivePresence } from './utils/useLivePresence';
 
-export const TIME_PHASES = ['dawn', 'day', 'sunset', 'evening', 'night'];
-
-// Real-time 24-Hour Diurnal Phase Detector
-export const getRealTimePhase = () => {
-  const now = new Date();
-  const minutes = now.getHours() * 60 + now.getMinutes();
-
-  // 1. Dawn / ভোর: 4:00 AM — 6:59 AM (240 to 419 mins)
-  if (minutes >= 240 && minutes < 420) return 'dawn';
-  // 2. Day / সকাল ও দুপুর: 7:00 AM — 3:59 PM (420 to 959 mins)
-  if (minutes >= 420 && minutes < 960) return 'day';
-  // 3. Sunset (Golden Hour) / বিকেল ও গোধূলি: 4:00 PM — 6:29 PM (960 to 1109 mins)
-  if (minutes >= 960 && minutes < 1110) return 'sunset';
-  // 4. Evening (Aarti) / সন্ধ্যা ও মেলা: 6:30 PM — 10:29 PM (1110 to 1349 mins)
-  if (minutes >= 1110 && minutes < 1350) return 'evening';
-  // 5. Midnight / গভীর রাত ও পূর্ণিমা: 10:30 PM — 3:59 AM
-  return 'night';
-};
-
 export default function App() {
   const [selectedDayKey, setSelectedDayKey] = useState('mahalaya');
   const [currentPlaylistKey, setCurrentPlaylistKey] = useState('durga_puja');
 
-  // Real-time 5-Phase Time of Day Engine
-  const [timePhase, setTimePhase] = useState(getRealTimePhase);
+  // Automatic Real-Time Day & Night Engine (6 AM to 6 PM is Day, 6 PM to 6 AM is Night)
+  const getInitialIsNight = () => {
+    const hour = new Date().getHours();
+    return hour < 6 || hour >= 18;
+  };
+
+  const [isNight, setIsNight] = useState(getInitialIsNight);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
 
-  // Auto-sync time phase with real clock every 30 seconds (if user hasn't manually overridden in session)
+  // Auto-sync Day & Night with real local clock every minute (if not manually overridden)
   useEffect(() => {
     const checkTime = () => {
-      const manualOverride = sessionStorage.getItem('pujo_manual_phase_toggle');
+      const hour = new Date().getHours();
+      const autoNight = hour < 6 || hour >= 18;
+      const manualOverride = sessionStorage.getItem('pujo_manual_theme_toggle');
       if (!manualOverride) {
-        setTimePhase(getRealTimePhase());
+        setIsNight(autoNight);
       }
     };
 
-    const interval = setInterval(checkTime, 30000);
+    const interval = setInterval(checkTime, 60000);
     return () => clearInterval(interval);
   }, []);
 
-  // Manual cycle through all 5 diurnal time phases on button click
-  const handleCycleTimePhase = () => {
-    setTimePhase((prev) => {
-      const curIdx = TIME_PHASES.indexOf(prev);
-      const nextPhase = TIME_PHASES[(curIdx + 1) % TIME_PHASES.length];
-      sessionStorage.setItem('pujo_manual_phase_toggle', 'true');
-      return nextPhase;
+  const handleToggleNight = () => {
+    setIsNight((prev) => {
+      const next = !prev;
+      sessionStorage.setItem('pujo_manual_theme_toggle', 'true');
+      return next;
     });
   };
-
-  const isNight = timePhase === 'evening' || timePhase === 'night' || timePhase === 'dawn';
 
   // 100% Real live presence and live community chat hook
   const { onlineCount, messages, chaiCount, sendMessage, buyChai, tabSenderId } = useLivePresence();
@@ -157,14 +141,13 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen w-full flex flex-col justify-between overflow-x-hidden text-[#fdf3e2]">
-      {/* 1. Dynamic 5-Phase Time-of-Day Pandal Background */}
-      <BackgroundStage timePhase={timePhase} isNight={isNight} />
+      {/* 1. Day & Night Background Stage */}
+      <BackgroundStage isNight={isNight} />
 
-      {/* 2. Top Bar with 5-Phase Celestial Switch & Floating Hub */}
+      {/* 2. Top Bar with Day/Night Switch & Floating Hub */}
       <TopBar
-        timePhase={timePhase}
         isNight={isNight}
-        onCycleTimePhase={handleCycleTimePhase}
+        setIsNight={handleToggleNight}
         onlineCount={onlineCount}
         onOpenAdda={() => setIsAddaOpen(true)}
         onOpenGreeting={() => setIsGreetingOpen(true)}

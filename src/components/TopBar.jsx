@@ -1,22 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
-  Coffee,
-  Moon,
   Sun,
-  BookOpen,
-  Flower2,
-  MapPin,
-  Sparkles,
+  Moon,
   ChevronDown,
+  Sparkles,
   Music,
+  MapPin,
+  MessageCircle,
+  BookOpen,
   Send,
-  Heart,
-  ExternalLink
+  Radio,
+  Drum,
+  Flame,
+  CheckCircle2
 } from 'lucide-react';
 
 export default function TopBar({
-  timePhase = 'day',
-  onCycleTimePhase,
   isNight,
   setIsNight,
   onOpenAdda,
@@ -41,93 +40,88 @@ export default function TopBar({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const menuItems = [
+  const featuresList = [
     {
       id: 'anjali',
       title: 'ভার্চুয়াল পুষ্পাঞ্জলি',
-      subtitle: 'মায়ের চরণে ফুল নিবেদন ও শঙ্খধ্বনি',
-      icon: Flower2,
-      badge: 'Live Ritual',
-      badgeColor: 'bg-rose-500/30 text-rose-950 font-black border-rose-400/50',
-      iconBg: 'bg-rose-500/35 text-rose-900 border-rose-400/50',
-      onClick: () => {
+      desc: 'পূজার অঞ্জলি, শঙ্খ ও মন্ত্র',
+      icon: '🌺',
+      tag: 'NEW',
+      action: () => {
         setIsMenuOpen(false);
-        if (onOpenAnjali) onOpenAnjali();
-      }
+        onOpenAnjali();
+      },
+      gradient: 'from-amber-500/25 to-rose-500/25 border-amber-500/30'
     },
     {
       id: 'pandal',
-      title: 'সেরা পুজো পরিক্রমা',
-      subtitle: 'কলকাতার ৩২টি বিখ্যাত মণ্ডপ ও মেট্রো গাইড',
-      icon: MapPin,
-      badge: '৩২টি মণ্ডপ',
-      badgeColor: 'bg-amber-500/35 text-amber-950 font-black border-amber-400/50',
-      iconBg: 'bg-amber-500/35 text-amber-900 border-amber-400/50',
-      onClick: () => {
+      title: 'কলকাতা প্যান্ডেল পরিক্রমা',
+      desc: '৩২টি সেরা পুজো ও মেট্রো রুট',
+      icon: '🏛️',
+      tag: 'GUIDE',
+      action: () => {
         setIsMenuOpen(false);
-        if (onOpenPandalGuide) onOpenPandalGuide();
-      }
+        onOpenPandalGuide();
+      },
+      gradient: 'from-amber-500/20 to-orange-500/20 border-orange-500/30'
     },
     {
       id: 'adda',
-      title: 'লাইভ পুজোর আড্ডা ও চা',
-      subtitle: 'রিয়েল-টাইম কমিউনিটি চ্যাট ও মাটির ভাঁড়ের চা',
-      icon: Coffee,
-      badge: 'WhatsApp UI',
-      badgeColor: 'bg-orange-500/35 text-orange-950 font-black border-orange-400/50',
-      iconBg: 'bg-orange-500/35 text-orange-900 border-orange-400/50',
-      onClick: () => {
+      title: 'লাইভ পুজোর আড্ডা',
+      desc: 'সবার সাথে রিয়েল-টাইম চ্যাট',
+      icon: '☕',
+      tag: 'LIVE',
+      action: () => {
         setIsMenuOpen(false);
-        if (onOpenAdda) onOpenAdda();
-      }
+        onOpenAdda();
+      },
+      gradient: 'from-emerald-500/20 to-teal-500/20 border-emerald-500/30'
     },
     {
       id: 'spotify',
-      title: 'Spotify Music Hub',
-      subtitle: '১৮০+ পুজো হিটস, আগমনী ও বীরেন্দ্রকৃষ্ণ ভদ্র',
-      icon: Music,
-      badge: '180+ Tracks',
-      badgeColor: 'bg-emerald-500/35 text-emerald-950 font-black border-emerald-400/50',
-      iconBg: 'bg-emerald-500/35 text-emerald-900 border-emerald-400/50',
-      onClick: () => {
+      title: 'স্পটিফাই মিউজিক হাব',
+      desc: 'অফিসিয়াল পুজো ট্র্যাক ও প্লেলিস্ট',
+      icon: '🎵',
+      tag: 'AUDIO',
+      action: () => {
         setIsMenuOpen(false);
-        if (onOpenSpotify) onOpenSpotify();
-      }
+        onOpenSpotify();
+      },
+      gradient: 'from-green-500/20 to-emerald-500/20 border-green-500/30'
     },
     {
       id: 'mahalaya',
-      title: 'মহালয়া ও দেবীপক্ষের ইতিহাস',
-      subtitle: 'মহিষাসুরমর্দিনী, বীরেন্দ্রকৃষ্ণ ও চণ্ডীপাঠের কথা',
-      icon: BookOpen,
-      badge: 'Lore & Story',
-      badgeColor: 'bg-yellow-500/35 text-yellow-950 font-black border-yellow-400/50',
-      iconBg: 'bg-yellow-500/35 text-yellow-900 border-yellow-400/50',
-      onClick: () => {
+      title: 'মহালয়া ও দেবীপক্ষ কথা',
+      desc: 'বীরেন্দ্রকৃষ্ণ ভদ্র ও ইতিহাস',
+      icon: '📖',
+      tag: 'STORY',
+      action: () => {
         setIsMenuOpen(false);
-        if (onOpenAboutMahalaya) onOpenAboutMahalaya();
-      }
+        onOpenAboutMahalaya();
+      },
+      gradient: 'from-orange-500/20 to-amber-500/20 border-amber-500/30'
     },
     {
       id: 'greeting',
-      title: 'শারদীয় শুভেচ্ছা কার্ড',
-      subtitle: 'কাস্টমাইজড পুজো গ্রিটিং কার্ড তৈরি ও ডাউনলোড',
-      icon: Sparkles,
-      badge: 'Card Maker',
-      badgeColor: 'bg-purple-500/35 text-purple-950 font-black border-purple-400/50',
-      iconBg: 'bg-purple-500/35 text-purple-900 border-purple-400/50',
-      onClick: () => {
+      title: 'শারদ শুভেচ্ছা কার্ড',
+      desc: 'ডিজিটাল কার্ড বানিয়ে শেয়ার করুন',
+      icon: '💌',
+      tag: 'SHARE',
+      action: () => {
         setIsMenuOpen(false);
-        if (onOpenGreeting) onOpenGreeting();
-      }
+        onOpenGreeting();
+      },
+      gradient: 'from-pink-500/20 to-rose-500/20 border-pink-500/30'
     }
   ];
 
   return (
-    <header className="relative z-40 flex items-center justify-between w-full max-w-lg px-4 py-2.5 mx-auto select-none">
-      {/* 1. Left: Real Live Online Visitors */}
+    <header className="relative z-40 w-full px-3 sm:px-6 pt-3 sm:pt-4 flex items-center justify-between pointer-events-auto">
+      {/* 1. Left: 🟢 Live Online Indicator */}
       <div
-        title="Real live online visitors"
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full liquid-glass-pill text-xs font-medium text-[#fdf3e2]/90 select-none cursor-default shadow-md"
+        onClick={onOpenAdda}
+        title="Click to join live community adda!"
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full liquid-glass-pill cursor-pointer shadow-md hover:scale-103 active:scale-95 transition-all group"
       >
         <span className="relative flex h-2 w-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -141,33 +135,13 @@ export default function TopBar({
 
       {/* 2. Right: Dynamic Floating Menu Capsule */}
       <div className="relative flex items-center gap-2" ref={menuRef}>
-        {/* 5-Phase Real-Time Celestial Diurnal Switch (🌅 Dawn ➔ ☀️ Day ➔ 🌇 Sunset ➔ 🏮 Evening ➔ 🌙 Night) */}
+        {/* Day / Night Theme Ambience Switch (☀️ / 🌙) */}
         <button
-          onClick={onCycleTimePhase || (() => setIsNight(!isNight))}
-          title={
-            timePhase === 'dawn'
-              ? 'ভোর (Dawn: ৪:০০ AM — ৬:৫৯ AM) • ক্লিক করে সময় পরিবর্তন করুন'
-              : timePhase === 'day'
-              ? 'সকাল ও দুপুর (Day: ৭:০০ AM — ৩:৫৯ PM) • ক্লিক করে সময় পরিবর্তন করুন'
-              : timePhase === 'sunset'
-              ? 'বিকেল ও গোধূলি (Golden Hour: ৪:০০ PM — ৬:২৯ PM) • ক্লিক করে সময় পরিবর্তন করুন'
-              : timePhase === 'evening'
-              ? 'সন্ধ্যা ও আরতি (Evening: ৬:৩০ PM — ১০:২৯ PM) • ক্লিক করে সময় পরিবর্তন করুন'
-              : 'গভীর রাত ও পূর্ণিমা (Midnight: ১০:৩০ PM — ৩:৫৯ AM) • ক্লিক করে সময় পরিবর্তন করুন'
-          }
-          className="flex items-center justify-center w-8 h-8 rounded-full liquid-glass-btn text-[#ffd873] hover:bg-yellow-400/20 shadow-md transition-all active:scale-95 cursor-pointer text-sm"
+          onClick={setIsNight}
+          title={isNight ? 'Switch to Day ambience (দিনের আলো)' : 'Switch to Night ambience (রাতের আলো)'}
+          className="flex items-center justify-center w-8 h-8 rounded-full liquid-glass-btn text-[#ffd873] hover:bg-yellow-400/20 shadow-md transition-all active:scale-95 cursor-pointer"
         >
-          {timePhase === 'dawn' ? (
-            <span className="text-sm">🌅</span>
-          ) : timePhase === 'day' ? (
-            <Sun className="w-4 h-4 text-amber-300" />
-          ) : timePhase === 'sunset' ? (
-            <span className="text-sm">🌇</span>
-          ) : timePhase === 'evening' ? (
-            <span className="text-sm">🏮</span>
-          ) : (
-            <Moon className="w-4 h-4 text-amber-200" />
-          )}
+          {isNight ? <Sun className="w-4 h-4 text-amber-300" /> : <Moon className="w-4 h-4 text-amber-200" />}
         </button>
 
         {/* Dynamic Island Floating Feature Hub Pill with Cute Maa Durga Logo */}
@@ -194,7 +168,7 @@ export default function TopBar({
           />
         </button>
 
-        {/* 3. Exact Image 2 Style Frosted 3D Liquid Glass Dropdown Menu */}
+        {/* 3. Frosted 3D Liquid Glass Dropdown Menu */}
         {isMenuOpen && (
           <div className="absolute right-0 top-11 z-50 w-80 sm:w-88 rounded-[30px] liquid-glass-card p-3.5 shadow-2xl border border-white/35 backdrop-blur-3xl animate-fadeIn box-border">
             {/* Header */}
@@ -207,55 +181,43 @@ export default function TopBar({
                 />
                 দেবীপক্ষ এক্সপ্লোরার
               </span>
-              <span className="text-[10px] text-white/80 font-mono font-extrabold drop-shadow">
-                {menuItems.length} Features
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-black/40 text-[#ffd873] font-bold border border-white/20">
+                Sharod 2026
               </span>
             </div>
 
-            {/* Menu Items with Image 2 Translucent Glass Plates & Solid Dark Typography */}
-            <div className="space-y-2">
-              {menuItems.map((item) => {
-                const IconComponent = item.icon;
-
-                return (
-                  <button
-                    key={item.id}
-                    onClick={item.onClick}
-                    className="w-full p-2.5 rounded-2xl bg-gradient-to-r from-white/40 via-white/30 to-white/25 hover:from-white/55 hover:to-white/40 backdrop-blur-xl border border-white/50 hover:border-[#ffd873] transition-all flex items-center gap-3 text-left group cursor-pointer box-border shadow-md"
-                  >
-                    {/* Soft Pastel Glass Icon Badge */}
-                    <div
-                      className={`p-2.5 rounded-xl border flex-shrink-0 transition-transform group-hover:scale-110 shadow-sm ${item.iconBg}`}
-                    >
-                      <IconComponent className="w-4 h-4" />
-                    </div>
-
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between gap-1.5 mb-0.5">
-                        {/* Ultra-Sharp Dark Title */}
-                        <span className="font-bengali text-xs sm:text-[13px] font-black text-[#150702] group-hover:text-black transition-colors leading-tight">
-                          {item.title}
-                        </span>
-                        {/* Saturated Glass Badge */}
-                        <span
-                          className={`text-[9px] px-2 py-0.5 rounded-full border font-sans font-black flex-shrink-0 shadow-sm ${item.badgeColor}`}
-                        >
-                          {item.badge}
-                        </span>
-                      </div>
-
-                      {/* Clear Dark Subtitle */}
-                      <p className="font-bengali text-[11px] font-bold text-[#2d1105] group-hover:text-black leading-normal">
-                        {item.subtitle}
-                      </p>
-                    </div>
-                  </button>
-                );
-              })}
+            {/* 6 Feature Button Tiles */}
+            <div className="grid grid-cols-2 gap-2">
+              {featuresList.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={item.action}
+                  className="group relative flex flex-col justify-between p-2.5 rounded-2xl bg-gradient-to-b from-white/40 via-white/30 to-white/25 hover:from-white/50 hover:to-white/35 border border-white/50 hover:border-[#ffd873]/80 shadow-[0_4px_16px_rgba(0,0,0,0.15),inset_0_1px_1px_rgba(255,255,255,0.8)] transition-all duration-200 text-left active:scale-96 cursor-pointer"
+                >
+                  <div className="flex items-center justify-between w-full mb-1">
+                    <span className="text-xl p-1 rounded-xl bg-white/50 shadow-sm border border-white/40 group-hover:scale-110 transition-transform">
+                      {item.icon}
+                    </span>
+                    <span className="text-[9px] font-black px-1.5 py-0.5 rounded-md bg-[#1a0802] text-[#ffd873] border border-amber-400/40 shadow-xs font-sans tracking-wide">
+                      {item.tag}
+                    </span>
+                  </div>
+                  <div>
+                    <h3 className="font-bengali text-xs font-black text-[#150702] group-hover:text-[#801200] leading-tight transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-[10px] text-[#2d1105] font-bold leading-snug mt-0.5 line-clamp-1">
+                      {item.desc}
+                    </p>
+                  </div>
+                </button>
+              ))}
             </div>
 
-            <div className="mt-2.5 pt-2 border-t border-white/15 text-center text-[10px] sm:text-[11px] font-medium text-[#fdf3e2]/70 tracking-wider font-bengali">
-              দেবীপক্ষ (Devi Paksha) • শারদীয় উৎসব
+            {/* Sub-footer */}
+            <div className="mt-2.5 pt-2 border-t border-black/15 px-2 flex items-center justify-between text-[10px] text-[#fdf3e2]/70 font-semibold">
+              <span className="font-bengali">দেবীপক্ষ (Devi Paksha)</span>
+              <span className="font-bengali text-[#ffd873]/90">শারদীয় উৎসব</span>
             </div>
           </div>
         )}

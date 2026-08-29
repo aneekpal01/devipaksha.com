@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-export default function BackgroundStage({ timePhase = 'day', isNight = false }) {
+export default function BackgroundStage({ isNight = false }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function BackgroundStage({ timePhase = 'day', isNight = false }) 
     };
     window.addEventListener('resize', handleResize);
 
-    // 1. Floating particles: Shiuli & Kash (Day) / Golden Embers (Night & Evening)
+    // 1. Floating particles: Shiuli & Kash (Day) / Golden Embers (Night)
     const particles = [];
     const particleCount = Math.min(36, Math.floor(width / 28));
 
@@ -37,7 +37,7 @@ export default function BackgroundStage({ timePhase = 'day', isNight = false }) 
       });
     }
 
-    // 2. Realistic Tuni Bulb (Fairy Lights) along the top sky
+    // 2. Realistic Tuni Bulb (Fairy Lights) along the top sky in Night Mode
     let tuniBulbs = [];
     const bulbColors = [
       { main: '#ffd873', glow: 'rgba(255, 216, 115, 0.75)' }, // Warm Gold
@@ -198,14 +198,14 @@ export default function BackgroundStage({ timePhase = 'day', isNight = false }) 
       const time = Date.now() - startTime;
       ctx.clearRect(0, 0, width, height);
 
-      // In Evening/Night/Sunset: Draw fairy lights
-      if (isNight || timePhase === 'sunset' || timePhase === 'evening') {
+      // In Night Mode: Draw glowing Tuni Bulbs
+      if (isNight) {
         tuniBulbs.forEach((bulb) => {
           drawTuniBulb(bulb, time);
         });
       }
 
-      // Floating Petals (Day/Dawn) & Night Embers
+      // Floating Petals (Day) & Night Embers
       particles.forEach((p) => {
         if (isNight) {
           p.x += Math.sin(time * 0.001 + p.rotation) * 0.5;
@@ -249,103 +249,49 @@ export default function BackgroundStage({ timePhase = 'day', isNight = false }) 
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [isNight, timePhase]);
+  }, [isNight]);
 
   return (
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#050201]">
-      {/* 1. PC / Desktop Panoramic Widescreen Backgrounds (object-cover object-center) */}
+      {/* 1. PC / Desktop Panoramic Widescreen Backgrounds */}
       <div className="hidden md:block absolute inset-0 w-full h-full">
-        {/* Phase 1: Dawn / ভোর (4:00 AM - 6:59 AM) */}
-        <img
-          src="/assets/pandal-pc-dawn.webp"
-          alt="Bhor Dawn Pandal"
-          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
-            timePhase === 'dawn' ? 'opacity-100' : 'opacity-0'
-          } filter brightness-100 contrast-105 saturate-105`}
-        />
-
-        {/* Phase 2: Day / সকাল ও দুপুর (7:00 AM - 3:59 PM) */}
+        {/* Day Background (Original 2740px Master Artwork) */}
         <img
           src="/assets/pandal-pc-day.webp"
-          alt="Sokal Daytime Pandal"
+          alt="Durga Puja Pandal Daytime Panoramic PC View"
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
-            timePhase === 'day' ? 'opacity-100' : 'opacity-0'
+            isNight ? 'opacity-0 scale-100' : 'opacity-100 scale-100'
           } filter brightness-100 contrast-105 saturate-105`}
         />
 
-        {/* Phase 3: Sunset / বিকেল ও গোধূলি (4:00 PM - 6:29 PM) */}
-        <img
-          src="/assets/pandal-pc-sunset.webp"
-          alt="Bikel Sunset Golden Hour Pandal"
-          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
-            timePhase === 'sunset' ? 'opacity-100' : 'opacity-0'
-          } filter brightness-100 contrast-105 saturate-105`}
-        />
-
-        {/* Phase 4: Evening / সন্ধ্যা ও আরতি (6:30 PM - 10:29 PM) */}
-        <img
-          src="/assets/pandal-pc-evening.webp"
-          alt="Sondhya Festive Evening Pandal"
-          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
-            timePhase === 'evening' ? 'opacity-100' : 'opacity-0'
-          } filter brightness-100 contrast-105 saturate-105`}
-        />
-
-        {/* Phase 5: Midnight / রাত ও পূর্ণিমা (10:30 PM - 3:59 AM) */}
+        {/* Night Background (Original 2740px Master Artwork with Full Moon) */}
         <img
           src="/assets/pandal-pc-night.webp"
-          alt="Raat Midnight Pandal"
+          alt="Durga Puja Pandal Nighttime Panoramic PC View"
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
-            timePhase === 'night' ? 'opacity-100' : 'opacity-0'
+            isNight ? 'opacity-100 scale-100' : 'opacity-0 scale-100'
           } filter brightness-100 contrast-105 saturate-105`}
         />
       </div>
 
-      {/* 2. Mobile Responsive 5-Phase Dynamic Backgrounds (object-cover object-[center_35%]) */}
+      {/* 2. Mobile Responsive Day & Night Backgrounds (Original Beautiful Vertical Portrait) */}
       <div className="block md:hidden absolute inset-0 w-full h-full">
-        {/* Phase 1: Dawn / ভোর */}
+        {/* Mobile Day Background */}
         <img
-          src="/assets/pandal-pc-dawn.webp"
-          alt="Bhor Dawn Pandal Mobile"
+          src="/assets/pandal-day.jpg"
+          alt="Durga Puja Pandal Daytime Mobile"
           className={`absolute inset-0 w-full h-full object-cover object-[center_35%] transition-opacity duration-1000 ease-in-out ${
-            timePhase === 'dawn' ? 'opacity-100' : 'opacity-0'
-          } filter brightness-100 contrast-105 saturate-105`}
+            isNight ? 'opacity-0 scale-100' : 'opacity-95 scale-102'
+          } filter brightness-95 contrast-105 saturate-95`}
         />
 
-        {/* Phase 2: Day / সকাল ও দুপুর */}
+        {/* Mobile Night Background */}
         <img
-          src="/assets/pandal-pc-day.webp"
-          alt="Sokal Daytime Pandal Mobile"
+          src="/assets/pandal-night.jpg"
+          alt="Durga Puja Pandal Nighttime Mobile"
           className={`absolute inset-0 w-full h-full object-cover object-[center_35%] transition-opacity duration-1000 ease-in-out ${
-            timePhase === 'day' ? 'opacity-100' : 'opacity-0'
-          } filter brightness-100 contrast-105 saturate-105`}
-        />
-
-        {/* Phase 3: Sunset / বিকেল ও গোধূলি */}
-        <img
-          src="/assets/pandal-pc-sunset.webp"
-          alt="Bikel Sunset Pandal Mobile"
-          className={`absolute inset-0 w-full h-full object-cover object-[center_35%] transition-opacity duration-1000 ease-in-out ${
-            timePhase === 'sunset' ? 'opacity-100' : 'opacity-0'
-          } filter brightness-100 contrast-105 saturate-105`}
-        />
-
-        {/* Phase 4: Evening / সন্ধ্যা ও আরতি */}
-        <img
-          src="/assets/pandal-pc-evening.webp"
-          alt="Sondhya Evening Pandal Mobile"
-          className={`absolute inset-0 w-full h-full object-cover object-[center_35%] transition-opacity duration-1000 ease-in-out ${
-            timePhase === 'evening' ? 'opacity-100' : 'opacity-0'
-          } filter brightness-100 contrast-105 saturate-105`}
-        />
-
-        {/* Phase 5: Midnight / রাত ও পূর্ণিমা */}
-        <img
-          src="/assets/pandal-pc-night.webp"
-          alt="Raat Midnight Pandal Mobile"
-          className={`absolute inset-0 w-full h-full object-cover object-[center_35%] transition-opacity duration-1000 ease-in-out ${
-            timePhase === 'night' ? 'opacity-100' : 'opacity-0'
-          } filter brightness-100 contrast-105 saturate-105`}
+            isNight ? 'opacity-95 scale-102' : 'opacity-0 scale-100'
+          } filter brightness-105 contrast-110 saturate-105`}
         />
       </div>
 

@@ -171,8 +171,7 @@ export default function App() {
         <div className="mb-2 sm:mb-3">
           <DaySelectorDropdown
             currentPlaylistKey={currentPlaylistKey}
-            onSelectPlaylist={handleSelectPlaylist}
-            onOpenAboutMahalaya={() => setIsAboutMahalayaOpen(true)}
+            onOpenPlaylist={() => setIsPlaylistOpen(true)}
           />
         </div>
 

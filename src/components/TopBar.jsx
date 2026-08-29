@@ -2,7 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import {
   Sun,
   Moon,
-  ChevronDown
+  ChevronDown,
+  Sparkles,
+  MapPin,
+  Coffee,
+  Music,
+  BookOpen,
+  Send,
+  Flower2
 } from 'lucide-react';
 
 export default function TopBar({
@@ -34,9 +41,11 @@ export default function TopBar({
     {
       id: 'anjali',
       title: 'ভার্চুয়াল পুষ্পাঞ্জলি',
-      desc: 'পূজার অঞ্জলি, শঙ্খ ও মন্ত্র',
-      icon: '🌺',
-      tag: 'NEW',
+      desc: 'মায়ের চরণে ফুল নিবেদন ও শঙ্খধ্বনি',
+      icon: <Flower2 className="w-5 h-5 text-rose-950" />,
+      iconBg: 'bg-rose-400/85',
+      tag: 'Live Ritual',
+      tagStyle: 'bg-rose-950/70 text-rose-200 border-rose-400/40',
       action: () => {
         setIsMenuOpen(false);
         onOpenAnjali();
@@ -44,10 +53,12 @@ export default function TopBar({
     },
     {
       id: 'pandal',
-      title: 'কলকাতা প্যান্ডেল পরিক্রমা',
-      desc: '৩২টি সেরা পুজো ও মেট্রো...',
-      icon: '🏛️',
-      tag: 'GUIDE',
+      title: 'সেরা পুজো পরিক্রমা',
+      desc: 'কলকাতার ৩২টি বিখ্যাত মণ্ডপ ও মেট্রো গাইড',
+      icon: <MapPin className="w-5 h-5 text-amber-950" />,
+      iconBg: 'bg-amber-400/85',
+      tag: '৩২টি মণ্ডপ',
+      tagStyle: 'bg-amber-950/70 text-amber-200 border-amber-400/40',
       action: () => {
         setIsMenuOpen(false);
         onOpenPandalGuide();
@@ -55,10 +66,12 @@ export default function TopBar({
     },
     {
       id: 'adda',
-      title: 'লাইভ পুজোর আড্ডা',
-      desc: 'সবার সাথে রিয়েল-টাইম চ্যাট',
-      icon: '☕',
-      tag: 'LIVE',
+      title: 'লাইভ পুজোর আড্ডা ও চা',
+      desc: 'রিয়েল-টাইম কমিউনিটি চ্যাট ও মাটির ভাঁড়ের চা',
+      icon: <Coffee className="w-5 h-5 text-orange-950" />,
+      iconBg: 'bg-orange-400/85',
+      tag: 'WhatsApp UI',
+      tagStyle: 'bg-orange-950/70 text-orange-200 border-orange-400/40',
       action: () => {
         setIsMenuOpen(false);
         onOpenAdda();
@@ -66,10 +79,12 @@ export default function TopBar({
     },
     {
       id: 'spotify',
-      title: 'স্পটিফাই মিউজিক হাব',
-      desc: 'অফিসিয়াল পুজো ট্র্যাক ও...',
-      icon: '🎵',
-      tag: 'AUDIO',
+      title: 'Spotify Music Hub',
+      desc: '১৮০+ পুজো হিটস, আগমনী ও বীরেন্দ্রকৃষ্ণ ভদ্র',
+      icon: <Music className="w-5 h-5 text-emerald-950" />,
+      iconBg: 'bg-emerald-400/85',
+      tag: '180+ Tracks',
+      tagStyle: 'bg-emerald-950/70 text-emerald-200 border-emerald-400/40',
       action: () => {
         setIsMenuOpen(false);
         onOpenSpotify();
@@ -77,10 +92,12 @@ export default function TopBar({
     },
     {
       id: 'mahalaya',
-      title: 'মহালয়া ও দেবীপক্ষ কথা',
-      desc: 'বীরেন্দ্রকৃষ্ণ ভদ্র ও ইতিহাস',
-      icon: '📖',
-      tag: 'STORY',
+      title: 'মহালয়া ও দেবীপক্ষের ইতিহাস',
+      desc: 'মহিষাসুরমর্দিনী, বীরেন্দ্রকৃষ্ণ ও চণ্ডীপাঠের কথা',
+      icon: <BookOpen className="w-5 h-5 text-amber-950" />,
+      iconBg: 'bg-amber-300/85',
+      tag: 'Lore & Story',
+      tagStyle: 'bg-amber-950/70 text-amber-200 border-amber-400/40',
       action: () => {
         setIsMenuOpen(false);
         onOpenAboutMahalaya();
@@ -88,10 +105,12 @@ export default function TopBar({
     },
     {
       id: 'greeting',
-      title: 'শারদ শুভেচ্ছা কার্ড',
-      desc: 'ডিজিটাল কার্ড বানিয়ে...',
-      icon: '💌',
-      tag: 'SHARE',
+      title: 'শারদীয় শুভেচ্ছা কার্ড',
+      desc: 'কাস্টমাইজড পুজো গ্রিটিং কার্ড তৈরি ও ডাউনলোড',
+      icon: <Sparkles className="w-5 h-5 text-purple-950" />,
+      iconBg: 'bg-purple-400/85',
+      tag: 'Card Maker',
+      tagStyle: 'bg-purple-950/70 text-purple-200 border-purple-400/40',
       action: () => {
         setIsMenuOpen(false);
         onOpenGreeting();
@@ -152,59 +171,59 @@ export default function TopBar({
           />
         </button>
 
-        {/* 3. Exact Match Dark Slate Frosted Glass Dropdown Menu */}
+        {/* 3. EXACT MATCH Frosted 3D Liquid Glass Dropdown Menu from Reference Screenshot */}
         {isMenuOpen && (
-          <div className="absolute right-0 top-11 z-50 w-80 sm:w-88 rounded-[32px] bg-[#1a1d26]/96 p-3.5 shadow-2xl border border-white/20 backdrop-blur-3xl animate-fadeIn box-border">
-            {/* Header: 👑 দেবীপক্ষ এক্সপ্লোরার | Sharod 2026 */}
-            <div className="px-2 py-1 mb-2.5 border-b border-white/10 flex items-center justify-between">
-              <span className="font-bengali text-xs font-black text-[#ffd873] tracking-wide flex items-center gap-1.5">
-                <img
-                  src="/durga-logo.png"
-                  alt="Maa Durga"
-                  className="w-4 h-4 object-contain drop-shadow"
-                />
+          <div className="absolute right-0 top-11 z-50 w-80 sm:w-92 rounded-[32px] bg-gradient-to-b from-[#3d2e24]/92 via-[#251811]/96 to-[#150a05]/98 p-3.5 sm:p-4 shadow-2xl border border-white/25 backdrop-blur-3xl animate-fadeIn box-border">
+            {/* Header: ✨ দেবীপক্ষ এক্সপ্লোরার | 6 Features */}
+            <div className="px-2 py-1 mb-3 border-b border-white/10 flex items-center justify-between">
+              <span className="font-bengali text-sm font-black text-[#ffd873] tracking-wide flex items-center gap-1.5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                <Sparkles className="w-4 h-4 text-[#ffd873]" />
                 দেবীপক্ষ এক্সপ্লোরার
               </span>
-              <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-black/70 text-[#ffd873] font-bold border border-white/15 font-sans">
-                Sharod 2026
+              <span className="text-xs font-semibold text-[#fdf3e2]/75">
+                6 Features
               </span>
             </div>
 
-            {/* 6 Feature Button Tiles (Matching Exact Reference Screenshot) */}
-            <div className="grid grid-cols-2 gap-2">
+            {/* 6 Full-Width Horizontal Feature Rows (Matching Screenshot Exactly) */}
+            <div className="space-y-2">
               {featuresList.map((item) => (
                 <button
                   key={item.id}
                   onClick={item.action}
-                  className="group flex flex-col justify-between p-2.5 rounded-2xl bg-[#424754]/80 hover:bg-[#4d5363]/90 border border-white/15 shadow-sm transition-all text-left active:scale-96 cursor-pointer"
+                  className="group w-full flex items-center justify-between p-2.5 rounded-2xl bg-gradient-to-r from-white/35 via-white/28 to-white/20 hover:from-white/45 hover:to-white/30 border border-white/40 hover:border-[#ffd873]/80 shadow-[0_3px_12px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.7)] transition-all duration-200 text-left active:scale-97 cursor-pointer"
                 >
-                  {/* Top row: Light Square Icon Tile + Black Tag Badge */}
-                  <div className="flex items-center justify-between w-full mb-1.5">
-                    <div className="w-9 h-9 rounded-xl bg-[#cbced6] flex items-center justify-center text-lg shadow-inner group-hover:scale-105 transition-transform">
+                  {/* Left: Icon Tile + Title/Subtitle */}
+                  <div className="flex items-center gap-2.5 min-w-0 flex-1 mr-2">
+                    <div
+                      className={`w-9 h-9 rounded-2xl ${item.iconBg} flex items-center justify-center flex-shrink-0 shadow-inner group-hover:scale-105 transition-transform`}
+                    >
                       {item.icon}
                     </div>
-                    <span className="text-[9px] font-black px-2 py-0.5 rounded-md bg-black text-[#ffd873] border border-white/10 font-sans tracking-wider">
-                      {item.tag}
-                    </span>
+
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-bengali text-xs sm:text-[13px] font-black text-[#150702] group-hover:text-[#801200] leading-tight truncate">
+                        {item.title}
+                      </h3>
+                      <p className="font-bengali text-[10px] sm:text-[11px] text-[#2d1105] font-bold leading-snug mt-0.5 truncate">
+                        {item.desc}
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Bottom: Title & Subtitle */}
-                  <div>
-                    <h3 className="font-bengali text-xs font-black text-white group-hover:text-[#ffd873] leading-tight transition-colors truncate">
-                      {item.title}
-                    </h3>
-                    <p className="text-[10px] text-stone-300 font-medium leading-snug mt-0.5 truncate">
-                      {item.desc}
-                    </p>
-                  </div>
+                  {/* Right: Rounded Tag Pill Badge */}
+                  <span
+                    className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border shadow-xs flex-shrink-0 ${item.tagStyle}`}
+                  >
+                    {item.tag}
+                  </span>
                 </button>
               ))}
             </div>
 
-            {/* Sub-footer: দেবীপক্ষ (Devi Paksha) | শারদীয় উৎসব */}
-            <div className="mt-3 pt-2 border-t border-white/10 px-2 flex items-center justify-between text-[10px]">
-              <span className="font-bengali text-stone-300 font-medium">দেবীপক্ষ (Devi Paksha)</span>
-              <span className="font-bengali text-[#ffd873] font-bold">শারদীয় উৎসব</span>
+            {/* Sub-footer: দেবীপক্ষ (Devi Paksha) • শারদীয় উৎসব */}
+            <div className="mt-3 pt-2 border-t border-white/10 text-center text-[11px] text-[#ffd873]/80 font-medium font-bengali">
+              দেবীপক্ষ (Devi Paksha) • শারদীয় উৎসব
             </div>
           </div>
         )}

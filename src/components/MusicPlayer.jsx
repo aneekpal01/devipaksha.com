@@ -7,7 +7,9 @@ export default function MusicPlayer({
   isPlaying,
   setIsPlaying,
   onNext,
+  onNextTrack,
   onPrev,
+  onPrevTrack,
   onOpenDhak,
   onOpenPlaylist,
   isShuffle,
@@ -23,15 +25,19 @@ export default function MusicPlayer({
   const lastEndedTrackId = useRef(null);
   const isSwitchingTrack = useRef(false);
 
+  // Normalize callbacks
+  const nextCallback = onNextTrack || onNext;
+  const prevCallback = onPrevTrack || onPrev;
+
   // Fresh refs to prevent closure staleness
-  const onNextRef = useRef(onNext);
-  const onPrevRef = useRef(onPrev);
+  const onNextRef = useRef(nextCallback);
+  const onPrevRef = useRef(prevCallback);
   const isRepeatRef = useRef(isRepeat);
   const isPlayingRef = useRef(isPlaying);
 
   useEffect(() => {
-    onNextRef.current = onNext;
-    onPrevRef.current = onPrev;
+    onNextRef.current = nextCallback;
+    onPrevRef.current = prevCallback;
     isRepeatRef.current = isRepeat;
     isPlayingRef.current = isPlaying;
   });
@@ -91,6 +97,7 @@ export default function MusicPlayer({
                   } catch (e) {}
                 }
               } else if (event.data === 0) {
+                // Song ended naturally -> Auto play next song
                 if (isRepeatRef.current) {
                   ytPlayerInstance.current?.seekTo(0);
                   ytPlayerInstance.current?.playVideo();
@@ -102,9 +109,9 @@ export default function MusicPlayer({
               }
             },
             onError: (err) => {
-              console.warn('YouTube playback error, auto-advancing to next song:', err);
+              console.warn('YouTube playback notice, advancing to next song:', err);
               if (onNextRef.current) {
-                setTimeout(() => onNextRef.current(), 300);
+                setTimeout(() => onNextRef.current(), 400);
               }
             }
           }
@@ -157,7 +164,8 @@ export default function MusicPlayer({
           if (cur !== undefined && !isNaN(cur)) setCurrentTime(Math.floor(cur));
           if (dur !== undefined && !isNaN(dur) && dur > 0) setDuration(Math.floor(dur));
 
-          if (dur && dur > 5 && cur >= (dur - 0.8)) {
+          // If track reached the very end -> auto advance
+          if (dur && dur > 5 && cur >= (dur - 0.9)) {
             if (lastEndedTrackId.current !== currentTrack?.id) {
               lastEndedTrackId.current = currentTrack?.id;
               if (isRepeatRef.current) {
@@ -195,6 +203,18 @@ export default function MusicPlayer({
     }
   };
 
+  const handleNextClick = () => {
+    if (nextCallback) {
+      nextCallback();
+    }
+  };
+
+  const handlePrevClick = () => {
+    if (prevCallback) {
+      prevCallback();
+    }
+  };
+
   const handleSeek = (e) => {
     const newTime = parseFloat(e.target.value);
     setCurrentTime(newTime);
@@ -226,8 +246,6 @@ export default function MusicPlayer({
   };
 
   const trackThumbnail = currentTrack?.thumbnail || (currentTrack?.id ? `https://img.youtube.com/vi/${currentTrack.id}/hqdefault.jpg` : null);
-
-  // Calculate percentage of song completed for bright golden fill
   const progressPercent = duration > 0 ? Math.min(100, Math.max(0, (currentTime / duration) * 100)) : 0;
 
   return (
@@ -301,7 +319,7 @@ export default function MusicPlayer({
           {/* Transport Controls: Previous, Big White Play/Pause Button, Next */}
           <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
             <button
-              onClick={onPrev}
+              onClick={handlePrevClick}
               title="Previous Track"
               className="p-1.5 text-[#fdf3e2]/80 hover:text-[#ffd873] hover:scale-110 active:scale-95 transition-all cursor-pointer"
             >
@@ -322,7 +340,7 @@ export default function MusicPlayer({
             </button>
 
             <button
-              onClick={onNext}
+              onClick={handleNextClick}
               title="Next Track"
               className="p-1.5 text-[#fdf3e2]/80 hover:text-[#ffd873] hover:scale-110 active:scale-95 transition-all cursor-pointer"
             >
@@ -333,7 +351,6 @@ export default function MusicPlayer({
 
         {/* Dynamic Golden Filled Progress Bar with Left & Right Timestamps */}
         <div className="mt-3.5 w-full">
-          {/* Custom Dual-Tone Filled Progress Bar */}
           <div className="relative flex items-center h-4 group cursor-pointer">
             <input
               type="range"
@@ -348,7 +365,6 @@ export default function MusicPlayer({
             />
           </div>
 
-          {/* Left Elapsed Time & Right Total Duration Display */}
           <div className="flex items-center justify-between text-[11px] font-mono text-[#fdf3e2]/75 mt-1 px-0.5">
             <span className="text-[#ffd873] font-bold tabular-nums">
               {formatTime(currentTime)}
@@ -385,7 +401,7 @@ export default function MusicPlayer({
             <span>Repeat</span>
           </button>
 
-          {/* '🎵 Dhak' Apple Liquid Glass button */}
+          {/* '🎵 Dhak' Button */}
           <button
             onClick={handleDhakQuickTrigger}
             title="Play Dhak rhythm & open soundboard"

@@ -32,7 +32,7 @@ class ErrorBoundary extends Component {
           textAlign: 'center',
           fontFamily: 'sans-serif'
         }}>
-          <h1 style={{ fontSize: '28px', marginBottom: '12px' }}>🪔 দেবীপক্ষ — Devi Paksha</h1>
+          <h1 style={{ fontSize: '28px', marginBottom: '12px' }}>🪔 দেবীপক্ষ</h1>
           <p style={{ color: '#fdf3e2', opacity: 0.8, maxWidth: '400px', marginBottom: '20px' }}>
             Oops! An issue occurred while loading. Tap below to reload the pandal.
           </p>

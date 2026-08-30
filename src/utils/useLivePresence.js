@@ -6,9 +6,11 @@ const INITIAL_FALLBACK_MESSAGES = [
   { id: 103, name: 'দেবাঞ্জন', text: 'অষ্টমীর সকালে অঞ্জলি আর ধুনুচি নাচ — মিস করা যায় না! 🔥🥁', time: '01:45 PM' }
 ];
 
-const PRESENCE_STORAGE_KEY = 'pujo_active_tabs_map';
-const CHAT_STORAGE_KEY = 'pujo_chat_messages_v2';
-const CHAI_STORAGE_KEY = 'pujo_chai_total_count';
+const PRESENCE_TOPIC = 'https://ntfy.sh/devipaksha_pujo_global_hub_2026';
+const PRESENCE_SSE = 'https://ntfy.sh/devipaksha_pujo_global_hub_2026/sse';
+const LOCAL_PRESENCE_KEY = 'pujo_local_tabs_registry';
+const CHAT_STORAGE_KEY = 'pujo_chat_history_v3';
+const CHAI_STORAGE_KEY = 'pujo_chai_total_count_v3';
 
 export function useLivePresence() {
   const [onlineCount, setOnlineCount] = useState(1);
@@ -31,142 +33,186 @@ export function useLivePresence() {
     return 14;
   });
 
-  // Unique tab ID for this browser tab session
-  const tabSenderIdRef = useRef(() => {
+  // Unique client/tab ID for this session
+  const [tabSenderId] = useState(() => {
     let id = sessionStorage.getItem('pujo_tab_sender_id');
     if (!id) {
-      id = 'tab_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now().toString(36);
+      id = 'dev_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now().toString(36);
       sessionStorage.setItem('pujo_tab_sender_id', id);
     }
     return id;
   });
 
-  const tabSenderId = typeof tabSenderIdRef.current === 'function' ? tabSenderIdRef.current() : tabSenderIdRef.current;
+  // Global active peers map: tabId -> timestamp
+  const globalPeersRef = useRef(new Map());
 
-  // Real-time Multi-Tab Presence & Heartbeat Registry Engine
+  // Helper to publish to global cloud relay
+  const publishGlobal = useCallback(async (payload) => {
+    try {
+      await fetch(PRESENCE_TOPIC, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (err) {
+      // Graceful fallback on network glitch
+    }
+  }, []);
+
   useEffect(() => {
     const tabId = tabSenderId;
-    const channel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('pujo_live_presence_channel') : null;
+    const channel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('pujo_global_sync_channel') : null;
 
-    const updateHeartbeatAndCount = () => {
+    // Register self in local peer map
+    globalPeersRef.current.set(tabId, Date.now());
+
+    // 1. Send initial heartbeat to global cloud and local channel
+    publishGlobal({ type: 'presence_heartbeat', tabId, timestamp: Date.now() });
+
+    // 2. Setup Real-time SSE Stream (Global Cross-Device & Cross-Browser)
+    let eventSource = null;
+    try {
+      eventSource = new EventSource(PRESENCE_SSE);
+
+      eventSource.onmessage = (event) => {
+        try {
+          const raw = JSON.parse(event.data);
+          if (!raw || !raw.message) return;
+
+          const data = typeof raw.message === 'string' ? JSON.parse(raw.message) : raw.message;
+          if (!data || !data.type) return;
+
+          // A) Heartbeat from another browser/device (Brave, Chrome, Mobile, etc.)
+          if (data.type === 'presence_heartbeat' && data.tabId) {
+            globalPeersRef.current.set(data.tabId, Date.now());
+            updateLiveCount();
+          }
+
+          // B) Tab closed notification
+          if (data.type === 'tab_closed' && data.tabId) {
+            globalPeersRef.current.delete(data.tabId);
+            updateLiveCount();
+          }
+
+          // C) Global chat message from any device
+          if (data.type === 'chat_message' && data.message) {
+            setMessages((prev) => {
+              if (prev.some((m) => m.id === data.message.id)) return prev;
+              const updated = [...prev, data.message];
+              try {
+                localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(updated));
+              } catch (e) {}
+              return updated;
+            });
+          }
+
+          // D) Global Chai counter update
+          if (data.type === 'chai_click' && data.count !== undefined) {
+            setChaiCount(data.count);
+            try {
+              localStorage.setItem(CHAI_STORAGE_KEY, data.count.toString());
+            } catch (e) {}
+          }
+        } catch (e) {
+          // Non-JSON or keep-alive message
+        }
+      };
+
+      eventSource.onerror = () => {
+        // SSE auto-reconnects natively
+      };
+    } catch (err) {
+      console.warn('SSE global sync unavailable, relying on local sync:', err);
+    }
+
+    // 3. Update Local Heartbeat & Prune stale peers
+    const updateLiveCount = () => {
+      const now = Date.now();
+      // Keep self alive
+      globalPeersRef.current.set(tabId, now);
+
+      // Prune inactive peers (> 35 seconds without heartbeat)
+      for (const [peerId, lastSeen] of globalPeersRef.current.entries()) {
+        if (now - lastSeen > 35000) {
+          globalPeersRef.current.delete(peerId);
+        }
+      }
+
+      // Sync with localStorage tabs on same machine
       try {
-        const now = Date.now();
-        let tabs = {};
-        const stored = localStorage.getItem(PRESENCE_STORAGE_KEY);
-        if (stored) {
-          try {
-            tabs = JSON.parse(stored) || {};
-          } catch (e) {
-            tabs = {};
+        let localTabs = {};
+        const stored = localStorage.getItem(LOCAL_PRESENCE_KEY);
+        if (stored) localTabs = JSON.parse(stored) || {};
+        localTabs[tabId] = now;
+
+        // Prune local tabs
+        const cleanLocal = {};
+        for (const [id, seen] of Object.entries(localTabs)) {
+          if (now - seen < 5000) {
+            cleanLocal[id] = seen;
+            globalPeersRef.current.set(id, seen);
           }
         }
+        localStorage.setItem(LOCAL_PRESENCE_KEY, JSON.stringify(cleanLocal));
+      } catch (e) {}
 
-        // Register / update current tab's active heartbeat
-        tabs[tabId] = now;
-
-        // Prune expired tabs (inactive for > 3500ms)
-        const activeTabs = {};
-        let activeCount = 0;
-        for (const [id, lastSeen] of Object.entries(tabs)) {
-          if (now - lastSeen < 3500) {
-            activeTabs[id] = lastSeen;
-            activeCount++;
-          }
-        }
-
-        localStorage.setItem(PRESENCE_STORAGE_KEY, JSON.stringify(activeTabs));
-
-        // When multiple tabs are open (e.g. user opens 25 tabs), display exact active tabs count
-        // Minimum 1 online
-        const totalLive = Math.max(1, activeCount);
-        setOnlineCount(totalLive);
-
-        if (channel) {
-          channel.postMessage({ type: 'presence_pulse', count: totalLive, tabId });
-        }
-      } catch (err) {
-        console.warn('Presence heartbeat update error:', err);
-      }
+      const totalCount = Math.max(1, globalPeersRef.current.size);
+      setOnlineCount(totalCount);
     };
 
-    // Immediate initial pulse
-    updateHeartbeatAndCount();
+    // Periodic Heartbeat to Global Cloud (every 12 seconds)
+    const heartbeatInterval = setInterval(() => {
+      publishGlobal({ type: 'presence_heartbeat', tabId, timestamp: Date.now() });
+      updateLiveCount();
+    }, 12000);
 
-    // Pulse every 1.2 seconds
-    const interval = setInterval(updateHeartbeatAndCount, 1200);
+    // Frequent local update (every 1.5 seconds)
+    const localTickInterval = setInterval(updateLiveCount, 1500);
 
-    // Cross-tab storage change listener
-    const handleStorageChange = (e) => {
-      if (e.key === PRESENCE_STORAGE_KEY && e.newValue) {
-        try {
-          const tabs = JSON.parse(e.newValue) || {};
-          const now = Date.now();
-          const activeCount = Object.values(tabs).filter(t => now - t < 3500).length;
-          setOnlineCount(Math.max(1, activeCount));
-        } catch (err) {}
-      }
-      if (e.key === CHAT_STORAGE_KEY && e.newValue) {
-        try {
-          const newMsgs = JSON.parse(e.newValue);
-          if (Array.isArray(newMsgs)) setMessages(newMsgs);
-        } catch (err) {}
-      }
-      if (e.key === CHAI_STORAGE_KEY && e.newValue) {
-        try {
-          const newChai = parseInt(e.newValue, 10);
-          if (!isNaN(newChai)) setChaiCount(newChai);
-        } catch (err) {}
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-
-    // BroadcastChannel listener
+    // 4. Local BroadcastChannel Listener (Fast sync on same browser)
     if (channel) {
       channel.onmessage = (e) => {
         if (!e.data) return;
-        if (e.data.type === 'presence_pulse' && e.data.count) {
-          setOnlineCount(e.data.count);
+        if (e.data.type === 'local_pulse' && e.data.tabId) {
+          globalPeersRef.current.set(e.data.tabId, Date.now());
+          updateLiveCount();
         }
-        if (e.data.type === 'new_message' && e.data.message) {
+        if (e.data.type === 'chat_message' && e.data.message) {
           setMessages((prev) => {
-            if (prev.some(m => m.id === e.data.message.id)) return prev;
+            if (prev.some((m) => m.id === e.data.message.id)) return prev;
             return [...prev, e.data.message];
           });
         }
-        if (e.data.type === 'chai_update' && e.data.count !== undefined) {
-          setChaiCount(e.data.count);
-        }
       };
+      channel.postMessage({ type: 'local_pulse', tabId });
     }
 
-    // Cleanup on tab close / reload
+    // 5. Cleanup on tab close
     const handleBeforeUnload = () => {
       try {
-        const stored = localStorage.getItem(PRESENCE_STORAGE_KEY);
+        publishGlobal({ type: 'tab_closed', tabId });
+        const stored = localStorage.getItem(LOCAL_PRESENCE_KEY);
         if (stored) {
           const tabs = JSON.parse(stored) || {};
           delete tabs[tabId];
-          localStorage.setItem(PRESENCE_STORAGE_KEY, JSON.stringify(tabs));
+          localStorage.setItem(LOCAL_PRESENCE_KEY, JSON.stringify(tabs));
         }
-        if (channel) {
-          channel.postMessage({ type: 'tab_closed', tabId });
-        }
-      } catch (err) {}
+      } catch (e) {}
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
-      clearInterval(interval);
-      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(heartbeatInterval);
+      clearInterval(localTickInterval);
       window.removeEventListener('beforeunload', handleBeforeUnload);
       handleBeforeUnload();
+      if (eventSource) eventSource.close();
       if (channel) channel.close();
     };
-  }, [tabSenderId]);
+  }, [tabSenderId, publishGlobal]);
 
-  // Send message with multi-tab storage & broadcast sync
+  // Send message across all devices in real-time
   const sendMessage = useCallback((name, text, senderId) => {
     const formattedTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const newMsg = {
@@ -178,6 +224,7 @@ export function useLivePresence() {
       timestamp: Date.now()
     };
 
+    // Update local state immediately
     setMessages((prev) => {
       const updated = [...prev, newMsg];
       try {
@@ -186,34 +233,32 @@ export function useLivePresence() {
       return updated;
     });
 
+    // Broadcast globally to all other devices & browsers
+    publishGlobal({ type: 'chat_message', message: newMsg });
+
+    // Broadcast locally
     try {
       if (typeof BroadcastChannel !== 'undefined') {
-        const ch = new BroadcastChannel('pujo_live_presence_channel');
-        ch.postMessage({ type: 'new_message', message: newMsg });
+        const ch = new BroadcastChannel('pujo_global_sync_channel');
+        ch.postMessage({ type: 'chat_message', message: newMsg });
         ch.close();
       }
     } catch (e) {}
 
     return newMsg;
-  }, [tabSenderId]);
+  }, [tabSenderId, publishGlobal]);
 
-  // Buy chai with multi-tab sync
+  // Buy Chai with global real-time synchronization
   const buyChai = useCallback(() => {
     setChaiCount((prev) => {
       const next = prev + 1;
       try {
         localStorage.setItem(CHAI_STORAGE_KEY, next.toString());
       } catch (e) {}
-      try {
-        if (typeof BroadcastChannel !== 'undefined') {
-          const ch = new BroadcastChannel('pujo_live_presence_channel');
-          ch.postMessage({ type: 'chai_update', count: next });
-          ch.close();
-        }
-      } catch (e) {}
+      publishGlobal({ type: 'chai_click', count: next });
       return next;
     });
-  }, []);
+  }, [publishGlobal]);
 
   return {
     onlineCount,

@@ -9,7 +9,8 @@ export default function ChaiAddaModal({
   chaiCount = 14,
   onSendMessage,
   onBuyChai,
-  tabSenderId
+  tabSenderId,
+  onlineCount = 1
 }) {
   const [newComment, setNewComment] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -148,9 +149,10 @@ export default function ChaiAddaModal({
                 <h1 className="font-bengali-title text-base sm:text-xl font-bold text-[#ffd873] tracking-wide px-1">
                   লাইভ পুজোর আড্ডা
                 </h1>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/25 text-emerald-300 border border-emerald-500/40 font-bold flex items-center gap-1 flex-shrink-0">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  Online
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/25 text-emerald-300 border border-emerald-500/40 font-bold flex items-center gap-1.5 flex-shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_#34d399]"></span>
+                  <span className="tabular-nums font-bold text-emerald-200">{onlineCount}</span>
+                  <span>Online</span>
                 </span>
               </div>
               <p className="text-[10px] sm:text-xs text-[#fdf3e2]/65 font-medium px-1">

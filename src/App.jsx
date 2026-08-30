@@ -240,6 +240,7 @@ export default function App() {
         chaiCount={chaiCount}
         onBuyChai={buyChai}
         mySenderId={tabSenderId}
+        onlineCount={onlineCount}
       />
 
       <MahalayaAboutModal

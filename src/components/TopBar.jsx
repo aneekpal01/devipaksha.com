@@ -200,16 +200,16 @@ export default function TopBar({
           />
         </button>
 
-        {/* 3. Sleek Apple Liquid Glass Dropdown Menu (Clean Rows Without Stickers) */}
+        {/* 3. Golden Liquid Glass Dropdown Menu (Clean Rows Without Stickers) */}
         {isMenuOpen && (
-          <div className="absolute right-0 top-11 z-50 w-80 sm:w-92 rounded-[32px] liquid-glass-card p-3.5 sm:p-4 shadow-2xl border border-white/20 animate-fadeIn box-border">
+          <div className="absolute right-0 top-11 z-50 w-80 sm:w-92 rounded-[32px] bg-gradient-to-b from-[#8c6227]/95 via-[#533013]/95 to-[#241308]/98 backdrop-blur-3xl border-2 border-[#ffd873]/50 p-3.5 sm:p-4 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(234,179,8,0.25)] animate-fadeIn box-border">
             {/* Header: ✨ দেবীপক্ষ এক্সপ্লোরার | 6 Features */}
-            <div className="px-2 py-1 mb-3 border-b border-white/10 flex items-center justify-between">
+            <div className="px-2 py-1 mb-3 border-b border-[#ffd873]/20 flex items-center justify-between">
               <span className="font-bengali text-sm font-black text-[#ffd873] tracking-wide flex items-center gap-1.5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                 <Sparkles className="w-4 h-4 text-[#ffd873]" />
                 দেবীপক্ষ এক্সপ্লোরার
               </span>
-              <span className="text-xs font-semibold text-[#fdf3e2]/75">
+              <span className="text-xs font-semibold text-[#fdf3e2]/80">
                 6 Features
               </span>
             </div>
@@ -220,21 +220,21 @@ export default function TopBar({
                 <button
                   key={item.id}
                   onClick={item.action}
-                  className="group w-full flex items-center p-2.5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 hover:border-[#ffd873]/60 shadow-[0_3px_12px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.25)] transition-all duration-200 text-left active:scale-97 cursor-pointer"
+                  className="group w-full flex items-center p-2.5 rounded-2xl bg-white/25 hover:bg-white/35 border border-white/35 hover:border-[#ffd873]/70 shadow-[0_4px_12px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.6)] transition-all duration-200 text-left active:scale-97 cursor-pointer"
                 >
                   {/* Left: Icon Tile + Title/Subtitle */}
                   <div className="flex items-center gap-3 min-w-0 flex-1">
                     <div
-                      className={`w-9 h-9 rounded-2xl ${item.iconBg} flex items-center justify-center flex-shrink-0 shadow-inner group-hover:scale-105 transition-transform`}
+                      className={`w-8.5 h-8.5 sm:w-9 sm:h-9 rounded-xl ${item.iconBg} flex items-center justify-center flex-shrink-0 shadow-inner group-hover:scale-105 transition-transform`}
                     >
                       {item.icon}
                     </div>
 
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-bengali text-xs sm:text-[13px] font-bold text-[#fdf3e2] group-hover:text-[#ffd873] leading-tight truncate">
+                      <h3 className="font-bengali text-xs sm:text-[13px] font-black text-[#150702] group-hover:text-[#801200] leading-tight truncate">
                         {item.title}
                       </h3>
-                      <p className="font-bengali text-[10px] sm:text-[11px] text-[#fdf3e2]/70 font-medium leading-snug mt-0.5 truncate">
+                      <p className="font-bengali text-[10px] sm:text-[11px] text-[#2d1105]/90 font-bold leading-snug mt-0.5 truncate">
                         {item.desc}
                       </p>
                     </div>
@@ -244,7 +244,7 @@ export default function TopBar({
             </div>
 
             {/* Sub-footer: দেবীপক্ষ (Devi Paksha) • শারদীয় উৎসব */}
-            <div className="mt-3 pt-2 border-t border-white/10 text-center text-[11px] text-[#ffd873]/80 font-medium font-bengali">
+            <div className="mt-3 pt-2 border-t border-[#ffd873]/20 text-center text-[11px] text-[#ffd873]/90 font-bold font-bengali tracking-wide">
               দেবীপক্ষ (Devi Paksha) • শারদীয় উৎসব
             </div>
           </div>

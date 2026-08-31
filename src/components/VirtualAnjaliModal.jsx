@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Sparkles, Volume2, Heart, Award, Flame, Flower2, Bell } from 'lucide-react';
+import { X, Sparkles, Award, Flower2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 const FLOWERS = [
@@ -35,71 +35,24 @@ const FLOWERS = [
 
 const MANTRAS = [
   {
-    phase: 'প্রথম অঞ্জলি (1st Anjali Mantra)',
+    phase: 'প্রথম অঞ্জলি (1ST ANJALI MANTRA)',
     sanskrit: 'ওঁ মহিষঘ্নি মহামায়ে চামুণ্ডে মুণ্ডমালিনী। আয়ুরারোগ্য বিজয়ং দেহি দেবি নমোঽস্তুতে॥',
     phonetic: 'Om Mahishaghni Mahamaye Chamunde Mundamalini / Ayurarogyam Vijayang Dehi Devi Namostute',
     meaning: 'হে মহিষাসুরমর্দিনী, হে মহামায়া, তুমি আমাদের দীর্ঘায়ু, আরোগ্য ও বিজয় দান করো।'
   },
   {
-    phase: 'দ্বিতীয় অঞ্জলি (2nd Anjali Mantra)',
+    phase: 'দ্বিতীয় অঞ্জলি (2ND ANJALI MANTRA)',
     sanskrit: 'ওঁ সর্বমঙ্গল মঙ্গল্যে শিবে সর্বার্থ সাধিকে। শরণ্যে ত্র্যম্বকে গৌরি নারায়ণি নমোঽস্তুতে॥',
     phonetic: 'Om Sarva Mangala Mangalye Shive Sarvartha Sadhike / Sharanye Tryambake Gauri Narayani Namostute',
     meaning: 'হে সর্বমঙ্গলা, সর্বার্থসাধিকা, শরণদাত্রী গৌরী নারায়ণী, তোমাকে প্রণাম জানাই।'
   },
   {
-    phase: 'প্রণাম মন্ত্র (Final Pranam Mantra)',
+    phase: 'প্রণাম মন্ত্র (FINAL PRANAM MANTRA)',
     sanskrit: 'ওঁ জয়ন্তী মঙ্গলা কালী ভদ্রকালী কপালিনী। দুর্গা শিবা ক্ষমা ধাত্রী স্বাহা স্বধা নমোঽস্তুতে॥',
     phonetic: 'Om Jayanti Mangala Kali Bhadrakali Kapalini / Durga Shiva Kshama Dhatri Swaha Swadha Namostute',
     meaning: 'হে জয়দাত্রী, মঙ্গলা, দুর্গা, ধাত্রী — হে জগন্মাতা, তোমার চরণে ভক্তিপূর্ণ প্রণাম।'
   }
 ];
-
-// Web Audio API Synthesizer for Shankho (Conch) & Temple Bell
-const playSacredSound = (type = 'bell') => {
-  try {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContext) return;
-    const ctx = new AudioContext();
-
-    if (type === 'bell') {
-      // Crystal clear temple bell chime
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(880, ctx.currentTime); // A5
-      osc.frequency.exponentialRampToValueAtTime(1760, ctx.currentTime + 0.1);
-      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.3);
-
-      gain.gain.setValueAtTime(0.4, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.5);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + 2.5);
-    } else {
-      // Deep resonant conch / Shankho drone
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(220, ctx.currentTime); // A3
-      osc.frequency.linearRampToValueAtTime(261.63, ctx.currentTime + 0.5); // C4
-      osc.frequency.linearRampToValueAtTime(329.63, ctx.currentTime + 1.2); // E4
-      osc.frequency.linearRampToValueAtTime(220, ctx.currentTime + 2.8);
-
-      gain.gain.setValueAtTime(0.01, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.35, ctx.currentTime + 0.6);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 3.2);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + 3.2);
-    }
-  } catch (e) {
-    console.warn('Web Audio playback error:', e);
-  }
-};
 
 export default function VirtualAnjaliModal({ isOpen, onClose }) {
   const [selectedFlower, setSelectedFlower] = useState(FLOWERS[0]);
@@ -107,7 +60,7 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
   const [isOffering, setIsOffering] = useState(false);
   const [anjaliCount, setAnjaliCount] = useState(() => {
     const saved = localStorage.getItem('pujo_anjali_count');
-    return saved ? parseInt(saved, 10) : 1284;
+    return saved ? parseInt(saved, 10) : 1293;
   });
   const [hasOffered, setHasOffered] = useState(false);
 
@@ -125,11 +78,7 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
     if (isOffering) return;
     setIsOffering(true);
 
-    // Play Conch & Temple Bell Sound
-    playSacredSound('conch');
-    setTimeout(() => playSacredSound('bell'), 300);
-
-    // Dynamic Flower Petal Particle Explosion
+    // Dynamic Flower Petal Particle Explosion (Silent - No Sound)
     confetti({
       particleCount: 70,
       spread: 80,
@@ -173,7 +122,7 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/85 backdrop-blur-2xl animate-fadeIn select-none overflow-hidden">
       {/* 3D Liquid Glass Modal (Spacious & Responsive) */}
-      <div className="relative w-full max-w-2xl md:h-[84vh] h-full max-h-[90vh] rounded-[32px] sm:rounded-[36px] liquid-glass-card p-4 sm:p-6 shadow-2xl overflow-hidden flex flex-col justify-between border border-white/20 box-border">
+      <div className="relative w-full max-w-2xl md:h-[86vh] h-full max-h-[92vh] rounded-[32px] sm:rounded-[36px] liquid-glass-card p-4 sm:p-6 shadow-2xl overflow-hidden flex flex-col justify-between border border-white/20 box-border">
         {/* Pinned Top-Right Close Button */}
         <button
           onClick={onClose}
@@ -212,36 +161,34 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
         </div>
 
         {/* 2. Scrollable Sacred Ritual Center Stage */}
-        <div className="flex-1 overflow-y-auto px-1.5 py-2 space-y-4 overflow-x-hidden w-full box-border">
-          {/* Sanskrit Mantra Display Card */}
-          <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-950/40 via-black/40 to-rose-950/30 border border-[#ffd873]/25 shadow-xl relative overflow-hidden box-border">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-bold text-amber-300/90 tracking-wide font-bengali uppercase flex items-center gap-1.5">
+        <div className="flex-1 overflow-y-auto px-1.5 py-2 space-y-3.5 overflow-x-hidden w-full box-border">
+          {/* Enhanced Visually Powerful Sanskrit Mantra Card */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#2a1308]/90 via-[#180a04]/95 to-[#240c06]/90 border-2 border-[#ffd873]/45 shadow-[0_12px_32px_rgba(0,0,0,0.85),inset_0_1px_2px_rgba(255,216,115,0.4),0_0_24px_rgba(245,158,11,0.2)] relative overflow-hidden box-border">
+            {/* Top Phase Header */}
+            <div className="flex items-center justify-center mb-2.5">
+              <span className="text-[11px] sm:text-xs font-bold text-[#ffd873] tracking-wider font-bengali uppercase flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-400/15 border border-amber-400/30 shadow-inner">
                 <Sparkles className="w-3.5 h-3.5 text-[#ffd873]" />
                 {currentMantra.phase}
               </span>
-              <button
-                type="button"
-                onClick={() => playSacredSound('conch')}
-                className="text-[10px] px-2 py-1 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-[#ffd873] flex items-center gap-1 cursor-pointer transition-colors"
-                title="Play Conch Sound"
-              >
-                <Volume2 className="w-3 h-3" />
-                <span>শঙ্খধ্বনি</span>
-              </button>
             </div>
 
-            <p className="font-bengali text-sm sm:text-base text-[#fdf3e2] font-semibold leading-relaxed tracking-wide mb-2 text-center text-festive-glow">
+            {/* Sacred Sanskrit Shloka in Bold Golden Display */}
+            <p className="font-bengali text-sm sm:text-base md:text-lg text-[#ffd873] font-black leading-relaxed tracking-wide text-center drop-shadow-[0_2px_12px_rgba(255,216,115,0.5)] my-2">
               {currentMantra.sanskrit}
             </p>
 
-            <p className="text-[10px] sm:text-xs text-[#ffd873]/75 italic text-center font-serif leading-snug mb-1.5">
+            {/* Phonetic Pronunciation in Elegant Gold Italic */}
+            <p className="text-[11px] sm:text-xs text-[#fdf3e2]/85 italic text-center font-serif leading-relaxed my-2 px-2 max-w-xl mx-auto">
               "{currentMantra.phonetic}"
             </p>
 
-            <p className="text-[10px] sm:text-xs text-[#fdf3e2]/60 text-center font-bengali leading-normal border-t border-white/10 pt-2">
-              {currentMantra.meaning}
-            </p>
+            {/* Bengali Meaning Banner */}
+            <div className="mt-3 pt-2.5 border-t border-[#ffd873]/20 text-center">
+              <span className="text-[11px] text-amber-300 font-bold mr-1 font-bengali">অর্থ:</span>
+              <span className="text-[11px] sm:text-xs text-[#fdf3e2]/75 font-bengali leading-relaxed">
+                {currentMantra.meaning}
+              </span>
+            </div>
           </div>
 
           {/* Floral & Offering Choice Grid (2x2) */}

@@ -112,53 +112,22 @@ export default function TopBar({
   ];
 
   return (
-    <header className="relative z-40 w-full px-2 sm:px-6 pt-2 sm:pt-4 flex items-center justify-between pointer-events-auto box-border overflow-visible">
-      {/* 🏝️ 1. Left Island: [ 🟢 Live Online  │  👥 Creators  │  ☕ Buy Chai ] */}
-      <div className="flex items-center rounded-full liquid-glass-pill p-0.5 sm:p-1 border border-white/20 shadow-lg flex-shrink-0">
-        {/* Live Online Badge / Button */}
-        <button
-          onClick={onOpenAdda}
-          title="Click to join live community adda!"
-          className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full hover:bg-white/15 active:scale-95 transition-all cursor-pointer"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_10px_#34d399]"></span>
-          </span>
-          <span className="tabular-nums font-bold text-emerald-300 text-xs">
-            {onlineCount}
-          </span>
-          <span className="hidden sm:inline text-[11px] text-[#fdf3e2]/70 font-medium">
-            {t('online')}
-          </span>
-        </button>
+    <header className="relative z-40 w-full px-3 sm:px-6 pt-2.5 sm:pt-4 flex items-center justify-between pointer-events-auto box-border overflow-visible">
+      {/* 🟢 1. Left: Sleek Live Online Badge */}
+      <button
+        onClick={onOpenAdda}
+        title="Click to join live community adda!"
+        className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-full liquid-glass-pill text-emerald-300 font-bold text-xs shadow-lg hover:scale-103 active:scale-95 transition-all cursor-pointer flex-shrink-0"
+      >
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_10px_#34d399]"></span>
+        </span>
+        <span className="tabular-nums font-bold text-xs">{onlineCount}</span>
+        <span className="text-[11px] text-[#fdf3e2]/75 font-medium">{t('online')}</span>
+      </button>
 
-        {/* Divider */}
-        <span className="w-[1px] h-3.5 bg-white/20 my-auto mx-0.5" />
-
-        {/* 👥 Creators Button */}
-        <button
-          onClick={onOpenCreators}
-          title="Made with Bhalobasha by Aneek Pal"
-          className="flex items-center justify-center p-1.5 sm:px-2 rounded-full text-[#fdf3e2]/85 hover:text-[#ffd873] hover:bg-white/15 active:scale-95 transition-all cursor-pointer"
-        >
-          <Users className="w-3.5 h-3.5" />
-        </button>
-
-        {/* Divider */}
-        <span className="w-[1px] h-3.5 bg-white/20 my-auto mx-0.5" />
-
-        {/* ☕ Buy Us A Chai Button */}
-        <button
-          onClick={onOpenBuyChai}
-          title="Buy Me A Chai (UPI Support)"
-          className="flex items-center justify-center p-1.5 sm:px-2 rounded-full text-[#fdf3e2]/85 hover:text-[#ffd873] hover:bg-white/15 active:scale-95 transition-all cursor-pointer"
-        >
-          <Coffee className="w-3.5 h-3.5 text-amber-300" />
-        </button>
-      </div>
-
-      {/* 🏝️ 2. Right Island: [ 🌐 ENG  │  ☀️ / 🌙  │  👑 পুজো স্পেশাল ⌵ ] */}
+      {/* 🏝️ 2. Right: Unified Glass Capsule [ 🌐 ENG  │  ☀️ / 🌙  │  👑 পুজো স্পেশাল ⌵ ] */}
       <div className="relative flex items-center rounded-full liquid-glass-pill p-0.5 sm:p-1 border border-white/20 shadow-lg flex-shrink-0" ref={menuRef}>
         {/* 🌐 1-Click Language Switcher (বাংলা <-> ENG) */}
         <button
@@ -213,7 +182,7 @@ export default function TopBar({
 
         {/* 3. Golden Liquid Glass Dropdown Menu */}
         {isMenuOpen && (
-          <div className="absolute right-0 top-11 sm:top-12 z-50 w-[calc(100vw-20px)] max-w-sm sm:w-92 rounded-[28px] sm:rounded-[32px] bg-gradient-to-b from-[#8c6227]/95 via-[#533013]/95 to-[#241308]/98 backdrop-blur-3xl border-2 border-[#ffd873]/50 p-3 sm:p-4 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(234,179,8,0.25)] animate-fadeIn box-border">
+          <div className="absolute right-0 top-11 sm:top-12 z-50 w-[calc(100vw-24px)] max-w-sm sm:w-92 rounded-[28px] sm:rounded-[32px] bg-gradient-to-b from-[#8c6227]/95 via-[#533013]/95 to-[#241308]/98 backdrop-blur-3xl border-2 border-[#ffd873]/50 p-3.5 sm:p-4 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(234,179,8,0.25)] animate-fadeIn box-border">
             {/* Header */}
             <div className="px-2 py-1 mb-2.5 border-b border-[#ffd873]/20 flex items-center justify-between">
               <span className="font-bengali text-xs sm:text-sm font-black text-[#ffd873] tracking-wide flex items-center gap-1.5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
@@ -225,7 +194,7 @@ export default function TopBar({
               </span>
             </div>
 
-            {/* 6 Full-Width Horizontal Feature Rows (Title only, no subtext) */}
+            {/* 6 Full-Width Horizontal Feature Rows (Clean title only) */}
             <div className="space-y-1.5 sm:space-y-2">
               {featuresList.map((item) => (
                 <button
@@ -249,8 +218,55 @@ export default function TopBar({
               ))}
             </div>
 
+            {/* 👑 Premium Dedicated Creator (👥) & Chai (☕) Section */}
+            <div className="mt-3 pt-2.5 border-t border-[#ffd873]/20">
+              <div className="grid grid-cols-2 gap-2">
+                {/* 👥 Creator Profile */}
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    onOpenCreators();
+                  }}
+                  className="group p-2 sm:p-2.5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-[#ffd873]/60 transition-all text-left flex items-center gap-2.5 shadow-md active:scale-95 cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center flex-shrink-0 text-[#ffd873] group-hover:scale-105 transition-transform">
+                    <Users className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[11px] font-black text-[#ffd873] leading-tight truncate">
+                      {lang === 'bn' ? 'নির্মাতা' : 'Creator'}
+                    </div>
+                    <div className="text-[9px] text-[#fdf3e2]/70 font-semibold truncate">
+                      Aneek Pal
+                    </div>
+                  </div>
+                </button>
+
+                {/* ☕ Buy Me A Chai */}
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    onOpenBuyChai();
+                  }}
+                  className="group p-2 sm:p-2.5 rounded-2xl bg-gradient-to-r from-amber-500/25 to-orange-500/20 hover:from-amber-500/35 hover:to-orange-500/30 border border-[#ffd873]/40 hover:border-[#ffd873]/80 transition-all text-left flex items-center gap-2.5 shadow-md active:scale-95 cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-xl bg-amber-400/30 border border-amber-300/50 flex items-center justify-center flex-shrink-0 text-amber-300 group-hover:scale-105 transition-transform shadow-[0_0_10px_rgba(245,158,11,0.3)]">
+                    <Coffee className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[11px] font-black text-amber-300 leading-tight truncate">
+                      {lang === 'bn' ? 'চা খাওয়ান' : 'Buy Chai'}
+                    </div>
+                    <div className="text-[9px] text-amber-200/80 font-semibold truncate">
+                      UPI Support ☕
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
             {/* Sub-footer */}
-            <div className="mt-2.5 pt-2 border-t border-[#ffd873]/20 text-center text-[10px] sm:text-[11px] text-[#ffd873]/90 font-bold font-bengali tracking-wide">
+            <div className="mt-2.5 pt-2 border-t border-white/10 text-center text-[10px] sm:text-[11px] text-[#ffd873]/90 font-bold font-bengali tracking-wide">
               {t('footerFestival')}
             </div>
           </div>

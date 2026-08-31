@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, MessageCircle, Send, Check, CheckCheck, Trash2 } from 'lucide-react';
+import { X, MessageCircle, Send, Check, CheckCheck, Trash2, User } from 'lucide-react';
 
 export default function ChaiAddaModal({
   isOpen,
@@ -17,16 +17,23 @@ export default function ChaiAddaModal({
   // Tab-unique sender ID fallback
   const mySenderId = tabSenderId || sessionStorage.getItem('pujo_tab_sender_id') || 'tab_local';
 
-  // User Profile Name State (Once set, locked permanently)
-  const [savedName, setSavedName] = useState(() => {
-    return sessionStorage.getItem('pujo_tab_name') || localStorage.getItem('pujo_user_name') || '';
+  // 1-Time Permanent Name Lock State
+  const [isNameLocked, setIsNameLocked] = useState(() => {
+    return localStorage.getItem('pujo_name_locked') === 'true';
   });
+
+  const [savedName, setSavedName] = useState(() => {
+    return localStorage.getItem('pujo_custom_name') || '';
+  });
+
   const [tempNameInput, setTempNameInput] = useState('');
 
   useEffect(() => {
-    const stored = sessionStorage.getItem('pujo_tab_name') || localStorage.getItem('pujo_user_name');
-    if (stored) setSavedName(stored);
-  }, []);
+    const locked = localStorage.getItem('pujo_name_locked') === 'true';
+    const name = localStorage.getItem('pujo_custom_name') || '';
+    setIsNameLocked(locked);
+    if (name) setSavedName(name);
+  }, [isOpen]);
 
   const scrollToBottom = (behavior = 'smooth') => {
     if (chatScrollContainerRef.current) {
@@ -60,13 +67,16 @@ export default function ChaiAddaModal({
     '✨ ঢাকের কাঠি বাজলো বলে!'
   ];
 
+  // Save Name Once -> Permanently Lock
   const handleSaveName = (e) => {
     e?.preventDefault();
     const clean = tempNameInput.trim();
     if (!clean) return;
-    sessionStorage.setItem('pujo_tab_name', clean);
-    localStorage.setItem('pujo_user_name', clean);
+
+    localStorage.setItem('pujo_custom_name', clean);
+    localStorage.setItem('pujo_name_locked', 'true');
     setSavedName(clean);
+    setIsNameLocked(true);
   };
 
   const handleSendComment = async (e) => {
@@ -74,11 +84,15 @@ export default function ChaiAddaModal({
     if (!newComment.trim() || isSending) return;
 
     setIsSending(true);
-    const finalName = savedName.trim() || 'বাঙালি পুজোপ্রেমী';
-    if (!savedName) {
-      sessionStorage.setItem('pujo_tab_name', finalName);
-      localStorage.setItem('pujo_user_name', finalName);
+    let finalName = savedName.trim();
+
+    // If user hasn't set a name yet, check temp input or use default and lock
+    if (!finalName) {
+      finalName = tempNameInput.trim() || 'বাঙালি পুজোপ্রেমী';
+      localStorage.setItem('pujo_custom_name', finalName);
+      localStorage.setItem('pujo_name_locked', 'true');
       setSavedName(finalName);
+      setIsNameLocked(true);
     }
 
     if (onSendMessage) {
@@ -139,14 +153,14 @@ export default function ChaiAddaModal({
 
         {/* 2. Top Profile Identity Banner (User sets name ONCE, then permanently locked) */}
         <div className="my-2 p-2.5 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between shadow-inner gap-2 flex-wrap sm:flex-nowrap box-border">
-          <div className="flex items-center gap-2.5 min-w-0">
-            {savedName ? (
+          <div className="flex items-center gap-2.5 min-w-0 w-full">
+            {isNameLocked && savedName ? (
               <div className="flex items-center gap-2.5 min-w-0">
                 <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-500 to-orange-500 text-black font-extrabold text-xs flex items-center justify-center shadow-md border border-white/30 flex-shrink-0 font-mono">
                   {firstLetter}
                 </div>
                 <div className="min-w-0 flex items-center gap-1.5">
-                  <span className="text-xs font-bold text-[#ffd873] truncate">
+                  <span className="text-xs sm:text-sm font-bold text-[#ffd873] truncate">
                     {savedName}
                   </span>
                   <span className="text-[9px] text-emerald-300 bg-emerald-500/20 px-1.5 py-0.2 rounded-full border border-emerald-500/30 font-medium">
@@ -155,21 +169,27 @@ export default function ChaiAddaModal({
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSaveName} className="flex items-center gap-1.5">
-                <input
-                  type="text"
-                  placeholder="আপনার নাম লিখুন..."
-                  value={tempNameInput}
-                  onChange={(e) => setTempNameInput(e.target.value)}
-                  autoFocus
-                  className="px-3 py-1 rounded-xl bg-white/10 border border-[#ffd873] text-xs text-[#fdf3e2] outline-none"
-                />
+              <form onSubmit={handleSaveName} className="flex items-center gap-2 w-full">
+                <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                  <User className="w-3.5 h-3.5 text-[#ffd873] flex-shrink-0" />
+                  <span className="text-xs text-[#ffd873] font-bold whitespace-nowrap hidden sm:inline">
+                    আপনার নাম:
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="আপনার নাম লিখুন (একবারই সেট করতে পারবেন)..."
+                    value={tempNameInput}
+                    onChange={(e) => setTempNameInput(e.target.value)}
+                    className="flex-1 min-w-0 px-3 py-1.5 rounded-xl bg-white/10 border border-[#ffd873]/60 text-xs text-[#fdf3e2] outline-none focus:border-[#ffd873] placeholder-[#fdf3e2]/40"
+                  />
+                </div>
                 <button
                   type="submit"
-                  className="px-2.5 py-1 rounded-xl bg-[#ffd873] text-black font-bold text-xs cursor-pointer flex items-center gap-1"
+                  disabled={!tempNameInput.trim()}
+                  className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-[#ffd873] hover:from-amber-300 hover:to-[#ffe29a] text-black font-extrabold text-xs cursor-pointer flex items-center gap-1 shadow-md transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
                 >
-                  <Check className="w-3 h-3" />
-                  <span>সেভ</span>
+                  <Check className="w-3.5 h-3.5" />
+                  <span>সেভ করুন</span>
                 </button>
               </form>
             )}

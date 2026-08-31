@@ -187,6 +187,7 @@ export const MAHALAYA_ABOUT_DATA = {
   title: "মহালয়া ও দেবীপক্ষের ইতিহাস",
   englishTitle: "The Sacred History of Mahalaya, Chandi Path & Devi Paksha",
   intro: "আশ্বিনের শারদপ্রাতে বেজে উঠেছে আলোক মঞ্জীর... মহিষাসুরমর্দিনী কেবল একটি বেতার অনুষ্ঠান নয়, সমগ্র বাঙালি জাতির আত্মিক উৎসবের সূচনা।",
+  englishIntro: "On an autumn dawn of Ashwin, the divine resonance begins... Mahishasura Mardini is not just a radio broadcast, it is the spiritual soul and awakening of Bengal's greatest festival.",
   sections: [
     {
       id: "significance",
@@ -196,6 +197,10 @@ export const MAHALAYA_ABOUT_DATA = {
       content: [
         "মহালয়া তিথি হলো পিতৃপক্ষের অবসান এবং দেবীপক্ষের পুণ্য সূচনা। এই অমাবস্যা তিথিতে পূর্বপুরুষদের উদ্দেশ্যে গঙ্গাতীরে তর্পণ ও জলদান করা হয়।",
         "পৌরাণিক বিশ্বাস অনুসারে, মহালয়ার এই পুণ্যলগ্নে কৈলাস থেকে ধরাধামে মা দুর্গার মর্ত্যে আগমন ঘটে তাঁর চার সন্তান—লক্ষ্মী, সরস্বতী, কার্তিক ও গণেশকে সঙ্গে নিয়ে।"
+      ],
+      englishContent: [
+        "Mahalaya marks the conclusion of Pitru Paksha and the auspicious dawn of Devi Paksha. On this sacred Amavasya, descendants offer Tarpan prayers to ancestors along holy riverbanks.",
+        "According to sacred mythology, on this auspicious occasion Maa Durga begins Her divine descent from Mount Kailash to earth accompanied by Her four divine children—Lakshmi, Saraswati, Kartik, and Ganesha."
       ]
     },
     {
@@ -206,6 +211,10 @@ export const MAHALAYA_ABOUT_DATA = {
       content: [
         "১৯৩১ সালের মহালয়ার ভোরে অল ইন্ডিয়া রেডিও (আকাশবাণী কলকাতা) থেকে প্রথম সরাসরি সম্প্রচারিত হয়েছিল 'মহিষাসুরমর্দিনী'।",
         "পঙ্কজ কুমার মল্লিকের অমর সুরারোপ, বাণীকুমার রচিত কাব্য ও বীরেন্দ্রকৃষ্ণ ভদ্রের বজ্রকণ্ঠের স্তোত্রপাঠ আজ ৯৫ বছর ধরে কোটি কোটি বাঙালির হৃদয় আলোড়িত করে চলেছে।"
+      ],
+      englishContent: [
+        "First broadcast live at dawn in 1931 from All India Radio (Akashvani Kolkata), 'Mahishasura Mardini' has become an immortal cultural institution.",
+        "With Pankaj Kumar Mullick's timeless orchestration, Bani Kumar's sublime poetry, and Birendra Krishna Bhadra's thunderous Sanskrit chanting, it has stirred millions of hearts across generations for over 95 years."
       ]
     },
     {
@@ -216,6 +225,10 @@ export const MAHALAYA_ABOUT_DATA = {
       content: [
         "শ্রীশ্রীচণ্ডীর কাহিনী অনুযায়ী, মহিষাসুরের অত্যাচারে স্বর্গচ্যুত দেবগণের তেজপুঞ্জ একত্রিত হয়ে সৃষ্টি হয়েছিল মহাশক্তি দশভুজা দেবী দুর্গা।",
         "দেবতারা তাঁদের দিব্য অস্ত্র দিয়ে দেবীকে সজ্জিত করেছিলেন। দেবী অশুভ শক্তি মহিষাসুরকে বধ করে বিশ্বব্রহ্মাণ্ডে শান্তি ও ধর্মের পুনঃপ্রতিষ্ঠা করেছিলেন।"
+      ],
+      englishContent: [
+        "According to the Devi Mahatmya in Sri Sri Chandi, when the demon Mahishasura drove the Devas out of the heavens, the radiant energy of the gods united to manifest the supreme ten-armed Goddess Durga.",
+        "The deities adorned Her with their celestial divine weapons. Devi vanquished the tyrannical Mahishasura and restored righteousness, light, and peace throughout the cosmos."
       ]
     },
     {
@@ -226,6 +239,10 @@ export const MAHALAYA_ABOUT_DATA = {
       content: [
         "শরতের ভোরে কুয়াশামাখা শিউলি ফুলের গন্ধ, রেডিওর মৃদু গর্জন আর 'যা দেবী সর্বভূতেষু' স্তোত্রধ্বনি বাঙালিকে মনে করিয়ে দেয়—পুজো এসে গেছে!",
         "এই সুর শুধু সঙ্গীত নয়, এটি শিকড়ের টান, আনন্দাশ্রু আর মায়ের আগমন বার্তা।"
+      ],
+      englishContent: [
+        "The crisp autumn morning mist fragrant with night-flowering Shiuli blossoms, the warm crackle of old radios at 4 AM, and the resonant 'Ya Devi Sarva Bhuteshu' shlokas proclaim that Durga Puja has arrived!",
+        "This melody is far more than music—it is the primal call of cultural heritage, tears of divine joy, and the eternal celebration of homecoming."
       ]
     }
   ]

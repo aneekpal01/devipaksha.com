@@ -2,8 +2,11 @@ import React from 'react';
 import { X, BookOpen, Radio, Sparkles, Volume2 } from 'lucide-react';
 import { MAHALAYA_ABOUT_DATA } from '../data/pujoData';
 import { playShankha } from '../utils/audioEngine';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function MahalayaAboutModal({ isOpen, onClose, onPlayMahalaya }) {
+  const { lang, t } = useLanguage();
+
   if (!isOpen) return null;
 
   return (
@@ -13,7 +16,7 @@ export default function MahalayaAboutModal({ isOpen, onClose, onPlayMahalaya }) 
         <button
           onClick={onClose}
           className="absolute top-4 right-4 sm:top-5 sm:right-5 z-20 p-2 rounded-full liquid-glass-btn text-[#fdf3e2] hover:bg-white/20 cursor-pointer"
-          title="Close"
+          title={t('closeBtn')}
         >
           <X className="w-5 h-5" />
         </button>
@@ -26,10 +29,10 @@ export default function MahalayaAboutModal({ isOpen, onClose, onPlayMahalaya }) 
             </div>
             <div className="min-w-0">
               <h2 className="font-bengali-title text-lg sm:text-2xl font-bold text-[#ffd873] px-1 leading-snug">
-                {MAHALAYA_ABOUT_DATA.title}
+                {lang === 'bn' ? MAHALAYA_ABOUT_DATA.title : MAHALAYA_ABOUT_DATA.englishTitle}
               </h2>
               <p className="text-xs text-[#fdf3e2]/70 font-medium px-1">
-                {MAHALAYA_ABOUT_DATA.englishTitle}
+                {lang === 'bn' ? MAHALAYA_ABOUT_DATA.englishTitle : 'Sacred Lore, Chandi Path & Cultural Heritage'}
               </p>
             </div>
           </div>
@@ -42,16 +45,16 @@ export default function MahalayaAboutModal({ isOpen, onClose, onPlayMahalaya }) 
             className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-[#ffd873] hover:bg-[#ffe18d] text-black font-bold text-xs shadow-lg transition-all active:scale-95 cursor-pointer flex-shrink-0"
           >
             <Radio className="w-4 h-4 text-black" />
-            <span>Play Mahalaya</span>
+            <span>{t('playMahalayaBtn')}</span>
           </button>
         </div>
 
-        {/* Scrollable Content (Clean overflow-x-hidden with no white scrollbar artifacts) */}
+        {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto space-y-3 my-3 pr-1 text-[#fdf3e2] overflow-x-hidden">
           {/* Poetic Intro & Mobile Play Button */}
           <div className="p-3.5 rounded-2xl bg-white/5 border border-white/15 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <p className="font-bengali text-xs sm:text-sm leading-relaxed text-[#ffd873] italic">
-              "{MAHALAYA_ABOUT_DATA.intro}"
+              "{lang === 'bn' ? MAHALAYA_ABOUT_DATA.intro : MAHALAYA_ABOUT_DATA.englishIntro}"
             </p>
             <button
               onClick={() => {
@@ -61,70 +64,57 @@ export default function MahalayaAboutModal({ isOpen, onClose, onPlayMahalaya }) 
               className="sm:hidden flex items-center justify-center gap-1.5 w-full py-2 rounded-2xl bg-[#ffd873] text-black font-bold text-xs shadow-md cursor-pointer"
             >
               <Radio className="w-4 h-4 text-black" />
-              <span>Play Mahalaya</span>
+              <span>{t('playMahalayaBtn')}</span>
             </button>
           </div>
 
           {/* 2-Column Grid for Sections */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {MAHALAYA_ABOUT_DATA.sections.map((section) => (
-              <div
-                key={section.id}
-                className="p-4 rounded-2xl liquid-glass-btn border-white/10 hover:border-[#ffd873]/40 transition-colors flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <div>
-                      <h3 className="font-bengali font-bold text-sm sm:text-base text-[#ffd873]">
-                        {section.title}
-                      </h3>
-                      <div className="text-[10px] text-[#fdf3e2]/60 uppercase tracking-wider">
-                        {section.englishTitle}
+            {MAHALAYA_ABOUT_DATA.sections.map((section) => {
+              const headingText = lang === 'bn' ? section.heading : section.englishHeading;
+              const subText = lang === 'bn' ? section.englishHeading : section.heading;
+              const contentParagraphs = lang === 'bn' ? section.content : section.englishContent || section.content;
+
+              return (
+                <div
+                  key={section.id}
+                  className="p-4 rounded-2xl liquid-glass-btn border-white/10 hover:border-[#ffd873]/40 transition-colors flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-xl flex-shrink-0">{section.icon}</span>
+                      <div>
+                        <h3 className="font-bengali font-bold text-sm sm:text-base text-[#ffd873]">
+                          {headingText}
+                        </h3>
+                        <div className="text-[10px] text-[#fdf3e2]/60 uppercase tracking-wider">
+                          {subText}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {section.content && (
-                    <p className="font-bengali text-xs sm:text-sm text-[#fdf3e2]/85 leading-relaxed">
-                      {section.content}
-                    </p>
-                  )}
+                    <div className="space-y-2">
+                      {contentParagraphs.map((para, pIdx) => (
+                        <p key={pIdx} className="font-bengali text-xs sm:text-sm text-[#fdf3e2]/85 leading-relaxed">
+                          {para}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-
-                {/* Sacred Sanskrit Sloka */}
-                {section.sanskrit && (
-                  <div className="mt-2.5 p-3 rounded-2xl bg-black/40 border border-[#e8b64b]/30">
-                    <div className="font-bengali text-xs font-semibold text-[#ffd873] whitespace-pre-line leading-relaxed">
-                      {section.sanskrit}
-                    </div>
-                    <div className="mt-1.5 pt-1.5 border-t border-white/10 text-[11px] font-bengali text-[#fdf3e2]/75">
-                      <span className="text-[#ffd873] font-bold">বঙ্গানুবাদ: </span>
-                      {section.meaning}
-                    </div>
-                    <div className="mt-2 flex justify-end">
-                      <button
-                        onClick={() => playShankha()}
-                        className="flex items-center gap-1.5 px-3 py-1 rounded-xl liquid-glass-btn text-[11px] text-[#ffd873] font-bold cursor-pointer"
-                      >
-                        <Volume2 className="w-3.5 h-3.5" />
-                        <span>শঙ্খধ্বনি বাজান</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
         {/* Footer */}
         <div className="pt-2.5 border-t border-white/10 flex items-center justify-between text-xs text-[#fdf3e2]/70">
-          <span>দেবীপক্ষ ও দুর্গাপূজা ২০২৬ কথা</span>
+          <span>{t('mahalayaFooter')}</span>
           <button
             onClick={onClose}
             className="px-5 py-1.5 rounded-full liquid-glass-btn text-[#ffd873] font-bold text-xs shadow-md cursor-pointer"
           >
-            Close
+            {t('closeBtn')}
           </button>
         </div>
       </div>

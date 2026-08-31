@@ -6,7 +6,7 @@ export const translations = {
     deviPakshaExplorer: 'দেবীপক্ষ এক্সপ্লোরার',
     featuresCount: '৬টি ফিচার',
     footerFestival: 'দেবীপক্ষ (Devi Paksha) • শারদীয় উৎসব',
-    
+
     // 6 Features Dropdown
     feature_anjali_title: 'ভার্চুয়াল পুষ্পাঞ্জলি',
     feature_anjali_desc: 'মায়ের চরণে ফুল নিবেদন ও মন্ত্র পাঠ',
@@ -34,8 +34,7 @@ export const translations = {
     playlist: 'প্লেলিস্ট',
     allSongs: 'সব গান',
 
-    // Modals
-    // Virtual Anjali
+    // Virtual Anjali Modal
     anjaliTitle: 'ভার্চুয়াল পুষ্পাঞ্জলি',
     anjaliSubtitle: 'মায়ের চরণে ভক্তিভরে ফুল ও বেলপাতা নিবেদন করুন',
     anjaliCountText: 'ভক্ত অঞ্জলি দিয়েছেন',
@@ -51,7 +50,7 @@ export const translations = {
     anjaliCompleted: 'পুষ্পাঞ্জলি সম্পন্ন হয়েছে 🙏',
     anjaliSuccessMessage: 'আপনার পুষ্পাঞ্জলি ও প্রণতি সম্পন্ন হয়েছে। মা দুর্গার আশীর্বাদ আপনার ও আপনার পরিবারের উপর সদাসর্বদা বর্ষিত হোক! 🌸🙏',
 
-    // Live Adda
+    // Live Adda Modal
     addaTitle: 'লাইভ পুজোর আড্ডা',
     addaSubtitle: 'শারদীয় স্মৃতি ও আড্ডা',
     yourName: 'আপনার নাম:',
@@ -59,6 +58,45 @@ export const translations = {
     saveBtn: 'সেভ করুন',
     typeMessagePlaceholder: 'পুজোর বার্তা বা স্মৃতি লিখুন...',
     sendAsPlaceholder: 'হিসেবে বার্তা লিখুন...',
+
+    // Pandal Guide Modal
+    pandalGuideTitle: 'সেরা পুজো পরিক্রমা',
+    pandalGuideSubtitle: 'কলকাতার বিখ্যাত মণ্ডপ, নিকটতম মেট্রো রুট ও গুগল ম্যাপস',
+    pandalCountSuffix: 'টি মণ্ডপ',
+    zoneAll: 'সব (All • ৩২টি)',
+    zoneNorth: 'উত্তর ও মধ্য (North • ১১টি)',
+    zoneSouth: 'দক্ষিণ কলকাতা (South • ১৬টি)',
+    zoneEast: 'সল্টলেক ও ভিআইপি (East • ৫টি)',
+    searchPandalPlaceholder: 'প্যান্ডেলের নাম, মেট্রো স্টেশন বা থিম খুঁজুন...',
+    viewMap: 'ম্যাপ দেখুন',
+    pandalFooter: 'শারদীয় শুভ পরিক্রমা • Kolkata Police Helpline: 100 / 112',
+    noPandalsFound: 'কোনো মণ্ডপ পাওয়া যায়নি:',
+
+    // Greeting Card Modal
+    greetingTitle: 'শারদ শুভেচ্ছা কার্ড তৈরি করুন',
+    greetingSubtitle: 'Create & Share Beautiful Customized Durga Puja Wishes',
+    receiverLabel: 'প্রাপকের নাম (TO):',
+    receiverPlaceholder: 'যেমন: অনন্যা / প্রিয় বন্ধু...',
+    senderLabel: 'আপনার নাম (FROM):',
+    senderPlaceholder: 'আপনার নাম...',
+    chooseWishLabel: 'শুভেচ্ছা বার্তা বেছে নিন:',
+    previewCardHeader: 'শুভ শারদীয়া ও শুভ দুর্গোৎসব',
+    wishesFrom: '— শুভেচ্ছা সহ:',
+    defaultSender: 'আপনার প্রিয়জন',
+    copySiteLink: 'Copy Site Link',
+    copied: 'Copied! ✨',
+    shareOnWhatsApp: 'Share on WhatsApp',
+    closeBtn: 'Close',
+    greetingMsg1: 'দেবীপক্ষের পুণ্য লগ্নে আপনার ও আপনার পরিবারের সকলের জীবন আনন্দ, শান্তি ও সমৃদ্ধিতে ভরে উঠুক। শুভ দুর্গোৎসব ও শুভ শারদীয়া!',
+    greetingMsg2: 'কাশের বনে দোলা দিয়ে মা আসছেন ঘরে, ঢাকের কাঠি বাজলো বলে সুর উঠেছে দূরে। আপনাকে ও আপনার পরিবারকে শারদীয় দুর্গোৎসবের প্রীতি ও শুভেচ্ছা!',
+    greetingMsg3: 'আসছে বছর আবার হবে! দেবী দুর্গার আশীর্বাদে প্রতিটি দিন ভরে উঠুক আলো আর আনন্দে। শুভ শারদীয়া!',
+
+    // Mahalaya About Modal
+    mahalayaHistoryTitle: 'মহালয়া ও দেবীপক্ষের ইতিহাস',
+    mahalayaHistorySubtitle: 'The Sacred History of Mahalaya, Chandi Path & Devi Paksha',
+    playMahalayaBtn: 'Play Mahalaya',
+    mahalayaIntroText: 'আশ্বিনের শারদপ্রাতে বেজে উঠেছে আলোক মঞ্জীর... মহিষাসুরমর্দিনী কেবল একটি বেতার অনুষ্ঠান নয়, সমগ্র বাঙালি জাতির আত্মিক উৎসবের সূচনা।',
+    mahalayaFooter: 'দেবীপক্ষ ও দুর্গাপূজা ২০২৬ কথা',
 
     // Creator & Chai
     madeWithLove: 'MADE WITH BHALOBASHA BY',
@@ -102,8 +140,7 @@ export const translations = {
     playlist: 'Playlist',
     allSongs: 'All Songs',
 
-    // Modals
-    // Virtual Anjali
+    // Virtual Anjali Modal
     anjaliTitle: 'Virtual Pushpanjali',
     anjaliSubtitle: 'Offer sacred flowers and prayers at the lotus feet of Maa Durga',
     anjaliCountText: 'devotees offered Anjali',
@@ -119,7 +156,7 @@ export const translations = {
     anjaliCompleted: 'Pushpanjali Completed 🙏',
     anjaliSuccessMessage: 'Your Pushpanjali & prayers have been offered. May Maa Durga bestow divine health, prosperity & happiness upon you and your family! 🌸🙏',
 
-    // Live Adda
+    // Live Adda Modal
     addaTitle: 'Live Pujo Adda',
     addaSubtitle: 'Festive Memories & Community Chat',
     yourName: 'Your Name:',
@@ -127,6 +164,45 @@ export const translations = {
     saveBtn: 'Save Name',
     typeMessagePlaceholder: 'Write a festive memory or message...',
     sendAsPlaceholder: 'Send message as',
+
+    // Pandal Guide Modal
+    pandalGuideTitle: 'Kolkata Pandal Guide',
+    pandalGuideSubtitle: '32 Famous Pandals, Nearest Metro Routes & Google Maps',
+    pandalCountSuffix: 'Pandals',
+    zoneAll: 'All (32 Pandals)',
+    zoneNorth: 'North & Central (11)',
+    zoneSouth: 'South Kolkata (16)',
+    zoneEast: 'Salt Lake & VIP (5)',
+    searchPandalPlaceholder: 'Search by pandal name, metro station or theme...',
+    viewMap: 'View Map',
+    pandalFooter: 'Sharodiyo Parikrama • Kolkata Police Helpline: 100 / 112',
+    noPandalsFound: 'No pandals found matching:',
+
+    // Greeting Card Modal
+    greetingTitle: 'Create Sharodiyo Greeting Card',
+    greetingSubtitle: 'Create & Share Beautiful Customized Durga Puja Wishes',
+    receiverLabel: 'RECIPIENT NAME (TO):',
+    receiverPlaceholder: 'e.g. Ananya / Dear Friend...',
+    senderLabel: 'YOUR NAME (FROM):',
+    senderPlaceholder: 'Your Name...',
+    chooseWishLabel: 'Choose Greeting Message:',
+    previewCardHeader: 'Shubho Sharodiya & Durga Puja Wishes',
+    wishesFrom: '— Warm Wishes From:',
+    defaultSender: 'Your Loved One',
+    copySiteLink: 'Copy Site Link',
+    copied: 'Copied! ✨',
+    shareOnWhatsApp: 'Share on WhatsApp',
+    closeBtn: 'Close',
+    greetingMsg1: 'May the divine blessings of Maa Durga fill your life and family with boundless joy, peace, prosperity, and happiness. Shubho Sharodiya & Shubho Durgotsav!',
+    greetingMsg2: 'With the whisper of Kash flowers and the rhythm of Dhak beats, Maa Durga is arriving. Wishing you and your loved ones a blessed Durga Puja!',
+    greetingMsg3: 'May Maa Durga illuminate your path with divine grace, happiness, and success throughout the year. Shubho Sharodiya!',
+
+    // Mahalaya About Modal
+    mahalayaHistoryTitle: 'History of Mahalaya & Devi Paksha',
+    mahalayaHistorySubtitle: 'The Sacred History of Mahalaya, Chandi Path & Devi Paksha',
+    playMahalayaBtn: 'Play Mahalaya',
+    mahalayaIntroText: 'On an autumn dawn of Ashwin, the divine resonance begins... Mahishasura Mardini is not just a broadcast, it is the spiritual soul of Bengal\'s greatest festival.',
+    mahalayaFooter: 'Devi Paksha & Durga Puja 2026 Lore',
 
     // Creator & Chai
     madeWithLove: 'MADE WITH LOVE BY',

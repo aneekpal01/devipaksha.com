@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { X, MapPin, Navigation, Search, Train, Sparkles, ExternalLink } from 'lucide-react';
 import { KOLKATA_PANDALS, PANDAL_ZONES } from '../data/pandalData';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function PandalGuideModal({ isOpen, onClose }) {
   const [activeZone, setActiveZone] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const { lang, t } = useLanguage();
 
   if (!isOpen) return null;
 
@@ -22,6 +24,14 @@ export default function PandalGuideModal({ isOpen, onClose }) {
 
     return matchesZone && matchesSearch;
   });
+
+  const getZoneLabel = (zoneKey) => {
+    if (zoneKey === 'all') return t('zoneAll');
+    if (zoneKey === 'north') return t('zoneNorth');
+    if (zoneKey === 'south') return t('zoneSouth');
+    if (zoneKey === 'east') return t('zoneEast');
+    return zoneKey;
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/85 backdrop-blur-2xl animate-fadeIn select-none overflow-hidden">
@@ -46,14 +56,14 @@ export default function PandalGuideModal({ isOpen, onClose }) {
             <div className="min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="font-bengali-title text-base sm:text-xl font-bold text-[#ffd873] tracking-wide">
-                  সেরা পুজো পরিক্রমা
+                  {t('pandalGuideTitle')}
                 </h1>
                 <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-emerald-500/25 text-emerald-300 border border-emerald-500/40 font-bold flex-shrink-0">
-                  {KOLKATA_PANDALS.length}টি মণ্ডপ
+                  {KOLKATA_PANDALS.length} {t('pandalCountSuffix')}
                 </span>
               </div>
               <p className="text-[10px] sm:text-xs text-[#fdf3e2]/65 font-medium leading-tight">
-                কলকাতার বিখ্যাত মণ্ডপ, নিকটতম মেট্রো রুট ও গুগল ম্যাপস
+                {t('pandalGuideSubtitle')}
               </p>
             </div>
           </div>
@@ -74,7 +84,7 @@ export default function PandalGuideModal({ isOpen, onClose }) {
                     : 'border-white/10 hover:border-white/20 text-[#fdf3e2]/70 bg-white/5'
                 }`}
               >
-                {zone.name}
+                {getZoneLabel(zone.key)}
               </button>
             ))}
           </div>
@@ -84,7 +94,7 @@ export default function PandalGuideModal({ isOpen, onClose }) {
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
             <input
               type="text"
-              placeholder="প্যান্ডেলের নাম, মেট্রো স্টেশন বা থিম খুঁজুন..."
+              placeholder={t('searchPandalPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-9 pr-4 py-2 rounded-2xl bg-white/5 border border-white/15 text-xs sm:text-sm text-[#fdf3e2] placeholder-[#fdf3e2]/40 outline-none focus:border-[#ffd873] focus:bg-white/10 transition-all shadow-inner"
@@ -92,11 +102,11 @@ export default function PandalGuideModal({ isOpen, onClose }) {
           </div>
         </div>
 
-        {/* 3. 2-Column Responsive Pandal Grid (Full Title Visibility, Zero Box Clipping) */}
+        {/* 3. 2-Column Responsive Pandal Grid */}
         <div className="flex-1 overflow-y-auto px-1.5 py-1 space-y-3 overflow-x-hidden w-full box-border">
           {filteredPandals.length === 0 ? (
             <div className="py-16 text-center text-sm text-[#fdf3e2]/60">
-              No pandals found matching "{searchQuery}"
+              {t('noPandalsFound')} "{searchQuery}"
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -145,7 +155,7 @@ export default function PandalGuideModal({ isOpen, onClose }) {
                       className="px-3 py-1.5 rounded-xl bg-[#ffd873] hover:bg-[#ffe59e] text-black font-bold text-[11px] flex items-center gap-1 shadow-md transition-all active:scale-95 flex-shrink-0 cursor-pointer ml-auto"
                     >
                       <Navigation className="w-3 h-3 fill-black" />
-                      <span>ম্যাপ দেখুন</span>
+                      <span>{t('viewMap')}</span>
                       <ExternalLink className="w-2.5 h-2.5 opacity-60 ml-0.5" />
                     </a>
                   </div>
@@ -157,7 +167,7 @@ export default function PandalGuideModal({ isOpen, onClose }) {
 
         {/* 4. Bottom Footer Info */}
         <div className="pt-2 border-t border-white/10 text-center text-[10px] text-[#fdf3e2]/50 font-bengali">
-          শারদীয় শুভ পরিক্রমা • Kolkata Police Helpline: 100 / 112
+          {t('pandalFooter')}
         </div>
       </div>
     </div>

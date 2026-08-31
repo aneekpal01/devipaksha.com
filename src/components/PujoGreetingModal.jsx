@@ -1,25 +1,32 @@
-import React, { useState } from 'react';
-import { X, Send, Share2, Download, Sparkles, Copy, Check, Heart } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Share2, Sparkles, Copy, Check } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function PujoGreetingModal({ isOpen, onClose }) {
+  const { lang, t } = useLanguage();
   const [senderName, setSenderName] = useState('');
   const [receiverName, setReceiverName] = useState('');
-  const [selectedMessage, setSelectedMessage] = useState(
-    'দেবীপক্ষের পুণ্য লগ্নে আপনার ও আপনার পরিবারের সকলের জীবন আনন্দ, শান্তি ও সমৃদ্ধিতে ভরে উঠুক। শুভ দুর্গোৎসব ও শুভ শারদীয়া!'
-  );
+  const [selectedMessage, setSelectedMessage] = useState(() => t('greetingMsg1'));
   const [isCopied, setIsCopied] = useState(false);
+
+  // Sync selected message when language switches
+  useEffect(() => {
+    setSelectedMessage(t('greetingMsg1'));
+  }, [lang]);
 
   if (!isOpen) return null;
 
   const messages = [
-    'দেবীপক্ষের পুণ্য লগ্নে আপনার ও আপনার পরিবারের সকলের জীবন আনন্দ, শান্তি ও সমৃদ্ধিতে ভরে উঠুক। শুভ দুর্গোৎসব ও শুভ শারদীয়া!',
-    'কাশের বনে দোলা দিয়ে মা আসছেন ঘরে, ঢাকের কাঠি বাজলো বলে সুর উঠেছে দূরে। আপনাকে ও আপনার পরিবারকে শারদীয় দুর্গোৎসবের প্রীতি ও শুভেচ্ছা!',
-    'আসছে বছর আবার হবে! দেবী দুর্গার আশীর্বাদে প্রতিটি দিন ভরে উঠুক আলো আর আনন্দে। শুভ শারদীয়া!'
+    t('greetingMsg1'),
+    t('greetingMsg2'),
+    t('greetingMsg3')
   ];
 
   const handleShareWhatsApp = () => {
-    const fullText = `🪔 *শুভ শারদীয়া ও শুভ দুর্গোৎসব* 🪔\n\n${receiverName ? `প্রিয় ${receiverName},\n` : ''}${selectedMessage}\n\n— শুভেচ্ছা সহ: *${senderName || 'আপনার প্রিয়জন'}*\n\n✨ পুজো আসছে ও মহালয়া গান শুনুন: ${window.location.href}`;
+    const greetingHeader = lang === 'bn' ? '🪔 *শুভ শারদীয়া ও শুভ দুর্গোৎসব* 🪔' : '🪔 *Shubho Sharodiya & Durga Puja Wishes* 🪔';
+    const dearPrefix = lang === 'bn' ? 'প্রিয় ' : 'Dear ';
+    const fullText = `${greetingHeader}\n\n${receiverName ? `${dearPrefix}${receiverName},\n` : ''}${selectedMessage}\n\n${t('wishesFrom')} *${senderName || t('defaultSender')}*\n\n✨ ${window.location.href}`;
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(fullText)}`;
     window.open(whatsappUrl, '_blank');
 
@@ -32,7 +39,7 @@ export default function PujoGreetingModal({ isOpen, onClose }) {
   };
 
   const handleCopyLink = () => {
-    const fullText = `🪔 শুভ শারদীয়া — দেবীপক্ষ: ${window.location.href}`;
+    const fullText = `🪔 ${t('previewCardHeader')} — Devi Paksha: ${window.location.href}`;
     navigator.clipboard.writeText(fullText).then(() => {
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
@@ -46,7 +53,7 @@ export default function PujoGreetingModal({ isOpen, onClose }) {
         <button
           onClick={onClose}
           className="absolute top-4 right-4 sm:top-5 sm:right-5 z-20 p-2 rounded-full liquid-glass-btn text-[#fdf3e2] hover:bg-white/20 cursor-pointer"
-          title="Close"
+          title={t('closeBtn')}
         >
           <X className="w-5 h-5" />
         </button>
@@ -59,10 +66,10 @@ export default function PujoGreetingModal({ isOpen, onClose }) {
             </div>
             <div className="min-w-0">
               <h2 className="font-bengali-title text-lg sm:text-2xl font-bold text-[#ffd873] px-1 leading-snug">
-                শারদ শুভেচ্ছা কার্ড তৈরি করুন
+                {t('greetingTitle')}
               </h2>
               <p className="text-xs text-[#fdf3e2]/70 font-medium px-1">
-                Create & Share Beautiful Customized Durga Puja Wishes
+                {t('greetingSubtitle')}
               </p>
             </div>
           </div>
@@ -75,11 +82,11 @@ export default function PujoGreetingModal({ isOpen, onClose }) {
             <div className="grid grid-cols-2 gap-2">
               <div>
                 <label className="text-[11px] font-bold uppercase tracking-wider text-[#ffd873] block mb-1">
-                  প্রাপকের নাম (To):
+                  {t('receiverLabel')}
                 </label>
                 <input
                   type="text"
-                  placeholder="যেমন: অনন্যা / বন্ধু..."
+                  placeholder={t('receiverPlaceholder')}
                   value={receiverName}
                   onChange={(e) => setReceiverName(e.target.value)}
                   className="w-full px-3 py-2 rounded-2xl bg-white/5 border border-white/15 text-xs text-[#fdf3e2] placeholder-[#fdf3e2]/40 outline-none focus:border-[#ffd873]"
@@ -88,11 +95,11 @@ export default function PujoGreetingModal({ isOpen, onClose }) {
 
               <div>
                 <label className="text-[11px] font-bold uppercase tracking-wider text-[#ffd873] block mb-1">
-                  আপনার নাম (From):
+                  {t('senderLabel')}
                 </label>
                 <input
                   type="text"
-                  placeholder="আপনার নাম..."
+                  placeholder={t('senderPlaceholder')}
                   value={senderName}
                   onChange={(e) => setSenderName(e.target.value)}
                   className="w-full px-3 py-2 rounded-2xl bg-white/5 border border-white/15 text-xs text-[#fdf3e2] placeholder-[#fdf3e2]/40 outline-none focus:border-[#ffd873]"
@@ -102,7 +109,7 @@ export default function PujoGreetingModal({ isOpen, onClose }) {
 
             <div>
               <label className="text-[11px] font-bold uppercase tracking-wider text-[#ffd873] block mb-1.5">
-                শুভেচ্ছা বার্তা বেছে নিন:
+                {t('chooseWishLabel')}
               </label>
               <div className="space-y-2">
                 {messages.map((msg, idx) => (
@@ -128,11 +135,11 @@ export default function PujoGreetingModal({ isOpen, onClose }) {
             <div className="text-3xl mb-2">🪔</div>
             <div>
               <div className="font-bengali-title text-xl font-bold text-[#ffd873] mb-1">
-                শুভ শারদীয়া ও শুভ দুর্গোৎসব
+                {t('previewCardHeader')}
               </div>
               {receiverName && (
                 <div className="font-bengali text-sm text-[#ffd873]/90 font-bold mb-2">
-                  প্রিয় {receiverName},
+                  {lang === 'bn' ? `প্রিয় ${receiverName},` : `Dear ${receiverName},`}
                 </div>
               )}
               <p className="font-bengali text-xs sm:text-sm text-[#fdf3e2] leading-relaxed italic px-2">
@@ -141,7 +148,7 @@ export default function PujoGreetingModal({ isOpen, onClose }) {
             </div>
 
             <div className="mt-4 pt-3 border-t border-white/10 text-xs text-[#ffd873] font-bold">
-              — শুভেচ্ছা সহ: {senderName || 'আপনার প্রিয়জন'}
+              {t('wishesFrom')} {senderName || t('defaultSender')}
             </div>
           </div>
         </div>
@@ -153,7 +160,7 @@ export default function PujoGreetingModal({ isOpen, onClose }) {
             className="flex items-center gap-1.5 px-4 py-2 rounded-2xl liquid-glass-btn text-xs text-[#fdf3e2] font-bold cursor-pointer"
           >
             {isCopied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-            <span>{isCopied ? 'Link Copied!' : 'Copy Site Link'}</span>
+            <span>{isCopied ? t('copied') : t('copySiteLink')}</span>
           </button>
 
           <div className="flex items-center gap-2">
@@ -162,14 +169,14 @@ export default function PujoGreetingModal({ isOpen, onClose }) {
               className="flex items-center gap-1.5 px-5 py-2 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg transition-transform active:scale-95 cursor-pointer"
             >
               <Share2 className="w-4 h-4" />
-              <span>Share on WhatsApp</span>
+              <span>{t('shareOnWhatsApp')}</span>
             </button>
 
             <button
               onClick={onClose}
               className="px-5 py-2 rounded-2xl liquid-glass-btn text-[#ffd873] font-bold text-xs shadow-md cursor-pointer"
             >
-              Close
+              {t('closeBtn')}
             </button>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Sparkles, Award, Flower2 } from 'lucide-react';
+import { X, Sparkles, Award, Flower2, CheckCircle2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 const FLOWERS = [
@@ -35,19 +35,22 @@ const FLOWERS = [
 
 const MANTRAS = [
   {
-    phase: 'প্রথম অঞ্জলি (1ST ANJALI MANTRA)',
+    step: 1,
+    phase: '১ম অঞ্জলি (1ST ANJALI MANTRA)',
     sanskrit: 'ওঁ মহিষঘ্নি মহামায়ে চামুণ্ডে মুণ্ডমালিনী। আয়ুরারোগ্য বিজয়ং দেহি দেবি নমোঽস্তুতে॥',
     phonetic: 'Om Mahishaghni Mahamaye Chamunde Mundamalini / Ayurarogyam Vijayang Dehi Devi Namostute',
     meaning: 'হে মহিষাসুরমর্দিনী, হে মহামায়া, তুমি আমাদের দীর্ঘায়ু, আরোগ্য ও বিজয় দান করো।'
   },
   {
-    phase: 'দ্বিতীয় অঞ্জলি (2ND ANJALI MANTRA)',
+    step: 2,
+    phase: '২য় অঞ্জলি (2ND ANJALI MANTRA)',
     sanskrit: 'ওঁ সর্বমঙ্গল মঙ্গল্যে শিবে সর্বার্থ সাধিকে। শরণ্যে ত্র্যম্বকে গৌরি নারায়ণি নমোঽস্তুতে॥',
     phonetic: 'Om Sarva Mangala Mangalye Shive Sarvartha Sadhike / Sharanye Tryambake Gauri Narayani Namostute',
     meaning: 'হে সর্বমঙ্গলা, সর্বার্থসাধিকা, শরণদাত্রী গৌরী নারায়ণী, তোমাকে প্রণাম জানাই।'
   },
   {
-    phase: 'প্রণাম মন্ত্র (FINAL PRANAM MANTRA)',
+    step: 3,
+    phase: '৩য় অঞ্জলি ও প্রণাম মন্ত্র (FINAL PRANAM MANTRA)',
     sanskrit: 'ওঁ জয়ন্তী মঙ্গলা কালী ভদ্রকালী কপালিনী। দুর্গা শিবা ক্ষমা ধাত্রী স্বাহা স্বধা নমোঽস্তুতে॥',
     phonetic: 'Om Jayanti Mangala Kali Bhadrakali Kapalini / Durga Shiva Kshama Dhatri Swaha Swadha Namostute',
     meaning: 'হে জয়দাত্রী, মঙ্গলা, দুর্গা, ধাত্রী — হে জগন্মাতা, তোমার চরণে ভক্তিপূর্ণ প্রণাম।'
@@ -58,15 +61,21 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
   const [selectedFlower, setSelectedFlower] = useState(FLOWERS[0]);
   const [currentMantraIdx, setCurrentMantraIdx] = useState(0);
   const [isOffering, setIsOffering] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(() => {
+    return localStorage.getItem('pujo_anjali_completed_forever') === 'true';
+  });
   const [anjaliCount, setAnjaliCount] = useState(() => {
     const saved = localStorage.getItem('pujo_anjali_count');
     return saved ? parseInt(saved, 10) : 1293;
   });
-  const [hasOffered, setHasOffered] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
-      setHasOffered(false);
+      const completed = localStorage.getItem('pujo_anjali_completed_forever') === 'true';
+      setIsCompleted(completed);
+      if (completed) {
+        setCurrentMantraIdx(2);
+      }
     }
   }, [isOpen]);
 
@@ -75,7 +84,7 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
   const currentMantra = MANTRAS[currentMantraIdx];
 
   const handleOfferPushpanjali = () => {
-    if (isOffering) return;
+    if (isOffering || isCompleted) return;
     setIsOffering(true);
 
     // Dynamic Flower Petal Particle Explosion (Silent - No Sound)
@@ -109,10 +118,15 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
     const newCount = anjaliCount + 1;
     setAnjaliCount(newCount);
     localStorage.setItem('pujo_anjali_count', newCount.toString());
-    setHasOffered(true);
 
-    // Cycle to next mantra on subsequent Anjalis
-    setCurrentMantraIdx((prev) => (prev + 1) % MANTRAS.length);
+    // If user gives 3rd & final Anjali (step 3), permanently complete
+    if (currentMantraIdx >= 2) {
+      setIsCompleted(true);
+      localStorage.setItem('pujo_anjali_completed_forever', 'true');
+    } else {
+      // Advance to next Anjali step (1 -> 2 -> 3)
+      setCurrentMantraIdx((prev) => prev + 1);
+    }
 
     setTimeout(() => {
       setIsOffering(false);
@@ -162,6 +176,29 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
 
         {/* 2. Scrollable Sacred Ritual Center Stage */}
         <div className="flex-1 overflow-y-auto px-1.5 py-2 space-y-3.5 overflow-x-hidden w-full box-border">
+          {/* Progress Steps (১ম অঞ্জলি -> ২য় অঞ্জলি -> প্রণাম) */}
+          <div className="flex items-center justify-center gap-2 text-xs font-bengali">
+            {MANTRAS.map((m, idx) => {
+              const isDone = isCompleted || idx < currentMantraIdx;
+              const isCurrent = !isCompleted && idx === currentMantraIdx;
+              return (
+                <div
+                  key={idx}
+                  className={`px-3 py-1 rounded-full border text-[11px] font-bold flex items-center gap-1 transition-all ${
+                    isDone
+                      ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
+                      : isCurrent
+                      ? 'bg-amber-400/25 border-[#ffd873] text-[#ffd873] shadow-md scale-105'
+                      : 'bg-white/5 border-white/10 text-white/40'
+                  }`}
+                >
+                  {isDone && <CheckCircle2 className="w-3 h-3 text-emerald-400" />}
+                  <span>{idx === 0 ? '১ম অঞ্জলি' : idx === 1 ? '২য় অঞ্জলি' : 'প্রণাম মন্ত্র'}</span>
+                </div>
+              );
+            })}
+          </div>
+
           {/* Enhanced Visually Powerful Sanskrit Mantra Card */}
           <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#2a1308]/90 via-[#180a04]/95 to-[#240c06]/90 border-2 border-[#ffd873]/45 shadow-[0_12px_32px_rgba(0,0,0,0.85),inset_0_1px_2px_rgba(255,216,115,0.4),0_0_24px_rgba(245,158,11,0.2)] relative overflow-hidden box-border">
             {/* Top Phase Header */}
@@ -204,9 +241,11 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
                 return (
                   <div
                     key={f.id}
-                    onClick={() => setSelectedFlower(f)}
-                    className={`p-3 rounded-2xl cursor-pointer transition-all border flex items-center gap-3 box-border ${
-                      isSelected
+                    onClick={() => !isCompleted && setSelectedFlower(f)}
+                    className={`p-3 rounded-2xl transition-all border flex items-center gap-3 box-border ${
+                      isCompleted ? 'opacity-60 cursor-default border-white/10 bg-white/5' : 'cursor-pointer'
+                    } ${
+                      isSelected && !isCompleted
                         ? 'liquid-glass-btn border-[#ffd873] bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-[#ffd873] shadow-lg'
                         : 'border-white/10 hover:border-white/20 bg-white/5 text-[#fdf3e2]/80 hover:bg-white/10'
                     }`}
@@ -228,13 +267,13 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
             </div>
           </div>
 
-          {/* Success Devotional Greeting Banner */}
-          {hasOffered && (
-            <div className="p-3 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 text-xs sm:text-sm flex items-center justify-between animate-fadeIn shadow-md">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-emerald-400" />
-                <span>মা দুর্গার আশীর্বাদ আপনার ও আপনার পরিবারের উপর সদাসর্বদা বর্ষিত হোক! 🌸🙏</span>
-              </div>
+          {/* Success Devotional Completion Banner */}
+          {isCompleted && (
+            <div className="p-3.5 rounded-2xl bg-emerald-950/50 border border-emerald-500/40 text-emerald-200 text-xs sm:text-sm flex items-center gap-2.5 animate-fadeIn shadow-lg">
+              <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+              <span className="leading-relaxed font-bengali">
+                আপনার পুষ্পাঞ্জলি ও প্রণতি সম্পন্ন হয়েছে। মা দুর্গার আশীর্বাদ আপনার ও আপনার পরিবারের উপর সদাসর্বদা বর্ষিত হোক! 🌸🙏
+              </span>
             </div>
           )}
         </div>
@@ -242,19 +281,38 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
         {/* 3. Bottom Action Bar */}
         <div className="pt-3 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 box-border">
           <div className="text-[11px] text-[#fdf3e2]/60 sm:block hidden font-bengali">
-            অর্ঘ্য নিবেদন করতে নিচের বোতামটি স্পর্শ করুন 🌺
+            {isCompleted
+              ? '✅ আপনার পুষ্পাঞ্জলি সম্পূর্ণ হয়েছে'
+              : `পর্যায় ${currentMantraIdx + 1}/৩: অর্ঘ্য নিবেদন করতে নিচের বোতামটি স্পর্শ করুন 🌺`}
           </div>
 
           <button
             type="button"
             onClick={handleOfferPushpanjali}
-            disabled={isOffering}
-            className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-black font-extrabold text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-xl transition-all active:scale-95 cursor-pointer disabled:opacity-75"
+            disabled={isOffering || isCompleted}
+            className={`w-full sm:w-auto px-6 py-3 rounded-2xl font-extrabold text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-xl transition-all ${
+              isCompleted
+                ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 opacity-90 cursor-default'
+                : 'bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-black active:scale-95 cursor-pointer disabled:opacity-75'
+            }`}
           >
-            <Flower2 className={`w-5 h-5 ${isOffering ? 'animate-spin' : 'animate-bounce'}`} />
-            <span>
-              {isOffering ? 'অঞ্জলি প্রদান হচ্ছে... 🌸' : `${selectedFlower.name.split(' ')[0]} দিয়ে অঞ্জলি দিন 🌺`}
-            </span>
+            {isCompleted ? (
+              <>
+                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                <span>পুষ্পাঞ্জলি সম্পন্ন হয়েছে 🙏</span>
+              </>
+            ) : (
+              <>
+                <Flower2 className={`w-5 h-5 ${isOffering ? 'animate-spin' : 'animate-bounce'}`} />
+                <span>
+                  {isOffering
+                    ? 'অঞ্জলি প্রদান হচ্ছে... 🌸'
+                    : currentMantraIdx === 2
+                    ? `${selectedFlower.name.split(' ')[0]} দিয়ে শেষ অঞ্জলি ও প্রণাম নিবেদন করুন 🌺`
+                    : `${selectedFlower.name.split(' ')[0]} দিয়ে ${currentMantraIdx === 0 ? '১ম' : '২য়'} অঞ্জলি দিন 🌺`}
+                </span>
+              </>
+            )}
           </button>
         </div>
       </div>

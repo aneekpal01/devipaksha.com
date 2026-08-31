@@ -56,7 +56,7 @@ export default function App() {
   };
 
   // 100% Real live presence and live community chat hook
-  const { onlineCount, messages, chaiCount, sendMessage, buyChai, tabSenderId } = useLivePresence();
+  const { onlineCount, messages, chaiCount, sendMessage, deleteMessage, buyChai, tabSenderId } = useLivePresence();
 
   // Modals state
   const [isDhakOpen, setIsDhakOpen] = useState(false);
@@ -237,6 +237,7 @@ export default function App() {
         onClose={() => setIsAddaOpen(false)}
         messages={messages}
         onSendMessage={sendMessage}
+        onDeleteMessage={deleteMessage}
         chaiCount={chaiCount}
         onBuyChai={buyChai}
         mySenderId={tabSenderId}

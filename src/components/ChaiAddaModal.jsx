@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, MessageCircle, Heart, Send, Check, CheckCheck, User, Sparkles, Edit3 } from 'lucide-react';
-import confetti from 'canvas-confetti';
+import { X, MessageCircle, Send, Check, CheckCheck, Trash2 } from 'lucide-react';
 
 export default function ChaiAddaModal({
   isOpen,
   onClose,
   messages = [],
-  chaiCount = 14,
   onSendMessage,
-  onBuyChai,
+  onDeleteMessage,
   tabSenderId,
   onlineCount = 1
 }) {
@@ -19,17 +17,11 @@ export default function ChaiAddaModal({
   // Tab-unique sender ID fallback
   const mySenderId = tabSenderId || sessionStorage.getItem('pujo_tab_sender_id') || 'tab_local';
 
-  // User Profile Name State (Tab-specific session storage with localStorage fallback)
+  // User Profile Name State (Once set, locked permanently)
   const [savedName, setSavedName] = useState(() => {
     return sessionStorage.getItem('pujo_tab_name') || localStorage.getItem('pujo_user_name') || '';
   });
   const [tempNameInput, setTempNameInput] = useState('');
-  const [isSettingName, setIsSettingName] = useState(false);
-
-  // 1-Time Chai Tap Lock
-  const [hasGivenChai, setHasGivenChai] = useState(() => {
-    return localStorage.getItem('pujo_chai_given') === 'true';
-  });
 
   useEffect(() => {
     const stored = sessionStorage.getItem('pujo_tab_name') || localStorage.getItem('pujo_user_name');
@@ -75,7 +67,6 @@ export default function ChaiAddaModal({
     sessionStorage.setItem('pujo_tab_name', clean);
     localStorage.setItem('pujo_user_name', clean);
     setSavedName(clean);
-    setIsSettingName(false);
   };
 
   const handleSendComment = async (e) => {
@@ -97,36 +88,20 @@ export default function ChaiAddaModal({
     setNewComment('');
     setIsSending(false);
 
-    confetti({
-      particleCount: 40,
-      spread: 60,
-      origin: { y: 0.7 },
-      colors: ['#ffd873', '#ff6b1a', '#10b981']
-    });
-
     setTimeout(() => scrollToBottom('smooth'), 60);
   };
 
-  const handleChaiClick = () => {
-    if (hasGivenChai) return; // Only 1 tap allowed!
-
-    if (onBuyChai) onBuyChai();
-    setHasGivenChai(true);
-    localStorage.setItem('pujo_chai_given', 'true');
-
-    confetti({
-      particleCount: 45,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#f59e0b', '#d97706', '#ffd873', '#ef4444']
-    });
+  const handleDelete = (messageId) => {
+    if (onDeleteMessage) {
+      onDeleteMessage(messageId);
+    }
   };
 
   const firstLetter = savedName ? savedName.trim().charAt(0).toUpperCase() : 'U';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/85 backdrop-blur-2xl animate-fadeIn select-none overflow-hidden">
-      {/* WhatsApp Web Style Dialog (max-w-3xl on PC with full vertical chat height) */}
+      {/* Web Style Dialog (max-w-3xl on PC with full vertical chat height) */}
       <div className="relative w-full max-w-3xl md:h-[86vh] h-full max-h-[90vh] rounded-[32px] sm:rounded-[36px] liquid-glass-card p-3.5 sm:p-5 shadow-2xl overflow-hidden flex flex-col justify-between border border-white/20 box-border">
         {/* Pinned Top-Right Close Button */}
         <button
@@ -137,7 +112,7 @@ export default function ChaiAddaModal({
           <X className="w-5 h-5" />
         </button>
 
-        {/* 1. WhatsApp Web Style Header */}
+        {/* 1. Header */}
         <div className="flex items-center justify-between pb-3 border-b border-white/10 pr-12 gap-3 min-w-0">
           <div className="flex items-center gap-3 min-w-0">
             <div className="p-2 sm:p-2.5 rounded-2xl bg-[#00a884]/20 text-[#00a884] shadow-md border border-[#00a884]/30 flex-shrink-0">
@@ -156,30 +131,16 @@ export default function ChaiAddaModal({
                 </span>
               </div>
               <p className="text-[10px] sm:text-xs text-[#fdf3e2]/65 font-medium px-1">
-                WhatsApp Community Chat • শারদীয় স্মৃতি ও আড্ডা
+                শারদীয় স্মৃতি ও আড্ডা
               </p>
             </div>
           </div>
-
-          {/* Chai 1-Time Button in Header for PC */}
-          <button
-            onClick={handleChaiClick}
-            disabled={hasGivenChai}
-            className={`hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl text-xs font-bold shadow-lg transition-all flex-shrink-0 cursor-pointer ${
-              hasGivenChai
-                ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 opacity-90 cursor-default'
-                : 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black active:scale-95'
-            }`}
-          >
-            <Heart className={`w-3.5 h-3.5 ${hasGivenChai ? 'fill-emerald-400 text-emerald-400' : 'fill-rose-900 text-rose-900'}`} />
-            <span>{hasGivenChai ? `চা দেওয়া হয়েছে ☕ (${chaiCount})` : `মাটির ভাঁড়ে চা ☕ (${chaiCount})`}</span>
-          </button>
         </div>
 
-        {/* 2. Top-Left Profile Identity Banner (Tab Name & Avatar with Edit Option) */}
+        {/* 2. Top Profile Identity Banner (User sets name ONCE, then permanently locked) */}
         <div className="my-2 p-2.5 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between shadow-inner gap-2 flex-wrap sm:flex-nowrap box-border">
           <div className="flex items-center gap-2.5 min-w-0">
-            {savedName && !isSettingName ? (
+            {savedName ? (
               <div className="flex items-center gap-2.5 min-w-0">
                 <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-500 to-orange-500 text-black font-extrabold text-xs flex items-center justify-center shadow-md border border-white/30 flex-shrink-0 font-mono">
                   {firstLetter}
@@ -191,16 +152,6 @@ export default function ChaiAddaModal({
                   <span className="text-[9px] text-emerald-300 bg-emerald-500/20 px-1.5 py-0.2 rounded-full border border-emerald-500/30 font-medium">
                     You
                   </span>
-                  <button
-                    onClick={() => {
-                      setTempNameInput(savedName);
-                      setIsSettingName(true);
-                    }}
-                    title="Change Name for this Tab"
-                    className="p-1 text-white/50 hover:text-[#ffd873] transition-colors cursor-pointer"
-                  >
-                    <Edit3 className="w-3 h-3" />
-                  </button>
                 </div>
               </div>
             ) : (
@@ -223,24 +174,9 @@ export default function ChaiAddaModal({
               </form>
             )}
           </div>
-
-          <div className="flex items-center gap-2 flex-shrink-0 ml-auto">
-            <button
-              onClick={handleChaiClick}
-              disabled={hasGivenChai}
-              className={`sm:hidden px-2.5 py-1 rounded-xl text-[10px] font-bold flex items-center gap-1 shadow-md ${
-                hasGivenChai
-                  ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/40'
-                  : 'bg-amber-500 text-black'
-              }`}
-            >
-              <Heart className="w-3 h-3 fill-current" />
-              <span>{hasGivenChai ? `চা দেওয়া হয়েছে (${chaiCount})` : `+1 Chai ☕ (${chaiCount})`}</span>
-            </button>
-          </div>
         </div>
 
-        {/* 3. WhatsApp Style Message Thread (Strict Left/Right Alignment based on senderId & name) */}
+        {/* 3. Message Thread with Delete Option on Own Messages */}
         <div
           ref={chatScrollContainerRef}
           className="flex-1 overflow-y-auto px-3 py-3 space-y-3 overflow-x-hidden w-full box-border rounded-2xl bg-black/30 border border-white/5 shadow-inner"
@@ -255,7 +191,7 @@ export default function ChaiAddaModal({
             return (
               <div
                 key={item.id}
-                className={`flex items-end gap-2 w-full ${isMe ? 'justify-end' : 'justify-start'}`}
+                className={`group flex items-end gap-2 w-full ${isMe ? 'justify-end' : 'justify-start'}`}
               >
                 {/* Left Avatar for other people (LEFT SIDE) */}
                 {!isMe && (
@@ -264,7 +200,7 @@ export default function ChaiAddaModal({
                   </div>
                 )}
 
-                {/* WhatsApp Chat Bubble */}
+                {/* Message Bubble */}
                 <div
                   className={`relative max-w-[85%] sm:max-w-[75%] px-3.5 py-2 rounded-2xl shadow-md transition-all ${
                     isMe
@@ -284,14 +220,23 @@ export default function ChaiAddaModal({
                     {item.text}
                   </div>
 
-                  {/* Message Timestamp & WhatsApp Double Checkmark */}
+                  {/* Message Bottom Row: Timestamp, Double Check, & Delete Button */}
                   <div
-                    className={`flex items-center gap-1 justify-end text-[9px] font-mono mt-0.5 ${
+                    className={`flex items-center gap-1.5 justify-end text-[9px] font-mono mt-0.5 ${
                       isMe ? 'text-emerald-200/80' : 'text-[#fdf3e2]/50'
                     }`}
                   >
                     <span>{item.time || 'Just now'}</span>
                     {isMe && <CheckCheck className="w-3 h-3 text-[#53bdeb]" />}
+                    {isMe && (
+                      <button
+                        onClick={() => handleDelete(item.id)}
+                        title="Delete message"
+                        className="ml-1 opacity-70 hover:opacity-100 text-rose-300 hover:text-rose-400 p-0.5 transition-opacity cursor-pointer"
+                      >
+                        <Trash2 className="w-2.5 h-2.5" />
+                      </button>
+                    )}
                   </div>
                 </div>
 
@@ -306,7 +251,7 @@ export default function ChaiAddaModal({
           })}
         </div>
 
-        {/* 4. WhatsApp Quick Suggestion Chips */}
+        {/* 4. Quick Suggestion Chips */}
         <div className="flex gap-1.5 overflow-x-auto pb-1 mt-2 mb-1.5 scrollbar-none w-full box-border">
           {quickPrompts.map((q, idx) => (
             <button
@@ -320,7 +265,7 @@ export default function ChaiAddaModal({
           ))}
         </div>
 
-        {/* 5. WhatsApp Style Bottom Input Bar */}
+        {/* 5. Bottom Input Bar */}
         <form onSubmit={handleSendComment} className="pt-1.5 border-t border-white/10 w-full box-border">
           <div className="flex items-center gap-2 w-full">
             <div className="relative flex-1 w-full">

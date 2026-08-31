@@ -113,6 +113,17 @@ export function useLivePresence() {
               localStorage.setItem(CHAI_STORAGE_KEY, data.count.toString());
             } catch (e) {}
           }
+
+          // E) Delete message from any device
+          if (data.type === 'delete_message' && data.messageId) {
+            setMessages((prev) => {
+              const updated = prev.filter((m) => m.id !== data.messageId);
+              try {
+                localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(updated));
+              } catch (e) {}
+              return updated;
+            });
+          }
         } catch (e) {
           // Non-JSON or keep-alive message
         }
@@ -183,6 +194,9 @@ export function useLivePresence() {
             return [...prev, e.data.message];
           });
         }
+        if (e.data.type === 'delete_message' && e.data.messageId) {
+          setMessages((prev) => prev.filter((m) => m.id !== e.data.messageId));
+        }
       };
       channel.postMessage({ type: 'local_pulse', tabId });
     }
@@ -248,6 +262,29 @@ export function useLivePresence() {
     return newMsg;
   }, [tabSenderId, publishGlobal]);
 
+  // Delete message across all devices in real-time
+  const deleteMessage = useCallback((messageId) => {
+    setMessages((prev) => {
+      const updated = prev.filter((m) => m.id !== messageId);
+      try {
+        localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+
+    // Broadcast deletion globally
+    publishGlobal({ type: 'delete_message', messageId });
+
+    // Broadcast locally
+    try {
+      if (typeof BroadcastChannel !== 'undefined') {
+        const ch = new BroadcastChannel('pujo_global_sync_channel');
+        ch.postMessage({ type: 'delete_message', messageId });
+        ch.close();
+      }
+    } catch (e) {}
+  }, [publishGlobal]);
+
   // Buy Chai with global real-time synchronization
   const buyChai = useCallback(() => {
     setChaiCount((prev) => {
@@ -265,6 +302,7 @@ export function useLivePresence() {
     messages,
     chaiCount,
     sendMessage,
+    deleteMessage,
     buyChai,
     tabSenderId
   };

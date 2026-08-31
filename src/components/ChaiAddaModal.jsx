@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, MessageCircle, Send, Check, CheckCheck, Trash2, User } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function ChaiAddaModal({
   isOpen,
@@ -13,6 +14,7 @@ export default function ChaiAddaModal({
   const [newComment, setNewComment] = useState('');
   const [isSending, setIsSending] = useState(false);
   const chatScrollContainerRef = useRef(null);
+  const { lang, t } = useLanguage();
 
   // Tab-unique sender ID fallback
   const mySenderId = tabSenderId || sessionStorage.getItem('pujo_tab_sender_id') || 'tab_local';
@@ -136,7 +138,7 @@ export default function ChaiAddaModal({
             <div className="min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="font-bengali-title text-base sm:text-xl font-bold text-[#ffd873] tracking-wide px-1">
-                  লাইভ পুজোর আড্ডা
+                  {t('addaTitle')}
                 </h1>
                 <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/25 text-emerald-300 border border-emerald-500/40 font-bold flex items-center gap-1.5 flex-shrink-0">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_#34d399]"></span>
@@ -145,7 +147,7 @@ export default function ChaiAddaModal({
                 </span>
               </div>
               <p className="text-[10px] sm:text-xs text-[#fdf3e2]/65 font-medium px-1">
-                শারদীয় স্মৃতি ও আড্ডা
+                {t('addaSubtitle')}
               </p>
             </div>
           </div>
@@ -173,11 +175,11 @@ export default function ChaiAddaModal({
                 <div className="flex items-center gap-1.5 flex-1 min-w-0">
                   <User className="w-3.5 h-3.5 text-[#ffd873] flex-shrink-0" />
                   <span className="text-xs text-[#ffd873] font-bold whitespace-nowrap hidden sm:inline">
-                    আপনার নাম:
+                    {t('yourName')}
                   </span>
                   <input
                     type="text"
-                    placeholder="আপনার নাম লিখুন (একবারই সেট করতে পারবেন)..."
+                    placeholder={t('enterNamePlaceholder')}
                     value={tempNameInput}
                     onChange={(e) => setTempNameInput(e.target.value)}
                     className="flex-1 min-w-0 px-3 py-1.5 rounded-xl bg-white/10 border border-[#ffd873]/60 text-xs text-[#fdf3e2] outline-none focus:border-[#ffd873] placeholder-[#fdf3e2]/40"
@@ -189,7 +191,7 @@ export default function ChaiAddaModal({
                   className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-[#ffd873] hover:from-amber-300 hover:to-[#ffe29a] text-black font-extrabold text-xs cursor-pointer flex items-center gap-1 shadow-md transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
                 >
                   <Check className="w-3.5 h-3.5" />
-                  <span>সেভ করুন</span>
+                  <span>{t('saveBtn')}</span>
                 </button>
               </form>
             )}
@@ -291,7 +293,7 @@ export default function ChaiAddaModal({
             <div className="relative flex-1 w-full">
               <input
                 type="text"
-                placeholder={savedName ? `${savedName} হিসেবে বার্তা লিখুন...` : 'পুজোর বার্তা বা স্মৃতি লিখুন...'}
+                placeholder={savedName ? `${savedName} ${t('sendAsPlaceholder')}...` : t('typeMessagePlaceholder')}
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 className="w-full px-4 py-2.5 rounded-full bg-white/10 border border-white/15 text-xs sm:text-sm text-[#fdf3e2] placeholder-[#fdf3e2]/40 outline-none focus:border-[#00a884] focus:bg-white/15 transition-all shadow-inner"

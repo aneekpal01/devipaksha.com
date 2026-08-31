@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { getCountdown, PUJO_DAYS } from '../data/pujoData';
 import { Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function CountdownHeader({ selectedDayKey }) {
   const selectedDay = PUJO_DAYS[selectedDayKey] || PUJO_DAYS.shashthi;
   const [countdown, setCountdown] = useState(() => getCountdown(selectedDay.dateString));
+  const { lang, t } = useLanguage();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -26,16 +28,16 @@ export default function CountdownHeader({ selectedDayKey }) {
 
   return (
     <div className="relative z-20 flex flex-col items-center justify-center pt-2 pb-1 text-center select-none px-3">
-      {/* Iconic Bengali Headline: পুজো আসছে (Bigger & Bolder) */}
+      {/* Iconic Headline: পুজো আসছে / Pujo Is Coming */}
       <h1
         onClick={handleCelebrateClick}
         title="Click for festive celebration!"
         className="font-bengali-title text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-[#ffd873] tracking-wide text-festive-glow drop-shadow-[0_4px_20px_rgba(0,0,0,0.95)] cursor-pointer hover:scale-103 transition-transform duration-300 active:scale-98"
       >
-        পুজো আসছে
+        {t('heroTitle')}
       </h1>
 
-      {/* Clean subtitle: 41 days [12h : 49m : 40s] until Durga Pujo */}
+      {/* Subtitle: 41 days [12h : 49m : 40s] until Durga Pujo */}
       <div
         onClick={handleCelebrateClick}
         className="mt-1 flex items-center justify-center gap-1.5 cursor-pointer group"
@@ -45,7 +47,7 @@ export default function CountdownHeader({ selectedDayKey }) {
           <span className="text-[#ffd873] font-bold text-sm sm:text-base tabular-nums">
             {countdown.days}
           </span>
-          <span className="text-[#fdf3e2]/80">days</span>
+          <span className="text-[#fdf3e2]/80">{t('days')}</span>
 
           {/* Time tracker grouped in an Apple Liquid Glass capsule */}
           <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full liquid-glass-pill font-mono text-[10px] sm:text-xs mx-0.5">
@@ -64,7 +66,7 @@ export default function CountdownHeader({ selectedDayKey }) {
 
           {/* Clean 'until Durga Pujo' text with Cute Maa Durga Logo */}
           <span className="text-[#fdf3e2]/85 ml-0.5">
-            until Durga Pujo
+            {t('untilDurgaPujo')}
           </span>
           <img
             src="/durga-logo.png"

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Sparkles, Award, Flower2, CheckCircle2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { useLanguage } from '../context/LanguageContext';
 
 const FLOWERS = [
   {
@@ -61,6 +62,7 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
   const [selectedFlower, setSelectedFlower] = useState(FLOWERS[0]);
   const [currentMantraIdx, setCurrentMantraIdx] = useState(0);
   const [isOffering, setIsOffering] = useState(false);
+  const { lang, t } = useLanguage();
   const [isCompleted, setIsCompleted] = useState(() => {
     return localStorage.getItem('pujo_anjali_completed_forever') === 'true';
   });
@@ -156,21 +158,21 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
             <div className="min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="font-bengali-title text-base sm:text-xl font-bold text-[#ffd873] tracking-wide px-1">
-                  ভার্চুয়াল পুষ্পাঞ্জলি
+                  {t('anjaliTitle')}
                 </h1>
                 <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-sans font-bold flex-shrink-0">
                   Live Ritual
                 </span>
               </div>
               <p className="text-[10px] sm:text-xs text-[#fdf3e2]/65 font-medium px-1">
-                মায়ের চরণে ভক্তিভরে ফুল ও বেলপাতা নিবেদন করুন
+                {t('anjaliSubtitle')}
               </p>
             </div>
           </div>
 
           <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-bold text-[#ffd873] shadow-inner flex-shrink-0">
             <Award className="w-3.5 h-3.5 text-amber-400" />
-            <span>{anjaliCount.toLocaleString()} ভক্ত অঞ্জলি দিয়েছেন</span>
+            <span>{anjaliCount.toLocaleString()} {t('anjaliCountText')}</span>
           </div>
         </div>
 
@@ -193,7 +195,7 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
                   }`}
                 >
                   {isDone && <CheckCircle2 className="w-3 h-3 text-emerald-400" />}
-                  <span>{idx === 0 ? '১ম অঞ্জলি' : idx === 1 ? '২য় অঞ্জলি' : 'প্রণাম মন্ত্র'}</span>
+                  <span>{idx === 0 ? t('step1') : idx === 1 ? t('step2') : t('step3')}</span>
                 </div>
               );
             })}
@@ -219,9 +221,9 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
               "{currentMantra.phonetic}"
             </p>
 
-            {/* Bengali Meaning Banner */}
+            {/* Meaning Banner */}
             <div className="mt-3 pt-2.5 border-t border-[#ffd873]/20 text-center">
-              <span className="text-[11px] text-amber-300 font-bold mr-1 font-bengali">অর্থ:</span>
+              <span className="text-[11px] text-amber-300 font-bold mr-1 font-bengali">{lang === 'bn' ? 'অর্থ:' : 'Meaning:'}</span>
               <span className="text-[11px] sm:text-xs text-[#fdf3e2]/75 font-bengali leading-relaxed">
                 {currentMantra.meaning}
               </span>
@@ -231,7 +233,7 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
           {/* Floral & Offering Choice Grid (2x2) */}
           <div>
             <label className="block text-xs font-bold text-[#ffd873] mb-2 font-bengali">
-              ১. অর্ঘ্য বা ফুল নির্বাচন করুন (Choose Offering):
+              {t('chooseOffering')}
             </label>
 
             <div className="grid grid-cols-2 gap-2.5">
@@ -272,7 +274,7 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
             <div className="p-3.5 rounded-2xl bg-emerald-950/50 border border-emerald-500/40 text-emerald-200 text-xs sm:text-sm flex items-center gap-2.5 animate-fadeIn shadow-lg">
               <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
               <span className="leading-relaxed font-bengali">
-                আপনার পুষ্পাঞ্জলি ও প্রণতি সম্পন্ন হয়েছে। মা দুর্গার আশীর্বাদ আপনার ও আপনার পরিবারের উপর সদাসর্বদা বর্ষিত হোক! 🌸🙏
+                {t('anjaliSuccessMessage')}
               </span>
             </div>
           )}
@@ -282,8 +284,8 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
         <div className="pt-3 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 box-border">
           <div className="text-[11px] text-[#fdf3e2]/60 sm:block hidden font-bengali">
             {isCompleted
-              ? '✅ আপনার পুষ্পাঞ্জলি সম্পূর্ণ হয়েছে'
-              : `পর্যায় ${currentMantraIdx + 1}/৩: অর্ঘ্য নিবেদন করতে নিচের বোতামটি স্পর্শ করুন 🌺`}
+              ? `✅ ${t('anjaliCompleted')}`
+              : `${lang === 'bn' ? 'পর্যায়' : 'Step'} ${currentMantraIdx + 1}/৩: 🌺`}
           </div>
 
           <button
@@ -299,17 +301,17 @@ export default function VirtualAnjaliModal({ isOpen, onClose }) {
             {isCompleted ? (
               <>
                 <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                <span>পুষ্পাঞ্জলি সম্পন্ন হয়েছে 🙏</span>
+                <span>{t('anjaliCompleted')}</span>
               </>
             ) : (
               <>
                 <Flower2 className={`w-5 h-5 ${isOffering ? 'animate-spin' : 'animate-bounce'}`} />
                 <span>
                   {isOffering
-                    ? 'অঞ্জলি প্রদান হচ্ছে... 🌸'
+                    ? t('anjaliInProgress')
                     : currentMantraIdx === 2
-                    ? `${selectedFlower.name.split(' ')[0]} দিয়ে শেষ অঞ্জলি ও প্রণাম নিবেদন করুন 🌺`
-                    : `${selectedFlower.name.split(' ')[0]} দিয়ে ${currentMantraIdx === 0 ? '১ম' : '২য়'} অঞ্জলি দিন 🌺`}
+                    ? `${selectedFlower.name.split(' ')[0]} ${t('giveFinalAnjali')}`
+                    : `${selectedFlower.name.split(' ')[0]} ${currentMantraIdx === 0 ? t('give1stAnjali') : t('give2ndAnjali')}`}
                 </span>
               </>
             )}

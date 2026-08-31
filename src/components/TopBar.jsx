@@ -8,10 +8,11 @@ import {
   Coffee,
   Music,
   BookOpen,
-  Send,
   Flower2,
-  Users
+  Users,
+  Languages
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function TopBar({
   isNight,
@@ -28,6 +29,7 @@ export default function TopBar({
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const { lang, toggleLanguage, t } = useLanguage();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -43,12 +45,10 @@ export default function TopBar({
   const featuresList = [
     {
       id: 'anjali',
-      title: 'ভার্চুয়াল পুষ্পাঞ্জলি',
-      desc: 'মায়ের চরণে ফুল নিবেদন ও শঙ্খধ্বনি',
+      title: t('feature_anjali_title'),
+      desc: t('feature_anjali_desc'),
       icon: <Flower2 className="w-5 h-5 text-rose-950" />,
       iconBg: 'bg-rose-300/90',
-      tag: 'Live Ritual',
-      tagStyle: 'bg-rose-400/40 text-rose-950 border-rose-400/60',
       action: () => {
         setIsMenuOpen(false);
         onOpenAnjali();
@@ -56,12 +56,10 @@ export default function TopBar({
     },
     {
       id: 'pandal',
-      title: 'সেরা পুজো পরিক্রমা',
-      desc: 'কলকাতার ৩২টি বিখ্যাত মণ্ডপ ও মেট্রো গাইড',
+      title: t('feature_pandal_title'),
+      desc: t('feature_pandal_desc'),
       icon: <MapPin className="w-5 h-5 text-amber-950" />,
       iconBg: 'bg-amber-300/90',
-      tag: '৩২টি মণ্ডপ',
-      tagStyle: 'bg-amber-400/40 text-amber-950 border-amber-400/60',
       action: () => {
         setIsMenuOpen(false);
         onOpenPandalGuide();
@@ -69,12 +67,10 @@ export default function TopBar({
     },
     {
       id: 'adda',
-      title: 'লাইভ পুজোর আড্ডা ও চা',
-      desc: 'রিয়েল-টাইম কমিউনিটি চ্যাট ও মাটির ভাঁড়ের চা',
+      title: t('feature_adda_title'),
+      desc: t('feature_adda_desc'),
       icon: <Coffee className="w-5 h-5 text-orange-950" />,
       iconBg: 'bg-orange-300/90',
-      tag: 'WhatsApp UI',
-      tagStyle: 'bg-orange-400/40 text-orange-950 border-orange-400/60',
       action: () => {
         setIsMenuOpen(false);
         onOpenAdda();
@@ -82,12 +78,10 @@ export default function TopBar({
     },
     {
       id: 'spotify',
-      title: 'Spotify Music Hub',
-      desc: '১৮০+ পুজো হিটস, আগমনী ও বীরেন্দ্রকৃষ্ণ ভদ্র',
+      title: t('feature_spotify_title'),
+      desc: t('feature_spotify_desc'),
       icon: <Music className="w-5 h-5 text-emerald-950" />,
       iconBg: 'bg-emerald-300/90',
-      tag: '180+ Tracks',
-      tagStyle: 'bg-emerald-400/40 text-emerald-950 border-emerald-400/60',
       action: () => {
         setIsMenuOpen(false);
         onOpenSpotify();
@@ -95,12 +89,10 @@ export default function TopBar({
     },
     {
       id: 'mahalaya',
-      title: 'মহালয়া ও দেবীপক্ষের ইতিহাস',
-      desc: 'মহিষাসুরমর্দিনী, বীরেন্দ্রকৃষ্ণ ও চণ্ডীপাঠের কথা',
+      title: t('feature_mahalaya_title'),
+      desc: t('feature_mahalaya_desc'),
       icon: <BookOpen className="w-5 h-5 text-amber-950" />,
       iconBg: 'bg-yellow-300/90',
-      tag: 'Lore & Story',
-      tagStyle: 'bg-yellow-400/40 text-yellow-950 border-yellow-400/60',
       action: () => {
         setIsMenuOpen(false);
         onOpenAboutMahalaya();
@@ -108,12 +100,10 @@ export default function TopBar({
     },
     {
       id: 'greeting',
-      title: 'শারদীয় শুভেচ্ছা কার্ড',
-      desc: 'কাস্টমাইজড পুজো গ্রিটিং কার্ড তৈরি ও ডাউনলোড',
+      title: t('feature_greeting_title'),
+      desc: t('feature_greeting_desc'),
       icon: <Sparkles className="w-5 h-5 text-purple-950" />,
       iconBg: 'bg-purple-300/90',
-      tag: 'Card Maker',
-      tagStyle: 'bg-purple-400/40 text-purple-950 border-purple-400/60',
       action: () => {
         setIsMenuOpen(false);
         onOpenGreeting();
@@ -137,10 +127,10 @@ export default function TopBar({
           <span className="tabular-nums font-bold text-emerald-300 text-xs">
             {onlineCount}
           </span>
-          <span className="text-[11px] text-[#fdf3e2]/70 font-medium">online</span>
+          <span className="text-[11px] text-[#fdf3e2]/70 font-medium">{t('online')}</span>
         </div>
 
-        {/* Dual Capsule Pill: [ 👥 Creators | ☕ Buy Chai ] matching user screenshot */}
+        {/* Dual Capsule Pill: [ 👥 Creators | ☕ Buy Chai ] */}
         <div className="flex items-center rounded-full liquid-glass-pill p-0.5 border border-white/20 shadow-md">
           {/* 👥 Creators Button */}
           <button
@@ -165,8 +155,20 @@ export default function TopBar({
         </div>
       </div>
 
-      {/* 2. Right: Ambience Switch & Floating Menu */}
+      {/* 2. Right: Language Switcher, Ambience Switch & Floating Menu */}
       <div className="relative flex items-center gap-2" ref={menuRef}>
+        {/* 🌐 1-Click Language Switcher (বাংলা <-> ENG) */}
+        <button
+          onClick={toggleLanguage}
+          title={lang === 'bn' ? 'Switch to English' : 'বাংলায় পরিবর্তন করুন'}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full liquid-glass-pill text-[#ffd873] hover:border-[#ffd873]/70 hover:bg-white/15 transition-all shadow-md active:scale-95 cursor-pointer font-bold text-xs"
+        >
+          <Languages className="w-3.5 h-3.5 text-amber-300" />
+          <span className="font-sans text-[11px] font-black uppercase tracking-wider">
+            {lang === 'bn' ? 'ENG' : 'বাংলা'}
+          </span>
+        </button>
+
         {/* Day / Night Ambience Toggle (☀️ / 🌙) */}
         <button
           onClick={setIsNight}
@@ -176,7 +178,7 @@ export default function TopBar({
           {isNight ? <Sun className="w-4 h-4 text-amber-300" /> : <Moon className="w-4 h-4 text-amber-200" />}
         </button>
 
-        {/* Floating Menu Button: [ 👑 পুজো স্পেশাল ⌵ ] */}
+        {/* Floating Menu Button: [ 👑 পুজো স্পেশাল / Pujo Special ⌵ ] */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full liquid-glass-pill transition-all cursor-pointer shadow-lg active:scale-95 ${
@@ -191,7 +193,7 @@ export default function TopBar({
             className="w-4 h-4 object-contain drop-shadow-[0_0_8px_rgba(255,216,115,0.8)]"
           />
           <span className="font-bengali text-xs font-bold tracking-wide">
-            পুজো স্পেশাল
+            {t('pujoSpecial')}
           </span>
           <ChevronDown
             className={`w-3.5 h-3.5 text-[#ffd873] transition-transform duration-200 ${
@@ -200,21 +202,21 @@ export default function TopBar({
           />
         </button>
 
-        {/* 3. Golden Liquid Glass Dropdown Menu (Clean Rows Without Stickers) */}
+        {/* 3. Golden Liquid Glass Dropdown Menu */}
         {isMenuOpen && (
           <div className="absolute right-0 top-11 z-50 w-80 sm:w-92 rounded-[32px] bg-gradient-to-b from-[#8c6227]/95 via-[#533013]/95 to-[#241308]/98 backdrop-blur-3xl border-2 border-[#ffd873]/50 p-3.5 sm:p-4 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(234,179,8,0.25)] animate-fadeIn box-border">
-            {/* Header: ✨ দেবীপক্ষ এক্সপ্লোরার | 6 Features */}
+            {/* Header */}
             <div className="px-2 py-1 mb-3 border-b border-[#ffd873]/20 flex items-center justify-between">
               <span className="font-bengali text-sm font-black text-[#ffd873] tracking-wide flex items-center gap-1.5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                 <Sparkles className="w-4 h-4 text-[#ffd873]" />
-                দেবীপক্ষ এক্সপ্লোরার
+                {t('deviPakshaExplorer')}
               </span>
               <span className="text-xs font-semibold text-[#fdf3e2]/80">
-                6 Features
+                {t('featuresCount')}
               </span>
             </div>
 
-            {/* 6 Full-Width Horizontal Feature Rows (Clean Without Stickers) */}
+            {/* 6 Full-Width Horizontal Feature Rows */}
             <div className="space-y-2">
               {featuresList.map((item) => (
                 <button
@@ -243,9 +245,9 @@ export default function TopBar({
               ))}
             </div>
 
-            {/* Sub-footer: দেবীপক্ষ (Devi Paksha) • শারদীয় উৎসব */}
+            {/* Sub-footer */}
             <div className="mt-3 pt-2 border-t border-[#ffd873]/20 text-center text-[11px] text-[#ffd873]/90 font-bold font-bengali tracking-wide">
-              দেবীপক্ষ (Devi Paksha) • শারদীয় উৎসব
+              {t('footerFestival')}
             </div>
           </div>
         )}

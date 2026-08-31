@@ -112,108 +112,75 @@ export default function TopBar({
   ];
 
   return (
-    <header className="relative z-40 w-full px-2 sm:px-6 pt-2 sm:pt-4 flex items-center justify-between pointer-events-auto box-border overflow-visible">
-      {/* 🏝️ 1. Left Island: [ 🟢 Live Online  │  👥 Creators  │  ☕ Buy Chai ] */}
-      <div className="flex items-center rounded-full liquid-glass-pill p-0.5 sm:p-1 border border-white/20 shadow-lg flex-shrink-0">
-        {/* Live Online Badge / Button */}
-        <button
-          onClick={onOpenAdda}
-          title="Click to join live community adda!"
-          className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full hover:bg-white/15 active:scale-95 transition-all cursor-pointer"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_10px_#34d399]"></span>
-          </span>
-          <span className="tabular-nums font-bold text-emerald-300 text-xs">
-            {onlineCount}
-          </span>
-          <span className="hidden sm:inline text-[11px] text-[#fdf3e2]/70 font-medium">
-            {t('online')}
-          </span>
-        </button>
+    <header className="relative z-40 w-full px-3 sm:px-6 pt-3 sm:pt-4 flex items-center justify-between pointer-events-auto box-border overflow-visible">
+      {/* 🌟 1. Left: Single Clean Live Online Pill (Opens Adda Chat) */}
+      <button
+        onClick={onOpenAdda}
+        title="Click to join live community adda!"
+        className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full liquid-glass-pill cursor-pointer shadow-lg hover:scale-103 active:scale-95 transition-all group flex-shrink-0"
+      >
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_10px_#34d399]"></span>
+        </span>
+        <span className="tabular-nums font-bold text-emerald-300 text-xs">
+          {onlineCount}
+        </span>
+        <span className="text-[11px] text-[#fdf3e2]/75 font-medium">
+          {t('online')}
+        </span>
+      </button>
 
-        {/* Divider */}
-        <span className="w-[1px] h-3.5 bg-white/20 my-auto mx-0.5" />
-
-        {/* 👥 Creators Button */}
-        <button
-          onClick={onOpenCreators}
-          title="Made with Bhalobasha by Aneek Pal"
-          className="flex items-center justify-center p-1.5 sm:px-2 rounded-full text-[#fdf3e2]/85 hover:text-[#ffd873] hover:bg-white/15 active:scale-95 transition-all cursor-pointer"
-        >
-          <Users className="w-3.5 h-3.5" />
-        </button>
-
-        {/* Divider */}
-        <span className="w-[1px] h-3.5 bg-white/20 my-auto mx-0.5" />
-
-        {/* ☕ Buy Us A Chai Button */}
-        <button
-          onClick={onOpenBuyChai}
-          title="Buy Me A Chai (UPI Support)"
-          className="flex items-center justify-center p-1.5 sm:px-2 rounded-full text-[#fdf3e2]/85 hover:text-[#ffd873] hover:bg-white/15 active:scale-95 transition-all cursor-pointer"
-        >
-          <Coffee className="w-3.5 h-3.5 text-amber-300" />
-        </button>
-      </div>
-
-      {/* 🏝️ 2. Right Island: [ 🌐 ENG  │  ☀️ / 🌙  │  👑 পুজো স্পেশাল ⌵ ] */}
-      <div className="relative flex items-center rounded-full liquid-glass-pill p-0.5 sm:p-1 border border-white/20 shadow-lg flex-shrink-0" ref={menuRef}>
+      {/* 🌟 2. Right: Language Switcher, Ambience Switch & Floating Menu */}
+      <div className="relative flex items-center gap-1.5 sm:gap-2 flex-shrink-0" ref={menuRef}>
         {/* 🌐 1-Click Language Switcher (বাংলা <-> ENG) */}
         <button
           onClick={toggleLanguage}
           title={lang === 'bn' ? 'Switch to English' : 'বাংলায় পরিবর্তন করুন'}
-          className="flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-full text-[#ffd873] hover:bg-white/15 transition-all font-bold text-xs cursor-pointer active:scale-95 flex-shrink-0"
+          className="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full liquid-glass-pill text-[#ffd873] hover:border-[#ffd873]/70 hover:bg-white/15 transition-all shadow-md active:scale-95 cursor-pointer font-bold text-xs flex-shrink-0"
         >
-          <Languages className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300" />
-          <span className="font-sans text-[10px] sm:text-[11px] font-black uppercase tracking-wider">
+          <Languages className="w-3.5 h-3.5 text-amber-300" />
+          <span className="font-sans text-[11px] font-black uppercase tracking-wider">
             {lang === 'bn' ? 'ENG' : 'বাংলা'}
           </span>
         </button>
-
-        {/* Divider */}
-        <span className="w-[1px] h-3.5 bg-white/20 my-auto mx-0.5" />
 
         {/* Day / Night Ambience Toggle (☀️ / 🌙) */}
         <button
           onClick={setIsNight}
           title={isNight ? 'Switch to Day ambience' : 'Switch to Night ambience'}
-          className="flex items-center justify-center p-1.5 rounded-full text-[#ffd873] hover:bg-yellow-400/20 transition-all active:scale-95 cursor-pointer flex-shrink-0"
+          className="flex items-center justify-center w-8 h-8 rounded-full liquid-glass-btn text-[#ffd873] hover:bg-yellow-400/20 shadow-md transition-all active:scale-95 cursor-pointer flex-shrink-0"
         >
-          {isNight ? <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300" /> : <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-200" />}
+          {isNight ? <Sun className="w-4 h-4 text-amber-300" /> : <Moon className="w-4 h-4 text-amber-200" />}
         </button>
-
-        {/* Divider */}
-        <span className="w-[1px] h-3.5 bg-white/20 my-auto mx-0.5" />
 
         {/* Floating Menu Button: [ 👑 পুজো স্পেশাল / Pujo Special ⌵ ] */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full transition-all cursor-pointer active:scale-95 flex-shrink-0 whitespace-nowrap ${
+          className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 rounded-full liquid-glass-pill transition-all cursor-pointer shadow-lg active:scale-95 flex-shrink-0 whitespace-nowrap ${
             isMenuOpen
-              ? 'bg-gradient-to-r from-amber-500/30 to-orange-500/25 text-[#ffd873]'
-              : 'text-[#fdf3e2] hover:bg-white/15'
+              ? 'border-[#ffd873] bg-gradient-to-r from-amber-500/30 to-orange-500/25 text-[#ffd873] shadow-[0_0_16px_rgba(255,216,115,0.35)]'
+              : 'hover:border-white/30 text-[#fdf3e2]'
           }`}
         >
           <img
             src="/durga-logo.png"
             alt="Maa Durga"
-            className="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain drop-shadow-[0_0_8px_rgba(255,216,115,0.8)] flex-shrink-0"
+            className="w-4 h-4 object-contain drop-shadow-[0_0_8px_rgba(255,216,115,0.8)] flex-shrink-0"
           />
           <span className="font-bengali text-xs font-bold tracking-wide whitespace-nowrap">
             {t('pujoSpecial')}
           </span>
           <ChevronDown
-            className={`w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#ffd873] transition-transform duration-200 flex-shrink-0 ${
+            className={`w-3.5 h-3.5 text-[#ffd873] transition-transform duration-200 flex-shrink-0 ${
               isMenuOpen ? 'rotate-180' : ''
             }`}
           />
         </button>
 
-        {/* 3. Golden Liquid Glass Dropdown Menu */}
+        {/* 3. Golden Liquid Glass Dropdown Menu with Pinned Creator & Chai */}
         {isMenuOpen && (
-          <div className="absolute right-0 top-11 sm:top-12 z-50 w-[calc(100vw-20px)] max-w-sm sm:w-92 rounded-[28px] sm:rounded-[32px] bg-gradient-to-b from-[#8c6227]/95 via-[#533013]/95 to-[#241308]/98 backdrop-blur-3xl border-2 border-[#ffd873]/50 p-3 sm:p-4 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(234,179,8,0.25)] animate-fadeIn box-border">
+          <div className="absolute right-0 top-11 sm:top-12 z-50 w-[calc(100vw-20px)] max-w-sm sm:w-92 rounded-[28px] sm:rounded-[32px] bg-gradient-to-b from-[#8c6227]/95 via-[#533013]/95 to-[#241308]/98 backdrop-blur-3xl border-2 border-[#ffd873]/50 p-3.5 sm:p-4 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(234,179,8,0.25)] animate-fadeIn box-border">
             {/* Header */}
             <div className="px-2 py-1 mb-2.5 border-b border-[#ffd873]/20 flex items-center justify-between">
               <span className="font-bengali text-xs sm:text-sm font-black text-[#ffd873] tracking-wide flex items-center gap-1.5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
@@ -236,7 +203,7 @@ export default function TopBar({
                   {/* Left: Icon Tile + Title/Subtitle */}
                   <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
                     <div
-                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${item.iconBg} flex items-center justify-center flex-shrink-0 shadow-inner group-hover:scale-105 transition-transform`}
+                      className={`w-8.5 h-8.5 sm:w-9 sm:h-9 rounded-xl ${item.iconBg} flex items-center justify-center flex-shrink-0 shadow-inner group-hover:scale-105 transition-transform`}
                     >
                       {item.icon}
                     </div>
@@ -254,8 +221,43 @@ export default function TopBar({
               ))}
             </div>
 
+            {/* Pinned Creator & Buy Chai Quick Actions */}
+            <div className="mt-3 pt-2.5 border-t border-[#ffd873]/20 grid grid-cols-2 gap-2">
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  onOpenCreators();
+                }}
+                className="p-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-left flex items-center gap-2 transition-all active:scale-95 cursor-pointer"
+              >
+                <Users className="w-4 h-4 text-[#ffd873] flex-shrink-0" />
+                <div className="min-w-0">
+                  <div className="text-[11px] font-bold text-[#fdf3e2] truncate">
+                    {t('creatorRow').split(' ')[0]}
+                  </div>
+                  <div className="text-[9px] text-[#fdf3e2]/60 truncate">Aneek Pal</div>
+                </div>
+              </button>
+
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  onOpenBuyChai();
+                }}
+                className="p-2 rounded-xl bg-gradient-to-r from-amber-500/25 to-orange-500/25 hover:from-amber-500/35 hover:to-orange-500/35 border border-amber-400/35 text-left flex items-center gap-2 transition-all active:scale-95 cursor-pointer"
+              >
+                <Coffee className="w-4 h-4 text-amber-300 flex-shrink-0" />
+                <div className="min-w-0">
+                  <div className="text-[11px] font-bold text-amber-300 truncate">
+                    {t('buyChaiRow').split(' ')[0]}
+                  </div>
+                  <div className="text-[9px] text-amber-200/70 truncate">UPI Support</div>
+                </div>
+              </button>
+            </div>
+
             {/* Sub-footer */}
-            <div className="mt-2.5 pt-2 border-t border-[#ffd873]/20 text-center text-[10px] sm:text-[11px] text-[#ffd873]/90 font-bold font-bengali tracking-wide">
+            <div className="mt-2.5 pt-2 border-t border-white/10 text-center text-[10px] sm:text-[11px] text-[#ffd873]/90 font-bold font-bengali tracking-wide">
               {t('footerFestival')}
             </div>
           </div>

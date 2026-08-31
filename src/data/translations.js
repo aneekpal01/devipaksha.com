@@ -20,6 +20,10 @@ export const translations = {
     feature_mahalaya_desc: 'মহিষাসুরমর্দিনী, বীরেন্দ্রকৃষ্ণ ও চণ্ডীপাঠের কথা',
     feature_greeting_title: 'শারদীয় শুভেচ্ছা কার্ড',
     feature_greeting_desc: 'কাস্টমাইজড পুজো গ্রিটিং কার্ড তৈরি ও ডাউনলোড',
+    creatorRow: 'নির্মাতা পরিচিতি (Creator Profile)',
+    creatorSub: 'Made with Bhalobasha by Aneek Pal',
+    buyChaiRow: 'এক কাপ চা খাওয়ান (Buy Me A Chai)',
+    buyChaiSub: 'Support solo developer via UPI',
 
     // Hero Section
     heroTitle: 'পুজো আসছে',
@@ -126,6 +130,10 @@ export const translations = {
     feature_mahalaya_desc: 'Mahishasura Mardini & Chandi Path lore',
     feature_greeting_title: 'Festive Greeting Card Maker',
     feature_greeting_desc: 'Create & download personalized festive cards',
+    creatorRow: 'Creator Profile',
+    creatorSub: 'Made with love by Aneek Pal',
+    buyChaiRow: 'Buy Me A Chai',
+    buyChaiSub: 'Support solo developer via UPI',
 
     // Hero Section
     heroTitle: 'Pujo Is Coming',

@@ -112,14 +112,14 @@ export default function TopBar({
   ];
 
   return (
-    <header className="relative z-40 w-full px-2 sm:px-6 pt-2.5 sm:pt-4 flex items-center justify-between pointer-events-auto box-border overflow-visible">
-      {/* 1. Left: 🟢 Live Online Indicator & Dual Capsule [ 👥 | ☕ ] */}
-      <div className="flex items-center gap-1 sm:gap-2 min-w-0 flex-shrink-0">
-        {/* Live Online Badge */}
-        <div
+    <header className="relative z-40 w-full px-2 sm:px-6 pt-2 sm:pt-4 flex items-center justify-between pointer-events-auto box-border overflow-visible">
+      {/* 🏝️ 1. Left Island: [ 🟢 Live Online  │  👥 Creators  │  ☕ Buy Chai ] */}
+      <div className="flex items-center rounded-full liquid-glass-pill p-0.5 sm:p-1 border border-white/20 shadow-lg flex-shrink-0">
+        {/* Live Online Badge / Button */}
+        <button
           onClick={onOpenAdda}
           title="Click to join live community adda!"
-          className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full liquid-glass-pill cursor-pointer shadow-md hover:scale-103 active:scale-95 transition-all group flex-shrink-0"
+          className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full hover:bg-white/15 active:scale-95 transition-all cursor-pointer"
         >
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -128,41 +128,43 @@ export default function TopBar({
           <span className="tabular-nums font-bold text-emerald-300 text-xs">
             {onlineCount}
           </span>
-          <span className="hidden sm:inline text-[11px] text-[#fdf3e2]/70 font-medium">{t('online')}</span>
-        </div>
+          <span className="hidden sm:inline text-[11px] text-[#fdf3e2]/70 font-medium">
+            {t('online')}
+          </span>
+        </button>
 
-        {/* Dual Capsule Pill: [ 👥 Creators | ☕ Buy Chai ] */}
-        <div className="flex items-center rounded-full liquid-glass-pill p-0.5 border border-white/20 shadow-md flex-shrink-0">
-          {/* 👥 Creators Button */}
-          <button
-            onClick={onOpenCreators}
-            title="Made with Bhalobasha by Aneek Pal"
-            className="flex items-center justify-center p-1 sm:px-2.5 sm:py-1 rounded-full text-[#fdf3e2]/85 hover:text-[#ffd873] hover:bg-white/15 active:scale-95 transition-all cursor-pointer"
-          >
-            <Users className="w-3.5 h-3.5" />
-          </button>
+        {/* Divider */}
+        <span className="w-[1px] h-3.5 bg-white/20 my-auto mx-0.5" />
 
-          {/* Divider */}
-          <span className="w-[1px] h-3 sm:h-3.5 bg-white/20 my-auto" />
+        {/* 👥 Creators Button */}
+        <button
+          onClick={onOpenCreators}
+          title="Made with Bhalobasha by Aneek Pal"
+          className="flex items-center justify-center p-1.5 sm:px-2 rounded-full text-[#fdf3e2]/85 hover:text-[#ffd873] hover:bg-white/15 active:scale-95 transition-all cursor-pointer"
+        >
+          <Users className="w-3.5 h-3.5" />
+        </button>
 
-          {/* ☕ Buy Us A Chai Button */}
-          <button
-            onClick={onOpenBuyChai}
-            title="Buy Me A Chai (UPI Support)"
-            className="flex items-center justify-center p-1 sm:px-2.5 sm:py-1 rounded-full text-[#fdf3e2]/85 hover:text-[#ffd873] hover:bg-white/15 active:scale-95 transition-all cursor-pointer"
-          >
-            <Coffee className="w-3.5 h-3.5 text-amber-300" />
-          </button>
-        </div>
+        {/* Divider */}
+        <span className="w-[1px] h-3.5 bg-white/20 my-auto mx-0.5" />
+
+        {/* ☕ Buy Us A Chai Button */}
+        <button
+          onClick={onOpenBuyChai}
+          title="Buy Me A Chai (UPI Support)"
+          className="flex items-center justify-center p-1.5 sm:px-2 rounded-full text-[#fdf3e2]/85 hover:text-[#ffd873] hover:bg-white/15 active:scale-95 transition-all cursor-pointer"
+        >
+          <Coffee className="w-3.5 h-3.5 text-amber-300" />
+        </button>
       </div>
 
-      {/* 2. Right: Language Switcher, Ambience Switch & Floating Menu */}
-      <div className="relative flex items-center gap-1 sm:gap-2 flex-shrink-0" ref={menuRef}>
+      {/* 🏝️ 2. Right Island: [ 🌐 ENG  │  ☀️ / 🌙  │  👑 পুজো স্পেশাল ⌵ ] */}
+      <div className="relative flex items-center rounded-full liquid-glass-pill p-0.5 sm:p-1 border border-white/20 shadow-lg flex-shrink-0" ref={menuRef}>
         {/* 🌐 1-Click Language Switcher (বাংলা <-> ENG) */}
         <button
           onClick={toggleLanguage}
           title={lang === 'bn' ? 'Switch to English' : 'বাংলায় পরিবর্তন করুন'}
-          className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full liquid-glass-pill text-[#ffd873] hover:border-[#ffd873]/70 hover:bg-white/15 transition-all shadow-md active:scale-95 cursor-pointer font-bold text-xs flex-shrink-0"
+          className="flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-full text-[#ffd873] hover:bg-white/15 transition-all font-bold text-xs cursor-pointer active:scale-95 flex-shrink-0"
         >
           <Languages className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300" />
           <span className="font-sans text-[10px] sm:text-[11px] font-black uppercase tracking-wider">
@@ -170,22 +172,28 @@ export default function TopBar({
           </span>
         </button>
 
+        {/* Divider */}
+        <span className="w-[1px] h-3.5 bg-white/20 my-auto mx-0.5" />
+
         {/* Day / Night Ambience Toggle (☀️ / 🌙) */}
         <button
           onClick={setIsNight}
           title={isNight ? 'Switch to Day ambience' : 'Switch to Night ambience'}
-          className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full liquid-glass-btn text-[#ffd873] hover:bg-yellow-400/20 shadow-md transition-all active:scale-95 cursor-pointer flex-shrink-0"
+          className="flex items-center justify-center p-1.5 rounded-full text-[#ffd873] hover:bg-yellow-400/20 transition-all active:scale-95 cursor-pointer flex-shrink-0"
         >
           {isNight ? <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300" /> : <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-200" />}
         </button>
 
+        {/* Divider */}
+        <span className="w-[1px] h-3.5 bg-white/20 my-auto mx-0.5" />
+
         {/* Floating Menu Button: [ 👑 পুজো স্পেশাল / Pujo Special ⌵ ] */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className={`flex items-center gap-1 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full liquid-glass-pill transition-all cursor-pointer shadow-lg active:scale-95 flex-shrink-0 whitespace-nowrap ${
+          className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full transition-all cursor-pointer active:scale-95 flex-shrink-0 whitespace-nowrap ${
             isMenuOpen
-              ? 'border-[#ffd873] bg-gradient-to-r from-amber-500/30 to-orange-500/25 text-[#ffd873] shadow-[0_0_16px_rgba(255,216,115,0.35)]'
-              : 'hover:border-white/30 text-[#fdf3e2]'
+              ? 'bg-gradient-to-r from-amber-500/30 to-orange-500/25 text-[#ffd873]'
+              : 'text-[#fdf3e2] hover:bg-white/15'
           }`}
         >
           <img
@@ -193,7 +201,7 @@ export default function TopBar({
             alt="Maa Durga"
             className="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain drop-shadow-[0_0_8px_rgba(255,216,115,0.8)] flex-shrink-0"
           />
-          <span className="font-bengali text-[11px] sm:text-xs font-bold tracking-wide whitespace-nowrap">
+          <span className="font-bengali text-xs font-bold tracking-wide whitespace-nowrap">
             {t('pujoSpecial')}
           </span>
           <ChevronDown
@@ -205,7 +213,7 @@ export default function TopBar({
 
         {/* 3. Golden Liquid Glass Dropdown Menu */}
         {isMenuOpen && (
-          <div className="absolute right-0 top-9 sm:top-11 z-50 w-[calc(100vw-16px)] max-w-sm sm:w-92 rounded-[28px] sm:rounded-[32px] bg-gradient-to-b from-[#8c6227]/95 via-[#533013]/95 to-[#241308]/98 backdrop-blur-3xl border-2 border-[#ffd873]/50 p-3 sm:p-4 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(234,179,8,0.25)] animate-fadeIn box-border">
+          <div className="absolute right-0 top-11 sm:top-12 z-50 w-[calc(100vw-20px)] max-w-sm sm:w-92 rounded-[28px] sm:rounded-[32px] bg-gradient-to-b from-[#8c6227]/95 via-[#533013]/95 to-[#241308]/98 backdrop-blur-3xl border-2 border-[#ffd873]/50 p-3 sm:p-4 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(234,179,8,0.25)] animate-fadeIn box-border">
             {/* Header */}
             <div className="px-2 py-1 mb-2.5 border-b border-[#ffd873]/20 flex items-center justify-between">
               <span className="font-bengali text-xs sm:text-sm font-black text-[#ffd873] tracking-wide flex items-center gap-1.5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">

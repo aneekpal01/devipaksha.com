@@ -225,7 +225,7 @@ export default function TopBar({
               </span>
             </div>
 
-            {/* 6 Full-Width Horizontal Feature Rows */}
+            {/* 6 Full-Width Horizontal Feature Rows (Title only, no subtext) */}
             <div className="space-y-1.5 sm:space-y-2">
               {featuresList.map((item) => (
                 <button
@@ -233,22 +233,17 @@ export default function TopBar({
                   onClick={item.action}
                   className="group w-full flex items-center p-2 sm:p-2.5 rounded-2xl bg-white/25 hover:bg-white/35 border border-white/35 hover:border-[#ffd873]/70 shadow-[0_4px_12px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.6)] transition-all duration-200 text-left active:scale-97 cursor-pointer"
                 >
-                  {/* Left: Icon Tile + Title/Subtitle */}
+                  {/* Left: Icon Tile + Clean Title */}
                   <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
                     <div
-                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${item.iconBg} flex items-center justify-center flex-shrink-0 shadow-inner group-hover:scale-105 transition-transform`}
+                      className={`w-7.5 h-7.5 sm:w-8 sm:h-8 rounded-xl ${item.iconBg} flex items-center justify-center flex-shrink-0 shadow-inner group-hover:scale-105 transition-transform`}
                     >
                       {item.icon}
                     </div>
 
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-bengali text-xs sm:text-[13px] font-black text-[#150702] group-hover:text-[#801200] leading-tight truncate">
-                        {item.title}
-                      </h3>
-                      <p className="font-bengali text-[10px] sm:text-[11px] text-[#2d1105]/90 font-bold leading-snug mt-0.5 truncate">
-                        {item.desc}
-                      </p>
-                    </div>
+                    <h3 className="font-bengali text-xs sm:text-sm font-black text-[#150702] group-hover:text-[#801200] leading-tight truncate">
+                      {item.title}
+                    </h3>
                   </div>
                 </button>
               ))}

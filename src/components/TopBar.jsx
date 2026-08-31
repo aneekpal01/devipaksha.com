@@ -3,6 +3,7 @@ import {
   Sun,
   Moon,
   ChevronDown,
+  ChevronRight,
   Sparkles,
   MapPin,
   Coffee,
@@ -47,8 +48,8 @@ export default function TopBar({
       id: 'anjali',
       title: t('feature_anjali_title'),
       desc: t('feature_anjali_desc'),
-      icon: <Flower2 className="w-5 h-5 text-rose-950" />,
-      iconBg: 'bg-rose-300/90',
+      icon: <Flower2 className="w-4 h-4 text-rose-300" />,
+      iconBg: 'bg-rose-950/60 border border-rose-500/25',
       action: () => {
         setIsMenuOpen(false);
         onOpenAnjali();
@@ -58,8 +59,8 @@ export default function TopBar({
       id: 'pandal',
       title: t('feature_pandal_title'),
       desc: t('feature_pandal_desc'),
-      icon: <MapPin className="w-5 h-5 text-amber-950" />,
-      iconBg: 'bg-amber-300/90',
+      icon: <MapPin className="w-4 h-4 text-amber-300" />,
+      iconBg: 'bg-amber-950/60 border border-amber-500/25',
       action: () => {
         setIsMenuOpen(false);
         onOpenPandalGuide();
@@ -69,8 +70,8 @@ export default function TopBar({
       id: 'adda',
       title: t('feature_adda_title'),
       desc: t('feature_adda_desc'),
-      icon: <Coffee className="w-5 h-5 text-orange-950" />,
-      iconBg: 'bg-orange-300/90',
+      icon: <Coffee className="w-4 h-4 text-orange-300" />,
+      iconBg: 'bg-orange-950/60 border border-orange-500/25',
       action: () => {
         setIsMenuOpen(false);
         onOpenAdda();
@@ -80,8 +81,8 @@ export default function TopBar({
       id: 'spotify',
       title: t('feature_spotify_title'),
       desc: t('feature_spotify_desc'),
-      icon: <Music className="w-5 h-5 text-emerald-950" />,
-      iconBg: 'bg-emerald-300/90',
+      icon: <Music className="w-4 h-4 text-emerald-300" />,
+      iconBg: 'bg-emerald-950/60 border border-emerald-500/25',
       action: () => {
         setIsMenuOpen(false);
         onOpenSpotify();
@@ -91,8 +92,8 @@ export default function TopBar({
       id: 'mahalaya',
       title: t('feature_mahalaya_title'),
       desc: t('feature_mahalaya_desc'),
-      icon: <BookOpen className="w-5 h-5 text-amber-950" />,
-      iconBg: 'bg-yellow-300/90',
+      icon: <BookOpen className="w-4 h-4 text-yellow-300" />,
+      iconBg: 'bg-yellow-950/60 border border-yellow-500/25',
       action: () => {
         setIsMenuOpen(false);
         onOpenAboutMahalaya();
@@ -102,8 +103,8 @@ export default function TopBar({
       id: 'greeting',
       title: t('feature_greeting_title'),
       desc: t('feature_greeting_desc'),
-      icon: <Sparkles className="w-5 h-5 text-purple-950" />,
-      iconBg: 'bg-purple-300/90',
+      icon: <Sparkles className="w-4 h-4 text-purple-300" />,
+      iconBg: 'bg-purple-950/60 border border-purple-500/25',
       action: () => {
         setIsMenuOpen(false);
         onOpenGreeting();
@@ -180,46 +181,49 @@ export default function TopBar({
           />
         </button>
 
-        {/* 3. Golden Liquid Glass Dropdown Menu */}
+        {/* 3. 👑 Masterpiece Handcrafted Dropdown Card (All 9 Luxury Improvements) */}
         {isMenuOpen && (
-          <div className="absolute right-0 top-11 sm:top-12 z-50 w-[calc(100vw-24px)] max-w-sm sm:w-92 rounded-[28px] sm:rounded-[32px] bg-gradient-to-b from-[#8c6227]/95 via-[#533013]/95 to-[#241308]/98 backdrop-blur-3xl border-2 border-[#ffd873]/50 p-3.5 sm:p-4 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(234,179,8,0.25)] animate-fadeIn box-border">
-            {/* Header */}
-            <div className="px-2 py-1 mb-2.5 border-b border-[#ffd873]/20 flex items-center justify-between">
-              <span className="font-bengali text-xs sm:text-sm font-black text-[#ffd873] tracking-wide flex items-center gap-1.5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+          <div className="absolute right-0 top-11 sm:top-12 z-50 w-[calc(100vw-24px)] max-w-sm sm:w-92 rounded-[30px] bg-gradient-to-b from-[#241308]/92 via-[#180d06]/94 to-[#0e0602]/96 backdrop-blur-2xl border border-[#ffd873]/25 p-4 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.85),0_8px_16px_rgba(0,0,0,0.6),0_0_35px_rgba(234,179,8,0.08),inset_0_1px_1px_rgba(255,255,255,0.12),inset_0_0_24px_rgba(255,216,115,0.03)] animate-fadeIn box-border">
+            {/* Header with 12% Gold Hairline Separator */}
+            <div className="px-1 py-0.5 mb-3 border-b border-[#ffd873]/15 pb-2.5 flex items-center justify-between">
+              <span className="font-bengali text-xs sm:text-sm font-bold text-[#ffd873] tracking-wide flex items-center gap-1.5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                 <Sparkles className="w-3.5 h-3.5 text-[#ffd873]" />
                 {t('deviPakshaExplorer')}
               </span>
-              <span className="text-[11px] sm:text-xs font-semibold text-[#fdf3e2]/80">
+              <span className="text-[11px] font-semibold text-[#fdf3e2]/60 font-mono">
                 {t('featuresCount')}
               </span>
             </div>
 
-            {/* 6 Full-Width Horizontal Feature Rows (Clean title only) */}
+            {/* 6 Interactive Object Feature Cards with Chevron (›) */}
             <div className="space-y-1.5 sm:space-y-2">
               {featuresList.map((item) => (
                 <button
                   key={item.id}
                   onClick={item.action}
-                  className="group w-full flex items-center p-2 sm:p-2.5 rounded-2xl bg-white/25 hover:bg-white/35 border border-white/35 hover:border-[#ffd873]/70 shadow-[0_4px_12px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.6)] transition-all duration-200 text-left active:scale-97 cursor-pointer"
+                  className="group w-full flex items-center justify-between px-3 py-2.5 rounded-2xl bg-[#281509]/60 hover:bg-[#361d0d]/80 border border-white/10 hover:border-[#ffd873]/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_2px_6px_rgba(0,0,0,0.3)] transition-all duration-200 text-left active:scale-[0.985] active:brightness-95 cursor-pointer"
                 >
-                  {/* Left: Icon Tile + Clean Title */}
-                  <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+                  {/* Left: Consistent 36x36 Icon Container + Clean Title */}
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
                     <div
-                      className={`w-7.5 h-7.5 sm:w-8 sm:h-8 rounded-xl ${item.iconBg} flex items-center justify-center flex-shrink-0 shadow-inner group-hover:scale-105 transition-transform`}
+                      className={`w-9 h-9 rounded-xl ${item.iconBg} flex items-center justify-center flex-shrink-0 shadow-inner group-hover:scale-105 transition-transform`}
                     >
                       {item.icon}
                     </div>
 
-                    <h3 className="font-bengali text-xs sm:text-sm font-black text-[#150702] group-hover:text-[#801200] leading-tight truncate">
+                    <h3 className="font-bengali text-xs sm:text-[13px] font-bold text-[#fdf3e2] group-hover:text-[#ffd873] leading-tight truncate transition-colors">
                       {item.title}
                     </h3>
                   </div>
+
+                  {/* Right: Soft Gold Chevron Arrow (›) */}
+                  <ChevronRight className="w-4 h-4 text-[#ffd873]/40 group-hover:text-[#ffd873] group-hover:translate-x-0.5 transition-all flex-shrink-0 ml-2" />
                 </button>
               ))}
             </div>
 
-            {/* 👑 Premium Dedicated Creator (👥) & Chai (☕) Section */}
-            <div className="mt-3 pt-2.5 border-t border-[#ffd873]/20">
+            {/* Secondary Subordinate Section (Creator 👥 & Buy Chai ☕) */}
+            <div className="mt-3 pt-2.5 border-t border-[#ffd873]/15">
               <div className="grid grid-cols-2 gap-2">
                 {/* 👥 Creator Profile */}
                 <button
@@ -227,16 +231,16 @@ export default function TopBar({
                     setIsMenuOpen(false);
                     onOpenCreators();
                   }}
-                  className="group p-2 sm:p-2.5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-[#ffd873]/60 transition-all text-left flex items-center gap-2.5 shadow-md active:scale-95 cursor-pointer"
+                  className="group p-2 rounded-xl bg-black/35 hover:bg-white/10 border border-white/10 hover:border-[#ffd873]/30 transition-all text-left flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer"
                 >
-                  <div className="w-8 h-8 rounded-xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center flex-shrink-0 text-[#ffd873] group-hover:scale-105 transition-transform">
-                    <Users className="w-4 h-4" />
+                  <div className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 text-[#ffd873]/80 group-hover:text-[#ffd873] transition-colors">
+                    <Users className="w-3.5 h-3.5" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="text-[11px] font-black text-[#ffd873] leading-tight truncate">
+                    <div className="text-[10px] font-bold text-[#fdf3e2]/90 leading-tight truncate group-hover:text-[#ffd873] transition-colors">
                       {lang === 'bn' ? 'নির্মাতা' : 'Creator'}
                     </div>
-                    <div className="text-[9px] text-[#fdf3e2]/70 font-semibold truncate">
+                    <div className="text-[9px] text-[#fdf3e2]/50 font-medium truncate">
                       Aneek Pal
                     </div>
                   </div>
@@ -248,16 +252,16 @@ export default function TopBar({
                     setIsMenuOpen(false);
                     onOpenBuyChai();
                   }}
-                  className="group p-2 sm:p-2.5 rounded-2xl bg-gradient-to-r from-amber-500/25 to-orange-500/20 hover:from-amber-500/35 hover:to-orange-500/30 border border-[#ffd873]/40 hover:border-[#ffd873]/80 transition-all text-left flex items-center gap-2.5 shadow-md active:scale-95 cursor-pointer"
+                  className="group p-2 rounded-xl bg-amber-950/20 hover:bg-amber-900/30 border border-amber-500/20 hover:border-amber-400/40 transition-all text-left flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer"
                 >
-                  <div className="w-8 h-8 rounded-xl bg-amber-400/30 border border-amber-300/50 flex items-center justify-center flex-shrink-0 text-amber-300 group-hover:scale-105 transition-transform shadow-[0_0_10px_rgba(245,158,11,0.3)]">
-                    <Coffee className="w-4 h-4" />
+                  <div className="w-7 h-7 rounded-lg bg-amber-500/15 border border-amber-500/25 flex items-center justify-center flex-shrink-0 text-amber-300 group-hover:scale-105 transition-transform">
+                    <Coffee className="w-3.5 h-3.5" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="text-[11px] font-black text-amber-300 leading-tight truncate">
+                    <div className="text-[10px] font-bold text-amber-300/90 leading-tight truncate group-hover:text-amber-200 transition-colors">
                       {lang === 'bn' ? 'চা খাওয়ান' : 'Buy Chai'}
                     </div>
-                    <div className="text-[9px] text-amber-200/80 font-semibold truncate">
+                    <div className="text-[9px] text-amber-200/60 font-medium truncate">
                       UPI Support ☕
                     </div>
                   </div>
@@ -265,8 +269,8 @@ export default function TopBar({
               </div>
             </div>
 
-            {/* Sub-footer */}
-            <div className="mt-2.5 pt-2 border-t border-white/10 text-center text-[10px] sm:text-[11px] text-[#ffd873]/90 font-bold font-bengali tracking-wide">
+            {/* Sub-footer with Refined Gold Tone & Breathing Space */}
+            <div className="mt-3 pt-1 text-center text-[10px] sm:text-[11px] text-[#ffd873]/50 font-medium font-bengali tracking-wider">
               {t('footerFestival')}
             </div>
           </div>
